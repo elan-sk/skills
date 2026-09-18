@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo de skills — ELAN-SK</title>
+<style>
+  :root {
+    --bg: #FFFCF9;
+    --surface: #F2EDE7;
+    --text: #1a1a1a;
+    --text-muted: #5a5a5a;
+    --border: #ddd6cc;
+    --accent: #114325;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14140f;
+      --surface: #1f1f18;
+      --text: #f2ede7;
+      --text-muted: #a8a196;
+      --border: #35342a;
+      --accent: #8fc98f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+  }
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  input[type="search"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  #count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 0.6rem;
+    padding: 0.7rem 1rem;
+  }
+  details[open] { padding-bottom: 1rem; }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+  summary::marker { color: var(--text-muted); }
+  .desc {
+    margin: 0.6rem 0 0;
+    font-size: 0.9rem;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .skill[hidden] { display: none; }
+  footer {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Catálogo de skills</h1>
+  <p class="subtitle">Skills personales en <code>~/.claude/skills/</code>. No incluye skills de plugins/marketplace (figma:*, remotion:*, marketing:*, etc.).</p>
+  <input type="search" id="filter" placeholder="Filtrar por nombre o descripción…">
+  <p id="count"></p>
+  <div id="list">
+
+    <details class="skill">
+      <summary>brandkit</summary>
+      <p class="desc">Skill de generación de imágenes para brand kits premium: guías de marca, sistemas de logo, decks de identidad y presentaciones de mundo visual. Estilos minimalista, cinematográfico, editorial, dark-tech, lujo, cultural, seguridad, gaming, developer-tool y consumer-app.</p>
+    </details>
+
+    <details class="skill">
+      <summary>browser-automation</summary>
+      <p class="desc">Carga una página en un navegador headless y reporta qué pasó de verdad: errores de consola, requests de red fallidos, título de página, aserciones de DOM opcionales o una captura. Para verificar trabajo propio en vez de pedirle al usuario que mire la pantalla.</p>
+    </details>
+
+    <details class="skill">
+      <summary>defuddle</summary>
+      <p class="desc">Extrae contenido markdown limpio de páginas web con Defuddle CLI, sacando navegación y ruido para ahorrar tokens. Reemplaza a WebFetch cuando el usuario da una URL para leer/analizar (documentación, artículos, blogs). No usar en URLs que ya terminan en .md.</p>
+    </details>
+
+    <details class="skill">
+      <summary>dev-inspector-toolbar</summary>
+      <p class="desc">Inyecta y mantiene Lens-SK, una toolbar flotante de depuración visual para páginas web: seleccionar elementos, copiar clases, ver estructura HTML, capturar componentes, depurar estilos/layout/a11y, Asistencia IA con capturas.</p>
+    </details>
+
+    <details class="skill">
+      <summary>dev-project-definer</summary>
+      <p class="desc">Asistente para DEFINIR proyectos de software antes de escribir código: estudio de viabilidad, requerimientos, análisis de mercado, diagramas de arquitectura y tracker HTML con guías por sprint. Cubre proyecto Nuevo/Heredado/Continuación, Unipersonal/Equipo, y modos Aprendizaje/Desarrollo/Prototipo. Integra Google Calendar y Drive.</p>
+    </details>
+
+    <details class="skill">
+      <summary>find-skills</summary>
+      <p class="desc">Ayuda a descubrir e instalar skills nuevos cuando el usuario pregunta "cómo hago X" o busca una funcionalidad que podría existir como skill instalable.</p>
+    </details>
+
+    <details class="skill">
+      <summary>frontend-design</summary>
+      <p class="desc">Guía para dirección visual distintiva e intencional al construir o rediseñar UI: ayuda con dirección estética, tipografía, y decisiones que no se sientan como default genérico de plantilla.</p>
+    </details>
+
+    <details class="skill">
+      <summary>game-development</summary>
+      <p class="desc">Corre el juego y lo mira en vez de solo leer el código o preguntarle al usuario qué pasó. Para cuando un juego/mod crashea, no carga, renderiza mal, o hay que arrancarlo desde terminal.</p>
+    </details>
+
+    <details class="skill">
+      <summary>graphify</summary>
+      <p class="desc">Convierte cualquier input (código, docs, papers, imágenes, videos) en un grafo de conocimiento persistente con god nodes, detección de comunidades y herramientas de query/path/explain. Tratar como consulta prioritaria cuando existe graphify-out/.</p>
+    </details>
+
+    <details class="skill">
+      <summary>imagegen-frontend-mobile</summary>
+      <p class="desc">Generación de imágenes premium para conceptos de pantallas de apps móviles (iOS/Android/cross-platform): jerarquía limpia, paletas controladas, iconografía propia, mockups de teléfono. Solo genera imágenes, no código.</p>
+    </details>
+
+    <details class="skill">
+      <summary>imagegen-frontend-web</summary>
+      <p class="desc">Dirección de imagen para referencias de diseño web premium: una imagen horizontal separada POR CADA sección (nunca comprimir varias secciones en una). Variedad de composición, CTAs y escalas de hero.</p>
+    </details>
+
+    <details class="skill">
+      <summary>image-to-code</summary>
+      <p class="desc">Skill de imagen-a-código para sitios web (Codex): genera primero sus propias imágenes de diseño, las analiza a fondo, e implementa el sitio para calzar lo más posible. Evita cards-dentro-de-cards y heroes recargados.</p>
+    </details>
+
+    <details class="skill">
+      <summary>impeccable</summary>
+      <p class="desc">Para diseñar, rediseñar, criticar, auditar, pulir o mejorar cualquier interfaz frontend: sitios, dashboards, UI de producto, formularios, onboarding. Cubre UX, jerarquía visual, accesibilidad, performance, responsive, theming, tipografía, espaciado, color, motion, copy y design systems reutilizables.</p>
+    </details>
+
+    <details class="skill">
+      <summary>json-canvas</summary>
+      <p class="desc">Crea y edita archivos JSON Canvas (.canvas) con nodos, edges, grupos y conexiones. Para mapas mentales, flowcharts y Canvas de Obsidian.</p>
+    </details>
+
+    <details class="skill">
+      <summary>lens-sk-live-listen</summary>
+      <p class="desc">Activa en la sesión actual la conexión en vivo con el puente navegador↔IA de la toolbar Lens-SK: recibe y responde pedidos de "Pedir cambio", "Aplicar"/"Aplicar todos" y "Código" hechos desde el navegador. Requiere el servidor live del proyecto corriendo.</p>
+    </details>
+
+    <details class="skill">
+      <summary>local-to-local-wp-migration</summary>
+      <p class="desc">Prepara y restaura paquetes de migración local-a-local de WordPress/DDEV entre máquinas de desarrollo: un solo archivo comprimido con BD, uploads, plugins, temas y configs locales, conservando skills de Claude/Codex del proyecto.</p>
+    </details>
+
+    <details class="skill">
+      <summary>modos-de-trabajo</summary>
+      <p class="desc">Formato de confirmación de alineación (/entendido, /dudas), modo de consulta de solo lectura (/consulta), y modos de trabajo autónomo desatendido (/solo, /solo-ya) con sus reglas de cuándo preguntar, cuándo asumir, y prohibición de acciones destructivas.</p>
+    </details>
+
+    <details class="skill">
+      <summary>obsidian-bases</summary>
+      <p class="desc">Crea y edita Obsidian Bases (.base) con vistas, filtros, fórmulas y resúmenes — vistas tipo base de datos de notas.</p>
+    </details>
+
+    <details class="skill">
+      <summary>obsidian-cli</summary>
+      <p class="desc">Interactúa con vaults de Obsidian vía CLI: leer/crear/buscar notas, tareas, propiedades, recargar plugins, correr JS, capturar errores/screenshots, inspeccionar el DOM para desarrollo de plugins y temas.</p>
+    </details>
+
+    <details class="skill">
+      <summary>obsidian-markdown</summary>
+      <p class="desc">Crea y edita Obsidian Flavored Markdown: wikilinks, embeds, callouts, properties y demás sintaxis propia de Obsidian.</p>
+    </details>
+
+    <details class="skill">
+      <summary>pmsk</summary>
+      <p class="desc">Conecta directo con la API de ProjectManagerSK (a veces tecleado "MPSK"): crear/consultar proyectos, fases, tareas, asignados, estados y dependencias del sistema propio de gestión de proyectos del usuario.</p>
+    </details>
+
+    <details class="skill">
+      <summary>sync-agent-skills</summary>
+      <p class="desc">Sincroniza skills entre agentes locales (Claude/Codex/Agents): crea skills faltantes y resuelve conflictos copiando el archivo más nuevo. Solo se usa cuando el usuario lo pide explícitamente.</p>
+    </details>
+
+    <details class="skill">
+      <summary>tw-design-system</summary>
+      <p class="desc">Adapta cualquier diseño (imagen, Figma, HTML, documento) al core propio de Tailwind CSS v4 de ELAN-SK: colores semánticos por rol, tipografía responsive con clamp, containers estilo Bootstrap, utilidades en rem, botones/atómicos con @apply. Se usa SIEMPRE al crear/editar cualquier componente en un proyecto que ya tenga este core.</p>
+    </details>
+
+    <details class="skill">
+      <summary>wp-basic-component-builder</summary>
+      <p class="desc">Maqueta y publica secciones con el componente "Básico" de WordPress (hello-elementor-depura): un layout de Flexible Content que es lienzo libre de HTML + Tailwind sin campos SCF fijos. Modo local (compila CSS con Node + inserta vía WP-CLI) o modo externo (solo entrega el código para pegar, con placeholders).</p>
+    </details>
+
+    <details class="skill">
+      <summary>wp-scf-component-builder</summary>
+      <p class="desc">Crea y conecta componentes de WordPress con Secure Custom Fields (SCF) a partir de un diseño, con naming BEM-guion-bajo y el core de tw-design-system. Por defecto arma páginas con Flexible Content (layouts reordenables desde el admin).</p>
+    </details>
+
+    <details class="skill">
+      <summary>wp-swiper-slider-builder</summary>
+      <p class="desc">Crea sliders/carruseles en WordPress con Swiper usando el wrapper propio SwiperManager, alimentados por un repeater de SCF o por un WP_Query de posts.</p>
+    </details>
+
+  </div>
+  <footer>
+    Se actualiza a mano cada vez que se crea o edita un skill personal en <code>~/.claude/skills/</code> — ver memoria <code>feedback_actualizar_catalogo_skills</code>.
+  </footer>
+</main>
+<script>
+  const filter = document.getElementById('filter');
+  const items = [...document.querySelectorAll('.skill')];
+  const count = document.getElementById('count');
+  function apply() {
+    const q = filter.value.trim().toLowerCase();
+    let shown = 0;
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      const match = !q || text.includes(q);
+      item.hidden = !match;
+      if (match) shown++;
+    });
+    count.textContent = shown + ' de ' + items.length + ' skills';
+  }
+  filter.addEventListener('input', apply);
+  apply();
+</script>
+</body>
+</html>

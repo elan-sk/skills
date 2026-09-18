@@ -1,0 +1,58 @@
+@layer utilities {
+    #masthead {
+        @apply !fixed top-0 z-50 w-full;
+            & .elementor-icon-wrapper {
+            @apply flex flex-center;
+        }
+
+        & #ekit-megamenu-menu-principal{
+            @media (width > 1024px) {
+                @apply !h-px-46;
+
+                & > * {
+                    @apply h-full;
+                    & > * {
+                        @apply h-full;
+                    }
+                }
+            }
+        }
+
+        &.main-menu--sticky {
+            margin-top: initial;
+            position: fixed;
+            @apply  shadow-[0_6px_10px_rgba(0,0,0,0.15)]
+        }
+
+        &.slide-up {
+            @apply !static
+        }
+
+        &.hamburger-active {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        & #menu-menu-principal {
+            @apply flex-col lg:flex-row;
+
+            & a {
+                @apply !text-h3 flex flex-center !mb-0 lg:!text-button
+            }
+
+            & .btn-search-wrapper {
+                @apply mt-12 text-center lg:!font-normal lg:mt-0 lg:ml-6 ;
+            }
+
+            & .btn-search {
+                @apply max-h-px-48;
+            }
+        }
+
+        & .elementskit-menu-hamburger.elementskit-menu-toggler {
+            @apply my-6
+        }
+
+    }
+}
+

@@ -1,0 +1,68 @@
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fade-in-scale {
+  0% { opacity: 0; scale: 0.8; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@keyframes fade-slow {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+@keyframes slide-down {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes show-scroll {
+  from {
+    opacity: 0.3;
+    position: relative;
+    top: 90px;
+  }
+
+  to {
+    opacity: 1;
+    position: relative;
+    top: 0;
+  }
+}
+
+
+/* Registrar las animaciones en el tema de Tailwind */
+@theme {
+  --animate-fade-in: fade-in 0.3s ease-in forwards;
+  --animate-fade-in-scale: fade-in-scale 0.3s ease-in forwards;
+  --animate-fade-slow: fade-slow 0.7s ease-out forwards;
+  --animate-slide-up: slide-up 0.3s ease-out forwards;
+  --animate-slide-down: slide-down 0.3s ease-out forwards;
+}
+
+@utility transition-scroll {
+  & > * {
+    animation-fill-mode: both;
+    animation-name: show-scroll;
+    animation-range: entry 0px cover 300px;
+    animation-timeline: --section;
+    view-timeline-axis: block;
+    view-timeline-name: --section;
+  }
+}
+
+@utility reset-transition {
+  animation-name: none !important;
+}
+
+/* Estilos adicionales */
+body:not(.user-logged-in) [data-animate-fade] {
+  opacity: 0;
+}

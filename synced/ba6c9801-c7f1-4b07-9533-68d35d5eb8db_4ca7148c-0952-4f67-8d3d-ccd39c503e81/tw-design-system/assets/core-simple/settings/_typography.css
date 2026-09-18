@@ -1,0 +1,37 @@
+@theme {
+  /*=== FUENTES PRECIOJUSTO ===*/
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  /*=== ESCALA TIPOGRÁFICA (px fijos — app desktop 1280×760) ===*/
+  --text-h1:     28px;
+  --text-h2:     22px;
+  --text-h3:     18px;
+  --text-h4:     15px;
+  --text-h5:     13px;
+  --text-h6:     12px;
+  --text-button: 13px;
+  --text-base:   12px;
+  --text-small:  11px;
+  --text-xs:     10px;
+
+  /*=== RADIOS PrecioJusto ===*/
+  --radius-sm:  6px;   /* badges, etiquetas */
+  --radius-md:  8px;   /* botones, inputs */
+  --radius-lg:  10px;  /* banners, sliders */
+  --radius-xl:  12px;  /* tarjetas, cards */
+  --radius-2xl: 14px;  /* elementos grandes */
+}
+
+/*=== UTILIDADES DE TIPOGRAFÍA ===*/
+@utility text-h1     { font-size: var(--text-h1);     @apply font-sans font-bold   leading-tight  }
+@utility text-h2     { font-size: var(--text-h2);     @apply font-sans font-bold   leading-tight  }
+@utility text-h3     { font-size: var(--text-h3);     @apply font-sans font-semibold leading-snug }
+@utility text-h4     { font-size: var(--text-h4);     @apply font-sans font-semibold              }
+@utility text-h5     { font-size: var(--text-h5);     @apply font-sans font-semibold              }
+@utility text-h6     { font-size: var(--text-h6);     @apply font-sans font-medium                }
+@utility text-button { font-size: var(--text-button); @apply font-sans font-semibold              }
+@utility text-base   { font-size: var(--text-base);   @apply font-sans font-normal                }
+@utility text-small  { font-size: var(--text-small);  @apply font-sans font-normal                }
+@utility text-xs     { font-size: var(--text-xs);     @apply font-sans font-normal                }
+@utility text-eyebrow { @apply text-xs font-bold tracking-widest uppercase                        }

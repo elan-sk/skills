@@ -1,0 +1,56 @@
+/*==================================================
+  FORMULARIOS — PrecioJusto
+==================================================*/
+
+@layer components {
+
+  /*=== LABEL ===*/
+  .form-label {
+    @apply block font-sans font-semibold text-black;
+    font-size: 11px;
+    margin-bottom: 5px;
+  }
+
+  /*=== INPUT / SELECT / TEXTAREA ===*/
+  .form-input {
+    @apply block w-full font-sans text-black bg-surface
+           border border-outline;
+    border-radius: 8px;
+    padding: 8px 11px;
+    font-size: 12px;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+
+    /* Placeholder */
+    &::placeholder { @apply text-lt }
+
+    /* Foco */
+    &:focus, &.focused {
+      @apply outline-none border-primary;
+      box-shadow: 0 0 0 3px rgba(200,48,0,.1);
+    }
+
+    /* Error */
+    &.error {
+      @apply border-error;
+      box-shadow: 0 0 0 3px rgba(200,48,0,.08);
+    }
+
+    /* Disabled */
+    &:disabled, &.disabled {
+      @apply bg-panel text-lt cursor-not-allowed;
+    }
+  }
+
+  /*=== TEXTOS DE APOYO ===*/
+  .form-hint  {
+    @apply font-sans text-mid;
+    font-size: 10px;
+    margin-top: 4px;
+  }
+
+  .form-error {
+    @apply font-sans text-error font-semibold;
+    font-size: 10px;
+    margin-top: 4px;
+  }
+}

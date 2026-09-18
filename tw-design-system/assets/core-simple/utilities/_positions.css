@@ -1,0 +1,75 @@
+/*======================================================
+  POSITIONS: Con estas clase podemos ubicar un elemento
+            con las propiedades de posicionamiento
+  nota: para poder usarla el padre de este elemento debe
+        estar posicionado (Relative, Absoluto)
+=======================================================*/
+/* === FULL === */
+@utility position-full {
+  @apply absolute inset-0;
+}
+
+/* === CENTRADOS === */
+@utility position-center {
+  @apply absolute top-1/2 left-1/2 -translate-1/2;
+}
+
+@utility position-x-center {
+  @apply absolute left-1/2 -translate-x-1/2;
+}
+
+@utility position-y-center {
+  @apply absolute top-1/2 -translate-y-1/2;
+}
+
+/* === SUPERIORES === */
+@utility position-t {
+  @apply absolute top-0 left-0 right-0;
+}
+
+@utility position-tr {
+  @apply absolute top-0 right-0;
+}
+
+@utility position-tl {
+  @apply absolute top-0 left-0;
+}
+
+/* === INFERIORES === */
+@utility position-b {
+  @apply absolute bottom-0 left-0 right-0;
+}
+
+@utility position-br {
+  @apply absolute bottom-0 right-0;
+}
+
+@utility position-bl {
+  @apply absolute bottom-0 left-0;
+}
+
+/* === LATERALES === */
+@utility position-l {
+  @apply absolute top-0 bottom-0 left-0;
+}
+
+@utility position-r {
+  @apply absolute top-0 bottom-0 right-0;
+}
+
+/* === CENTRADOS POR LADO === */
+@utility position-t-center {
+  @apply absolute top-0 left-1/2 -translate-x-1/2;
+}
+
+@utility position-b-center {
+  @apply absolute bottom-0 left-1/2 -translate-x-1/2;
+}
+
+@utility position-l-center {
+  @apply absolute left-0 top-1/2 -translate-y-1/2;
+}
+
+@utility position-r-center {
+  @apply absolute right-0 top-1/2 -translate-y-1/2;
+}

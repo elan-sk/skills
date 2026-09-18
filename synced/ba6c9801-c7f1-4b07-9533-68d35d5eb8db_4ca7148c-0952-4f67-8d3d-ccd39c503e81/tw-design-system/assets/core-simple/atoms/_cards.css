@@ -1,0 +1,89 @@
+/*==================================================
+  TARJETAS — PrecioJusto
+  stat-card | price-box | hist-card
+==================================================*/
+
+@layer components {
+
+  /*=== STAT CARD ===*/
+  .stat-card {
+    @apply relative overflow-hidden bg-surface border border-outline shadow-sm;
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+
+  /* Acento de color en el borde superior */
+  .stat-card-accent {
+    @apply position-t;
+    height: 3px;
+  }
+
+  .stat-label {
+    @apply font-sans font-bold uppercase text-mid;
+    font-size: 10px;
+    letter-spacing: .08em;
+  }
+
+  .stat-val {
+    @apply font-mono font-extrabold text-black;
+    font-size: 26px;
+    margin: 6px 0 3px;
+  }
+
+  .stat-sub { @apply font-sans text-mid; font-size: 11px; }
+
+  /* Ícono decorativo de fondo */
+  .stat-ico {
+    @apply position-r-center opacity-10 text-black;
+    font-size: 28px;
+    right: 16px;
+  }
+
+  /*=== PRICE BOX ===*/
+  .price-box {
+    @apply bg-dark;
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+
+  .price-label {
+    @apply font-sans font-semibold uppercase;
+    font-size: 10px;
+    letter-spacing: .08em;
+    color: rgba(255,255,255,.4);
+  }
+
+  .price-amount {
+    @apply font-mono font-extrabold text-tertiary;
+    font-size: 28px;
+    margin-top: 4px;
+  }
+
+  .price-sub {
+    font-size: 11px;
+    margin-top: 2px;
+    color: rgba(255,255,255,.4);
+  }
+
+  /*=== HIST CARD ===*/
+  .hist-card {
+    @apply flex items-center bg-surface border border-outline;
+    border-radius: 12px;
+    padding: 14px 18px;
+    gap: 14px;
+  }
+
+  .hist-ico {
+    @apply shrink-0 flex-center bg-primary-lt;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 18px;
+  }
+
+  .hist-name { @apply font-sans font-bold text-black; font-size: 14px; }
+  .hist-meta { @apply font-sans text-mid; font-size: 11px; margin-top: 2px; }
+
+  .hist-price-val { @apply font-mono font-extrabold text-black text-right; font-size: 18px; }
+  .hist-price-sub { @apply font-sans text-mid text-right; font-size: 10px; }
+}

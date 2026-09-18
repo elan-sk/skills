@@ -1,0 +1,214 @@
+/*==================================================
+  COLORES DE BOTONES/ENLACES
+  Variables CSS (no JS/variables.js) organizadas antes de los selectores,
+  para cambiar un color reasignando UN valor acá en vez de buscarlo
+  selector por selector. Cada una apunta a --color-{rol} (registrada por
+  variables.js en :root para los 15 roles de bgColors + white/black) — una
+  sola fuente de verdad para el hex real, sin duplicarlo a mano. Si tu
+  paleta agrega roles nuevos, sumá acá su propia variable --btn-*/--a-*
+  apuntando al var(--color-{rol}) que corresponda.
+==================================================*/
+:root {
+  /* Primary */
+  --btn-primary: var(--color-primary);
+  --btn-border-primary: var(--color-primary);
+  --btn-on-primary: var(--color-white);
+  --btn-hover-primary: var(--color-secondary-dk);
+  --btn-hover-border-primary: var(--color-secondary-dk);
+  --btn-hover-on-primary: var(--color-white);
+
+  /* Secondary */
+  --btn-secondary: var(--color-secondary-lt);
+  --btn-border-secondary: var(--color-secondary-lt);
+  --btn-on-secondary: var(--color-black);
+  --btn-hover-secondary: var(--color-secondary);
+  --btn-hover-border-secondary: var(--color-secondary);
+  --btn-hover-on-secondary: var(--color-black);
+
+  /* Tertiary — relleno neutro, tinta fija (ver nota más abajo) */
+  --btn-tertiary: var(--color-background);
+  --btn-border-tertiary: var(--color-black);
+  --btn-on-tertiary: var(--color-black);
+  --btn-hover-tertiary: var(--color-tertiary);
+  --btn-hover-on-tertiary: var(--color-black);
+
+  /* Enlaces <a>/button nativos (sin clase .btn-*, ver reset más abajo).
+  --a-color/--a-hover-color son el fallback de --link-color/--link-hover-
+  color (plugins/anchor-variants.js las pisa dinámicamente según el fondo
+  del contenedor, buscando el mejor contraste entre los tonos de marca). */
+  --a-color: var(--color-secondary-dk);
+  --a-hover-color: var(--color-error);
+}
+
+/*==================================================
+  RESET BUTTONS
+  Nota: en un theme hijo de WordPress, el reset.css del theme padre suele
+  definir `a{background-color:transparent}` y `button{background-color:
+  transparent;border:...;border-radius:...}` SIN @layer. En cascade layers,
+  cualquier regla sin capa le gana a una regla con capa aunque tenga menor
+  especificidad — por eso bg/border/radius de .btn-* se fuerzan con
+  !important acá. Es defensivo: si tu theme padre no tiene ese problema, no
+  hace daño; si lo tiene (muy común, ej. Hello Elementor), evita que el
+  botón se vea transparente/sin forma pese a que el CSS "se ve bien".
+==================================================*/
+@layer base {
+  /* Reseteo básico de links sueltos (sin clase .btn-*).
+  El color usa --link-color/--link-hover-color (seteadas por
+  plugins/anchor-variants.js según el fondo del contenedor, con fallback a
+  --a-color/--a-hover-color de arriba) en vez de @apply, porque acá también
+  necesitamos el !important real contra el reset del theme padre. Se
+  excluyen los .btn-*: entre dos !important, la capa "base" le gana a
+  "components" (el orden de prioridad se invierte para los important), así
+  que sin este :not() el color de link pisaría el color propio de cada
+  botón. */
+  :is(a, button):not(.btn-primary, .btn-secondary, .btn-tertiary) {
+    @apply !no-underline text-button !font-semibold transition-colors duration-100;
+    color: var(--link-color, var(--a-color)) !important;
+    &:hover { color: var(--link-hover-color, var(--a-hover-color)) !important; }
+    & span { @apply z-10; }
+  }
+  :is(.btn-primary, .btn-secondary, .btn-tertiary) {
+    @apply
+      !no-underline
+      !border-3
+      duration-500
+      flex-center
+      inline-flex
+      max-w-px-400
+      px-px-27 py-px-12
+      text-button
+      !font-semibold
+      transition-all
+      !rounded-full
+      ease-in-out;
+    & span { @apply z-10; }
+  }
+}
+
+/*==================================================
+  BUTTON PRIMARY
+  Nota: el borde NO se ve en la mayoría de los fondos — por defecto
+  coincide con el propio relleno (--btn-primary), como una pastilla sólida
+  sin contorno. Solo se pisa con --btn-context-color-primary (seteada por
+  plugins/buttons-variants.js ÚNICAMENTE en los fondos de la propia familia
+  de color de primary, no en todos los fondos) cuando el botón cae sobre
+  una sección de SU MISMA familia de color, que es el único caso donde el
+  relleno puede confundirse con el fondo y "desaparecer" — en cualquier
+  otro fondo el relleno ya se distingue solo, no debe verse ningún
+  contorno. El texto SIEMPRE usa --btn-on-primary (estático): el relleno
+  del botón no cambia, así que el color de texto que ya contrasta con ese
+  relleno tampoco debería cambiar según el fondo padre.
+  El fallback (--btn-border-primary, del :root de arriba) es el propio
+  color de relleno del botón.
+  El ::before de hover lleva el mismo borde condicional: al hacer hover el
+  relleno cambia a --btn-hover-primary y el ::before es más grande que el
+  botón (100%+9px, para el efecto de crecimiento) — si ese relleno coincide
+  con el fondo de la sección, sin borde el botón entero desaparece en hover
+  (el ::before, al ser más grande, tapa incluso el borde del botón de
+  abajo).
+==================================================*/
+@layer components {
+  .btn-primary {
+    @apply relative;
+    background-color: var(--btn-primary) !important;
+    color: var(--btn-on-primary) !important;
+    border-color: var(--btn-context-color-primary, var(--btn-border-primary)) !important;
+    &:before {
+      @apply
+        block content-['']
+        duration-200
+        origin-center
+        position-center
+        size-px
+        rounded-full
+        transition-all
+        ease-in-out
+    }
+    &:hover, &:active, &:focus {
+      color: var(--btn-hover-on-primary) !important;
+      &::before {
+        @apply aspect-square size-[calc(100%_+_9px)];
+        background-color: var(--btn-hover-primary);
+        border-color: var(--btn-context-color-primary, var(--btn-hover-border-primary)) !important;
+        border-style: solid;
+        border-width: 3px;
+      }
+    }
+  }
+}
+
+/*==================================================
+  BUTTON SECONDARY
+  Nota: mismo criterio que primary — border-color solo se pisa con
+  --btn-context-color-secondary, seteada únicamente en los 3 fondos de su
+  propia familia. En cualquier otro fondo el borde vuelve al fallback (el
+  propio relleno), invisible.
+==================================================*/
+@layer components {
+  .btn-secondary {
+    @apply relative;
+    background-color: var(--btn-secondary) !important;
+    color: var(--btn-on-secondary) !important;
+    border-color: var(--btn-context-color-secondary, var(--btn-border-secondary)) !important;
+    &:before {
+      @apply
+        block content-['']
+        duration-200
+        origin-center
+        position-center
+        size-px
+        rounded-full
+        transition-all
+        ease-in-out
+    }
+    &:hover, &:active, &:focus {
+      color: var(--btn-hover-on-secondary) !important;
+      &::before {
+        @apply aspect-square size-[calc(100%_+_9px)];
+        background-color: var(--btn-hover-secondary);
+        border-color: var(--btn-context-color-secondary, var(--btn-hover-border-secondary)) !important;
+        border-style: solid;
+        border-width: 3px;
+      }
+    }
+  }
+}
+
+/*==================================================
+  BUTTON TERTIARY
+  Nota: no usa --btn-context-color-* a propósito. Su relleno suele ser un
+  color neutro (fondo base) y su borde/texto un color de tinta fija, por lo
+  que ya se lee bien sobre cualquier fondo sin necesitar adaptarse al
+  contexto — por eso SIEMPRE tiene borde visible (a diferencia de primary/
+  secondary). Si tu paleta define btn-tertiary con un relleno de marca (no
+  neutro), reconsiderá si también necesita el patrón contextual.
+==================================================*/
+@layer components {
+  .btn-tertiary {
+    @apply relative;
+    background-color: var(--btn-tertiary) !important;
+    color: var(--btn-on-tertiary) !important;
+    border-color: var(--btn-border-tertiary) !important;
+    &:before {
+      @apply
+        block content-['']
+        duration-200
+        origin-center
+        position-center
+        size-px
+        rounded-full
+        transition-all
+        ease-in-out
+    }
+    &:hover, &:active, &:focus {
+      color: var(--btn-hover-on-tertiary) !important;
+      &::before {
+        @apply aspect-square size-[calc(100%_+_9px)];
+        background-color: var(--btn-hover-tertiary);
+        border-color: var(--btn-border-tertiary);
+        border-style: solid;
+        border-width: 3px;
+      }
+    }
+  }
+}

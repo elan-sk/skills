@@ -1,0 +1,122 @@
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fade-in-scale {
+  0% { opacity: 0; scale: 0.8; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@keyframes fade-slow {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+@keyframes slide-down {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes slide-right {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes slide-left {
+  0% { transform: translateX(0); opacity: 0; }
+  100% { transform: translateX(-100%); opacity: 1; }
+}
+
+@keyframes show-scroll {
+  from { opacity: 0.3; position: relative; top: 90px;}
+  to { opacity: 1; position: relative; top: 0;}
+}
+
+@keyframes tilt-left {
+  0%, 100% { transform:  rotateZ(4deg); }
+  50% { transform:  rotateZ(-4deg);}
+}
+
+@keyframes tilt-right {
+  0%, 100% { transform:  rotateZ(-4deg);}
+  50% { transform:  rotateZ(4deg);}
+}
+
+@keyframes tilt-stop {
+  100% { transform: rotateZ(6deg);}
+}
+
+@keyframes elastic-bounce {
+  0%, 100% { translate: 0 0;
+    /* scale: 1.03 0.99  */
+  }
+  /* 15% { scale: 0.95 1.05 } */
+  50% { translate: 0 -2px;
+    /* scale: 1 1  */
+  }
+  /* 85% { scale: 0.95 1.05 } */
+}
+
+@keyframes shadow-bounce {
+  0%, 100% { scale: 0.95 1; opacity: 0.2 }
+  50% { scale: 1.03 1; opacity: 0.13 }
+}
+
+@keyframes dot {
+  0%, 20% { opacity: 0; }
+  40%, 60% { opacity: 1; }
+  80%, 100% { opacity: 0; }
+}
+
+@theme {
+  --animate-dot: dot 1.5s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.3s ease-in forwards;
+  --animate-fade-in-scale: fade-in-scale 0.3s ease-in forwards;
+  --animate-fade-slow: fade-slow 0.7s ease-out forwards;
+  --animate-slide-up: slide-up 0.3s ease-out forwards;
+  --animate-slide-down: slide-down 0.3s ease-out forwards;
+  --animate-slide-right: slide-right 0.7s ease-out forwards;
+  --animate-slide-left: slide-left 0.7s ease-out forwards;
+  --animate-tilt-left: tilt-left 6s ease-in-out infinite;
+  --animate-tilt-right: tilt-right 6s ease-in-out infinite;
+  --animate-tilt-stop: tilt-stop .3s ease-in-out forwards;
+  --animate-elastic-bounce: elastic-bounce 1s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  --animate-shadow-bounce: shadow-bounce 1s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@utility skeleton {
+  background: linear-gradient(90deg, #EDE5DF 25%, #FDFAF5 50%, #EDE5DF 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@utility transition-scroll {
+  & > * {
+    animation-fill-mode: both;
+    animation-name: show-scroll;
+    animation-range: entry 0px cover 300px;
+    animation-timeline: --section;
+    view-timeline-axis: block;
+    view-timeline-name: --section;
+  }
+}
+
+@utility reset-transition {
+  animation-name: none !important;
+}
+
+/* Estilos adicionales */
+body:not(.user-logged-in) [data-animate-fade] {
+  opacity: 0;
+}

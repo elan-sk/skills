@@ -1,0 +1,59 @@
+/*==================================================
+  B A S E S : Maquetado básico
+==================================================*/
+
+@layer base {
+  :is(body, html) { @apply scroll-smooth; }
+  html {
+    @apply scroll-bar-decorated bg-background text-[12px] 2xl:text-[14px];
+  }
+  body { @apply text-base !p-0; }
+
+  /* Nota: SIN !important a propósito, aunque en un theme hijo de WordPress
+  el reset.css del theme padre pueda definir h1-h6{...} sin @layer y ganarle
+  a esto (ver philosophy.md §11.1 y §11.8). Un heading es una etiqueta
+  semántica que el usuario del proyecto legítimamente puede querer
+  reestilizar puntual (ej. <h1 class="text-h3"> para bajarle el tamaño a un
+  h1 conservando la semántica) — !important acá se lo impide, porque le
+  gana a cualquier clase que no sea también importante. Si hay una colisión
+  real confirmada con el theme padre, la solución preferida es desregistrar
+  ese reset (frameworks/wordpress.md), no ponerle !important a los
+  headings. Distinto es el caso de .btn-* (atoms/_buttons.css): ESE sí lleva
+  !important porque un botón es un átomo de marca, no algo que se espera
+  reestilizar puntual manteniendo la clase. */
+  h1 { @apply text-h1; }
+  h2 { @apply text-h2; }
+  h3 { @apply text-h3; }
+  h4 { @apply text-h4; }
+  h5 { @apply text-h5; }
+  h6 { @apply text-h6; }
+
+  * + :is(h1, h2, h3, h4, h5, h6) {
+    @apply mt-6;
+  }
+
+  p { @apply mb-6 leading-relaxed text-base; }
+  :is(b, strong) { @apply font-bold; }
+  :is(em, i) { @apply italic; }
+  :is(a, button) { @apply text-button underline; }
+
+  ul { @apply pl-0 list-none; }
+  ol { @apply mb-4 pl-8 list-decimal; }
+  li { @apply mb-1; }
+
+  code { @apply px-1.5 py-0.5 rounded text-sm font-mono; }
+  pre { @apply p-4 rounded-lg overflow-x-auto mb-4; }
+  pre code { @apply p-0; }
+  blockquote { @apply border-l-4 pl-4 my-4 italic; }
+
+  hr { @apply border-0 border-t my-8; }
+  table { @apply w-full border-collapse mb-4; }
+  :is(th, td) { @apply border p-2 text-left; }
+  th { @apply font-semibold; }
+
+  section {
+    padding-top: clamp(3.75rem, 2.4rem + 3.6vw, 5.625rem);
+    padding-bottom: clamp(4.5rem, 3.6rem + 3vw, 6.25rem);
+    padding-inline: 0;
+  }
+}

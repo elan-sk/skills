@@ -1,0 +1,50 @@
+@layer components {
+  .cx-header {
+    @apply shadow-[0_2px_8px_rgba(33,29,23,0.06)] transition-transform duration-300 ease-in-out;
+  }
+  /* Ocultar/mostrar el header con el scroll (ver js/components/menu.js,
+     clase HeaderScroll). El header ya es `fixed`, así que solo hace
+     falta trasladarlo fuera de vista, no togglear su position. */
+  .cx-header--hidden {
+    @apply -translate-y-full;
+  }
+
+  /* El <img> del logo subido en wp-admin trae width/height propios (ver
+     Personalizar > Identidad del sitio) que pueden ser más altos que la
+     fila del header (h-px-72) y desbordarla un poco con items-center. */
+  .cx-header__logo img,
+  .mobile-menu__logo img {
+    @apply h-px-56 w-auto;
+  }
+
+  /* Links del menú: el color base/hover ya lo resuelve el reset global
+     de atoms/_buttons.css (var(--link-color)/var(--link-hover-color)) según
+     el fondo del header (bg-background). Acá solo se agrega el indicador
+     de página activa, que no puede pisar la propiedad `color` del reset
+     (ver atoms/_buttons.css) así que se resuelve con un borde en vez de
+     un cambio de color. */
+  .cx-header__menu > li > a,
+  .mobile-menu__list > li > a {
+    @apply inline-flex border-b-2 border-transparent pb-1 text-button !mb-0;
+  }
+  .cx-header__menu > li.current-menu-item > a,
+  .mobile-menu__list > li.current-menu-item > a {
+    @apply border-tertiary;
+  }
+
+  /* Último ítem del menú principal = CTA (ver functions.php,
+     nav_menu_link_attributes agrega .btn-primary a ese <a>). El borde de
+     .btn-primary ya es !important y gana solo; acá solo hace falta anular
+     el pb-1 del link plano para que la píldora quede al ras del nav. */
+  .cx-header__menu > li:last-child > a,
+  .mobile-menu__list > li:last-child > a {
+    @apply pb-0;
+  }
+
+  .mobile-menu {
+    @apply invisible opacity-0 transition-opacity duration-300;
+  }
+  .mobile-menu.is-open {
+    @apply visible opacity-100;
+  }
+}

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrecioJusto — Plan de Trabajo · Elan SK Soft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary:     #C83000;
+  --primary-lt:  #FCEEE9;
+  --primary-mid: #e8ded9;
+  --secondary:   #1EE492;
+  --secondary-lt:#E4FCF3;
+  --accent:      #FDE000;
+  --accent-lt:   #FFF9CC;
+  --purple:      #7B61FF;
+  --purple-lt:   #EEE9FF;
+  --orange:      #E07A5F;
+  --orange-lt:   #FCEEE9;
+  --bg:          #FDFAF5;
+  --bg-card:     #FFFFFF;
+  --bg-dark:     #28201A;
+  --bg-mid:      #F6EFE9;
+  --dark:        #28201A;
+  --mid:         #7A655C;
+  --light:       #D9CCC7;
+  --border:      #EDE5DF;
+  --font:        'Sora', sans-serif;
+  --mono:        'JetBrains Mono', monospace;
+  --r:           14px;
+  --shadow:      0 4px 28px rgba(40,32,26,.10);
+  --shadow-sm:   0 2px 10px rgba(40,32,26,.05);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--dark); line-height:1.6; }
+
+#app{
+/* ── SIDEBAR ── */
+.sidebar {
+  position:fixed; left:0; top:0; bottom:0;
+  width:268px; background:var(--bg-dark);
+  display:flex; flex-direction:column;
+  padding:22px 16px; z-index:100; overflow-y:auto;
+}
+.logo-row { display:flex; align-items:center; gap:11px; padding-bottom:18px; border-bottom:1px solid rgba(255,255,255,.08); margin-bottom:18px; }
+.logo-badge { width:42px; height:42px; background:transparent; border:1px solid rgba(200,48,0,.5); border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:13px; font-weight:500; color:var(--primary); flex-shrink:0; }
+.logo-text strong { display:block; color:#fff; font-size:14px; font-weight:600; }
+.logo-text span { color:rgba(255,255,255,.35); font-size:10px; }
+
+.overall-box { background:rgba(255,255,255,.06); border-radius:12px; padding:14px; margin-bottom:16px; }
+.overall-box label { color:rgba(255,255,255,.45); font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; }
+.overall-num { color:#fff; font-size:36px; font-weight:700; margin:4px 0 8px; font-family:var(--mono); }
+.prog-bar { height:4px; background:rgba(255,255,255,.1); border-radius:2px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--primary),var(--accent)); transition:width .5s ease; }
+
+.sprint-nav { flex:1; display:flex; flex-direction:column; gap:2px; }
+.snav { display:flex; align-items:center; gap:9px; padding:9px 11px; border-radius:9px; cursor:pointer; text-decoration:none; transition:background .15s; }
+.snav:hover { background:rgba(255,255,255,.07); }
+.snav.active { background:rgba(255,255,255,.11); }
+.snav-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.snav-label { color:rgba(255,255,255,.65); font-size:12px; font-weight:500; flex:1; line-height:1.3; }
+.snav-prog { color:rgba(255,255,255,.35); font-size:11px; font-family:var(--mono); flex-shrink:0; }
+
+.sidebar-footer { border-top:1px solid rgba(255,255,255,.07); padding-top:12px; color:rgba(255,255,255,.25); font-size:10px; text-align:center; line-height:1.7; }
+
+/* ── MAIN ── */
+.main { margin-left:268px; padding:36px 44px 80px; max-width:1100px; }
+
+.page-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid var(--border); }
+.page-top h1 { font-size:26px; font-weight:700; }
+.page-top h1 span { color:var(--primary); }
+.page-top p { color:var(--mid); font-size:13px; margin-top:5px; }
+.meta-right { text-align:right; }
+.meta-date { font-family:var(--mono); font-size:11px; color:var(--mid); }
+.week-pill { display:inline-block; margin-top:7px; background:var(--primary); color:#fff; padding:4px 13px; border-radius:20px; font-size:12px; font-weight:600; font-family:var(--mono); }
+
+/* ── STATS ── */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:36px; }
+.stat { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r); padding:16px 20px; box-shadow:var(--shadow-sm); }
+.stat-lbl { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--mid); }
+.stat-val { font-size:30px; font-weight:700; margin:4px 0 0; font-family:var(--mono); }
+.stat-sub { font-size:11px; color:var(--mid); margin-top:2px; }
+
+/* ── SPRINT SECTION ── */
+.sprint-section { margin-bottom:52px; scroll-margin-top:32px; }
+.sprint-header { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+.sprint-num { width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:16px; font-weight:700; color:#fff; flex-shrink:0; }
+.sprint-num.amber { color:var(--bg-dark); }
+.sprint-info h2 { font-size:20px; font-weight:700; }
+.sprint-info .sprint-meta { font-size:12px; color:var(--mid); margin-top:2px; }
+.sprint-pct-area { margin-left:auto; display:flex; align-items:center; gap:9px; }
+.sprint-pct { font-family:var(--mono); font-size:14px; font-weight:700; }
+.sprint-bar { width:120px; height:5px; background:var(--bg-mid); border-radius:3px; overflow:hidden; }
+.sprint-bar-fill { height:100%; border-radius:3px; transition:width .5s ease; }
+
+/* ── WEEK CARD ── */
+.week-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r); margin-bottom:10px; box-shadow:var(--shadow-sm); overflow:hidden; transition:box-shadow .2s; }
+.week-card:hover { box-shadow:var(--shadow); }
+.week-header { display:flex; align-items:center; gap:11px; padding:15px 20px; cursor:pointer; user-select:none; }
+.week-tag { font-family:var(--mono); font-size:10px; font-weight:600; padding:4px 10px; border-radius:8px; flex-shrink:0; white-space:nowrap; }
+.week-title { font-size:14px; font-weight:600; flex:1; }
+.week-stat { font-size:11px; color:var(--mid); font-family:var(--mono); flex-shrink:0; }
+.chevron { color:var(--light); font-size:18px; transition:transform .2s; flex-shrink:0; }
+.week-card.open .chevron { transform:rotate(180deg); }
+
+.week-body { display:none; border-top:1px solid var(--border); }
+.week-card.open .week-body { display:block; }
+
+/* ── BODY SECTIONS ── */
+.body-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.body-col { padding:18px 20px 20px; }
+.body-col + .body-col { border-left:1px solid var(--border); }
+.body-full { padding:18px 20px 20px; }
+
+.section-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+.section-lbl .lbl-pill { padding:2px 8px; border-radius:5px; font-size:9px; }
+
+/* ── ACTIVITIES ── */
+.activity { display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-bottom:1px solid #F5EFE9; }
+.activity:last-child { border-bottom:none; }
+.activity input[type=checkbox] { width:16px; height:16px; accent-color:var(--primary); cursor:pointer; flex-shrink:0; margin-top:2px; }
+.act-text { font-size:13px; line-height:1.55; flex:1; }
+.act-text.done { text-decoration:line-through; color:var(--mid); }
+.act-text code { font-family:var(--mono); font-size:11px; background:#F5EFE9; padding:1px 5px; border-radius:4px; color:var(--primary); }
+.act-step { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:var(--primary); color:#fff; border-radius:50%; font-size:9px; font-weight:700; flex-shrink:0; margin-top:2px; }
+
+/* ── CRITERIOS ── */
+.criterios-section { background:var(--secondary-lt); border-top:1px solid #B8F0D8; padding:16px 20px 18px; }
+.criterios-section .section-lbl { color:#0D7A4A; }
+.criterio-item { display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-bottom:1px solid #C8F0DC; }
+.criterio-item:last-child { border-bottom:none; }
+.criterio-item input[type=checkbox] { width:16px; height:16px; accent-color:#0D7A4A; cursor:pointer; flex-shrink:0; margin-top:2px; }
+.criterio-text { font-size:13px; line-height:1.55; flex:1; }
+.criterio-text.done { text-decoration:line-through; color:#5DA882; }
+.criterio-text code { font-family:var(--mono); font-size:11px; background:#C8F0DC; padding:1px 5px; border-radius:4px; color:#0D5A34; }
+.criterio-id { font-family:var(--mono); font-size:10px; font-weight:700; color:#0D7A4A; background:#B8F0D8; padding:2px 7px; border-radius:5px; flex-shrink:0; margin-top:2px; }
+
+/* ── ENTREGABLE BANNER ── */
+.entregable { background:var(--bg-dark); border-radius:0 0 var(--r) var(--r); padding:13px 20px; display:flex; align-items:center; gap:10px; }
+.entregable-icon { font-size:18px; flex-shrink:0; }
+.entregable-text { font-size:13px; color:#fff; font-weight:500; flex:1; }
+.entregable-text span { color:var(--accent); font-weight:700; }
+
+/* ── RECURSOS ── */
+.recursos-section { padding:14px 20px 18px; border-top:1px solid var(--border); background:var(--bg); }
+.recursos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:7px; margin-top:10px; }
+.recurso { display:flex; align-items:center; gap:9px; padding:8px 11px; border:1px solid var(--border); border-radius:9px; text-decoration:none; color:var(--dark); font-size:12px; transition:all .2s; background:var(--bg-card); }
+.recurso:hover { border-color:var(--primary); background:var(--primary-lt); }
+.r-icon { width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+.r-yt { background:#FFE5E5; }
+.r-doc { background:#E5EDFF; }
+.r-tool { background:var(--accent-lt); }
+.r-art { background:var(--secondary-lt); }
+.r-type { font-size:9px; font-weight:600; color:var(--mid); text-transform:uppercase; letter-spacing:.05em; display:block; }
+
+/* ── NOTA TIP ── */
+.tip { background:var(--accent-lt); border-left:3px solid var(--accent); border-radius:0 9px 9px 0; padding:10px 14px; margin:12px 0 0; font-size:12px; line-height:1.6; }
+.tip strong { color:#7A5F00; }
+
+/* ── SPRINT COLORS ── */
+.sn1,.sf1 { background:var(--primary); }      .wt1 { background:var(--primary-lt); color:var(--primary); }          .sp1 { color:var(--primary); }
+.sn2,.sf2 { background:var(--secondary); }    .wt2 { background:var(--secondary-lt); color:#0D7A4A; }                .sp2 { color:#0D7A4A; }
+.sn3,.sf3 { background:var(--purple); }       .wt3 { background:var(--purple-lt); color:var(--purple); }             .sp3 { color:var(--purple); }
+.sn4,.sf4 { background:var(--accent); }       .wt4 { background:var(--accent-lt); color:#7A5F00; }                   .sp4 { color:#7A5F00; }
+.sn5,.sf5 { background:var(--orange); }       .wt5 { background:var(--orange-lt); color:var(--orange); }             .sp5 { color:var(--orange); }
+
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  #app .sidebar{display:none}
+  #app .main{margin-left:0;padding:20px 18px 60px}
+  #app .body-grid{grid-template-columns:1fr}
+  #app .body-col+.body-col{border-left:none;border-top:1px solid var(--border)}
+  #app .stats{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body id="app">
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside class="sidebar">
+  <div class="logo-row">
+    <div class="logo-badge"></></div>
+    <div class="logo-text">
+      <strong>ELAN SK soft</strong>
+      <span>Plan PrecioJusto</span>
+    </div>
+  </div>
+
+  <div class="overall-box">
+    <label>Progreso Total</label>
+    <div class="overall-num" id="overall-pct">0%</div>
+    <div class="prog-bar"><div class="prog-fill" id="overall-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="sprint-nav">
+    <a href="#s1" class="snav active"><span class="snav-dot" style="background:var(--primary)"></span><span class="snav-label">Sprint 1 · Entorno + Fundamentos</span><span class="snav-prog" id="np1">0</span></a>
+    <a href="#s2" class="snav"><span class="snav-dot" style="background:var(--secondary)"></span><span class="snav-label">Sprint 2 · Tauri + SQLite</span><span class="snav-prog" id="np2">0</span></a>
+    <a href="#s3" class="snav"><span class="snav-dot" style="background:var(--purple)"></span><span class="snav-label">Sprint 3 · UI + CRUD</span><span class="snav-prog" id="np3">0</span></a>
+    <a href="#s4" class="snav"><span class="snav-dot" style="background:var(--accent)"></span><span class="snav-label">Sprint 4 · Wizard + Cálculo</span><span class="snav-prog" id="np4">0</span></a>
+    <a href="#s5" class="snav"><span class="snav-dot" style="background:var(--orange)"></span><span class="snav-label">Sprint 5 · i18n + Build</span><span class="snav-prog" id="np5">0</span></a>
+  </div>
+
+  <div class="sidebar-footer">
+    Inicio: 28 Mar 2026 · 20 Semanas<br>
+    5 Sprints · ~280 horas totales
+  </div>
+</aside>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main class="main">
+  <div class="page-top">
+    <div>
+      <h1>PrecioJusto <span>— Plan de Trabajo</span></h1>
+      <p>Calculadora de precio de venta · React + TypeScript + Tauri + SQLite · Windows · Elan SK Soft</p>
+    </div>
+    <div class="meta-right">
+      <div class="meta-date" id="today-date"></div>
+      <div class="week-pill" id="current-week">Semana 1 de 20</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-lbl">Tareas completadas</div><div class="stat-val" id="stat-done">0</div><div class="stat-sub">del total del plan</div></div>
+    <div class="stat"><div class="stat-lbl">Criterios ✅</div><div class="stat-val sp1" id="stat-ca">0</div><div class="stat-sub">de aceptación</div></div>
+    <div class="stat"><div class="stat-lbl">Horas / semana</div><div class="stat-val" style="color:var(--primary)">~22h</div><div class="stat-sub">Lu-Vi 2h · Sáb-Dom 10h</div></div>
+    <div class="stat"><div class="stat-lbl">Meta</div><div class="stat-val" style="color:var(--accent);font-size:18px;padding-top:6px">v1.0 Windows</div><div class="stat-sub">Publicar en Gumroad</div></div>
+  </div>
+
+<!-- ╔══════════════════════════════════════════════════╗
+     ║  SPRINT 1 — ENTORNO Y FUNDAMENTOS WEB           ║
+     ╚══════════════════════════════════════════════════╝ -->
+<section class="sprint-section" id="s1">
+  <div class="sprint-header">
+    <div class="sprint-num sn1">S1</div>
+    <div class="sprint-info">
+      <h2>Entorno y Fundamentos Web</h2>
+      <div class="sprint-meta">Semanas 1–3 &nbsp;·&nbsp; ≈42 horas &nbsp;·&nbsp; Mar 28 – Abr 17, 2026 &nbsp;·&nbsp; Nivel Básico</div>
+    </div>
+    <div class="sprint-pct-area"><span class="sprint-pct sp1" id="pct1">0%</span><div class="sprint-bar"><div class="sprint-bar-fill sf1" id="bar1" style="width:0%"></div></div></div>
+  </div>
+
+  <!-- ── SEMANA 1 ── -->
+  <div class="week-card open" id="w1">
+    <div class="week-header" onclick="tog('w1')">
+      <span class="week-tag wt1">Sem 1</span>
+      <div class="week-title">Instalar herramientas + primer proyecto React con TypeScript</div>
+      <span class="week-stat" id="ws-w1">0 / 13</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <!-- TEORÍA -->
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Lunes:</strong> Leer qué es Node.js, npm y por qué los necesitas. Entender la diferencia entre runtime y package manager. Recurso: nodejs.org/en/learn/getting-started/introduction-to-nodejs</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Martes:</strong> Ver tutorial de Git básico en YouTube (busca "Git y GitHub desde cero" en Midudev). Conceptos clave: repositorio, commit, branch, push, pull.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Miércoles:</strong> Leer la sección "Types" del TypeScript Handbook (typescriptlang.org/docs/handbook/2/basic-types.html). Enfocarse en: string, number, boolean, interfaces, type aliases.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Jueves:</strong> Leer "Your First Component" y "Passing Props" en react.dev/learn. Entender qué es JSX y cómo React convierte funciones en UI.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Viernes:</strong> Leer sobre useState en react.dev/learn/state-a-components-memory. Practicar en el playground de React (react.dev/learn) con un contador simple.</span></div>
+        </div>
+        <!-- PRÁCTICA -->
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb 9-11am y 3-6pm · Dom 9-11am y 3-6pm</div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 1 — Instalar herramientas:</strong> Descargar e instalar Node.js LTS desde nodejs.org. Verificar en terminal: <code>node --version</code> y <code>npm --version</code>. Luego instalar Git desde git-scm.com y verificar: <code>git --version</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 2 — Configurar VS Code:</strong> Instalar extensiones: ESLint, Prettier, Tailwind CSS IntelliSense, TypeScript Importer. Configurar "Format on Save" en settings.json.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 3 — GitHub:</strong> Crear cuenta en github.com. Crear repositorio nuevo llamado <code>preciojusto</code> (público). Configurar git localmente: <code>git config --global user.name "Tu nombre"</code> y <code>git config --global user.email "tuemail"</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 4 — Crear proyecto:</strong> Abrir terminal en tu carpeta de proyectos y ejecutar: <code>npm create vite@latest preciojusto -- --template react-ts</code>. Luego entrar a la carpeta: <code>cd preciojusto</code> e instalar dependencias: <code>npm install</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 5 — Instalar Tailwind:</strong> Ejecutar <code>npm install -D tailwindcss postcss autoprefixer</code>. Luego <code>npx tailwindcss init -p</code>. Seguir la guía oficial de Tailwind para Vite: tailwindcss.com/docs/guides/vite.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 6 — Verificar:</strong> Ejecutar <code>npm run dev</code>. El browser debe abrir localhost:5173 con la pantalla de bienvenida de Vite + React. Sin errores rojos en consola.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 7 — Primer commit:</strong> <code>git init</code>, <code>git remote add origin URL-de-tu-repo</code>, <code>git add .</code>, <code>git commit -m "feat: configurar proyecto base con Vite + React + TypeScript + Tailwind"</code>, <code>git push -u origin main</code>.</span></div>
+        </div>
+      </div>
+      <!-- CRITERIOS -->
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 1</div>
+        <div class="criterio-item"><input type="checkbox" data-s="1" data-ca="1" onchange="upd()"><span class="criterio-id">CA-1.1a</span><span class="criterio-text">Al ejecutar <code>npm run dev</code> se abre el browser en localhost sin errores rojos en consola. Hacer screenshot de la terminal + browser.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="1" data-ca="1" onchange="upd()"><span class="criterio-id">CA-1.1b</span><span class="criterio-text">El repositorio <code>preciojusto</code> existe en GitHub con al menos 1 commit. El link del repositorio es público y accesible.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="1" data-ca="1" onchange="upd()"><span class="criterio-id">CA-1.1c</span><span class="criterio-text"><code>node --version</code> muestra v20.x o superior. <code>git --version</code> muestra 2.x. VS Code tiene las 4 extensiones instaladas.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">📦</span><div class="entregable-text"><span>Entregable Sem 1:</span> Proyecto React corriendo en el browser + repositorio en GitHub con primer commit.</div></div>
+      <div class="recursos-section">
+        <div class="section-lbl" style="color:var(--mid)">📎 RECURSOS SEMANA 1</div>
+        <div class="recursos-grid">
+          <a href="https://nodejs.org/en/download" target="_blank" class="recurso"><div class="r-icon r-tool">📦</div><div><strong>Node.js LTS</strong><span class="r-type">Descarga oficial</span></div></a>
+          <a href="https://typescriptlang.org/docs/handbook/2/basic-types.html" target="_blank" class="recurso"><div class="r-icon r-doc">📘</div><div><strong>TypeScript — Basic Types</strong><span class="r-type">Handbook oficial</span></div></a>
+          <a href="https://react.dev/learn" target="_blank" class="recurso"><div class="r-icon r-doc">⚛️</div><div><strong>React.dev — Learn</strong><span class="r-type">Documentación oficial</span></div></a>
+          <a href="https://www.youtube.com/@midudev" target="_blank" class="recurso"><div class="r-icon r-yt">▶️</div><div><strong>Midudev</strong><span class="r-type">Git + React en español</span></div></a>
+          <a href="https://vitejs.dev/guide/" target="_blank" class="recurso"><div class="r-icon r-tool">⚡</div><div><strong>Vite — Getting Started</strong><span class="r-type">Guía oficial</span></div></a>
+          <a href="https://tailwindcss.com/docs/guides/vite" target="_blank" class="recurso"><div class="r-icon r-doc">💨</div><div><strong>Tailwind + Vite</strong><span class="r-type">Guía de instalación</span></div></a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /w1 -->
+
+  <!-- ── SEMANA 2 ── -->
+  <div class="week-card" id="w2">
+    <div class="week-header" onclick="tog('w2')">
+      <span class="week-tag wt1">Sem 2</span>
+      <div class="week-title">Tipos TypeScript del dominio + componente Button + estructura de carpetas</div>
+      <span class="week-stat" id="ws-w2">0 / 11</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Lunes:</strong> Leer sobre Interfaces y Types en TypeScript. Diferencias entre <code>interface</code> y <code>type</code>. Cuándo usar cada uno. Leer typescriptlang.org/docs/handbook/2/objects.html</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Martes:</strong> Leer sobre Props en React (react.dev/learn/passing-props-to-a-component). Practicar creando un componente que recibe texto y color como props.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Miércoles–Viernes:</strong> Leer sobre <code>useState</code> y eventos en React (react.dev/learn/state-a-components-memory y react.dev/learn/responding-to-events).</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 1 — Limpiar App.tsx:</strong> Abrir <code>src/App.tsx</code> y borrar todo el contenido. Reemplazar con una función vacía que retorna <code>&lt;div&gt;PrecioJusto&lt;/div&gt;</code>. Verificar que sigue corriendo.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 2 — Crear estructura de carpetas:</strong> Dentro de <code>src/</code> crear las carpetas: <code>components/</code>, <code>pages/</code>, <code>db/</code>, <code>store/</code>, <code>i18n/</code>, <code>types/</code>, <code>utils/</code>. Verificar con: <code>find src -type d</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 3 — Crear src/types/index.ts:</strong> Definir las interfaces: <code>Insumo</code> (id, nombre, costo, tipoMedida, unidad, cantidadCotizada, detalle?), <code>Servicio</code>, <code>Nomina</code> (con campo periodo), <code>Impuesto</code> (con tipo: "PORCENTAJE"|"FIJO"), <code>Cotizacion</code> (con priceType: "ESTATICO"|"DINAMICO").</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 4 — Crear Button.tsx:</strong> En <code>src/components/Button.tsx</code> crear un componente que acepte: <code>label: string</code>, <code>onClick: () =&gt; void</code>, <code>variant: "primary" | "secondary"</code>. Usar Tailwind para los estilos (terracota para primary, gris para secondary).</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Paso 5 — Probar y commitear:</strong> Importar Button en App.tsx y renderizarlo. Verificar que se ve correcto. Luego: <code>git add .</code> → <code>git commit -m "feat: agregar tipos del dominio y componente Button"</code> → <code>git push</code>.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 2</div>
+        <div class="criterio-item"><input type="checkbox" data-s="1" data-ca="1" onchange="upd()"><span class="criterio-id">CA-1.2</span><span class="criterio-text">El archivo <code>src/types/index.ts</code> existe y contiene interfaces para Insumo, Servicio, Nomina, Impuesto y Cotizacion, correctamente tipadas (sin <code>any</code>).</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="1" data-ca="1" onchange="upd()"><span class="criterio-id">CA-1.3</span><span class="criterio-text">El componente <code>Button.tsx</code> acepta las props: <code>label: string</code>, <code>onClick: () =&gt; void</code> y <code>variant: "primary" | "secondary"</code>. El botón se renderiza sin errores.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="1" data-ca="1" onchange="upd()"><span class="criterio-id">CA-1.4</span><span class="criterio-text">Ejecutar <code>find src -type d</code> muestra todas las carpetas: components, pages, db, store, i18n, types, utils.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="1" data-ca="1" onchange="upd()"><span class="criterio-id">CA-1.5</span><span class="criterio-text">El repositorio en GitHub tiene mínimo 3 commits con mensajes descriptivos (feat:, fix:, etc.).</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">📦</span><div class="entregable-text"><span>Entregable Sem 2:</span> Tipos del dominio definidos + componente Button reutilizable + estructura de carpetas lista.</div></div>
+      <div class="recursos-section">
+        <div class="section-lbl" style="color:var(--mid)">📎 RECURSOS SEMANA 2</div>
+        <div class="recursos-grid">
+          <a href="https://typescriptlang.org/docs/handbook/2/objects.html" target="_blank" class="recurso"><div class="r-icon r-doc">📘</div><div><strong>TS — Object Types</strong><span class="r-type">Interfaces y tipos</span></div></a>
+          <a href="https://react.dev/learn/passing-props-to-a-component" target="_blank" class="recurso"><div class="r-icon r-doc">⚛️</div><div><strong>React — Passing Props</strong><span class="r-type">Documentación oficial</span></div></a>
+          <a href="https://www.youtube.com/@FaztCode" target="_blank" class="recurso"><div class="r-icon r-yt">▶️</div><div><strong>Fazt Code</strong><span class="r-type">TypeScript + React español</span></div></a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /w2 -->
+
+  <!-- ── SEMANA 3 ── -->
+  <div class="week-card" id="w3">
+    <div class="week-header" onclick="tog('w3')">
+      <span class="week-tag wt1">Sem 3</span>
+      <div class="week-title">Revisión Sprint 1 + verificación final de todos los criterios CA-1.x</div>
+      <span class="week-stat" id="ws-w3">0 / 6</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Lunes–Miércoles:</strong> Estudiar renderizado condicional y listas con <code>.map()</code> en React. Leer: react.dev/learn/conditional-rendering y react.dev/learn/rendering-lists. Son fundamentales para las pantallas de catálogo.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Jue–Vie:</strong> Introducción a Tauri — leer la página "Why Tauri" en tauri.app para entender cómo funciona y prepararte para el Sprint 2.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Verificar CA-1.1:</strong> <code>npm run dev</code> → sin errores en consola. Hacer screenshot del browser mostrando el proyecto.</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Verificar CA-1.2 a 1.5:</strong> Abrir cada archivo y confirmar: tipos correctos, Button con las props exactas, carpetas creadas. Ejecutar <code>npx tsc --noEmit</code> → debe retornar vacío (sin errores TypeScript).</span></div>
+          <div class="activity"><input type="checkbox" data-s="1" onchange="upd()"><span class="act-text"><strong>Commit final Sprint 1:</strong> <code>git add .</code> → <code>git commit -m "sprint1: completar entorno y tipos del dominio"</code> → <code>git push</code>. El repo debe tener mínimo 3 commits descriptivos.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Sprint 1 Completo</div>
+        <div class="criterio-item"><input type="checkbox" data-s="1" data-ca="1" onchange="upd()"><span class="criterio-id">SPRINT 1</span><span class="criterio-text">Todos los CA-1.1 a CA-1.5 cumplidos. Ejecutar <code>npx tsc --noEmit</code> → salida vacía (cero errores). El proyecto corre en browser. Compartir link del repositorio en GitHub.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🏁</span><div class="entregable-text"><span>Entregable Sprint 1:</span> Proyecto corriendo en browser con todos los tipos definidos y estructura lista para Tauri.</div></div>
+    </div>
+  </div><!-- /w3 -->
+</section>
+
+<!-- ╔══════════════════════════════════════════════════╗
+     ║  SPRINT 2 — TAURI + SQLITE                      ║
+     ╚══════════════════════════════════════════════════╝ -->
+<section class="sprint-section" id="s2">
+  <div class="sprint-header">
+    <div class="sprint-num sn2">S2</div>
+    <div class="sprint-info">
+      <h2>Tauri + SQLite — La Base de Datos Local</h2>
+      <div class="sprint-meta">Semanas 4–6 &nbsp;·&nbsp; ≈42 horas &nbsp;·&nbsp; Abr 18 – May 8, 2026 &nbsp;·&nbsp; Nivel Medio</div>
+    </div>
+    <div class="sprint-pct-area"><span class="sprint-pct sp2" id="pct2">0%</span><div class="sprint-bar"><div class="sprint-bar-fill sf2" id="bar2" style="width:0%"></div></div></div>
+  </div>
+
+  <!-- ── SEMANA 4 ── -->
+  <div class="week-card" id="w4">
+    <div class="week-header" onclick="tog('w4')">
+      <span class="week-tag wt2">Sem 4</span>
+      <div class="week-title">Instalar Rust + configurar Tauri 2.0 en el proyecto</div>
+      <span class="week-stat" id="ws-w4">0 / 10</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Lunes:</strong> Leer "Why Tauri" y "Architecture" en tauri.app. Entender el modelo frontend (React/WebView) + backend (Rust). Diferencia clave con Electron.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Martes:</strong> Leer sobre Tauri Commands (invoke) en tauri.app/develop/calling-rust. Cómo el frontend JavaScript puede llamar funciones del backend Rust.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Miércoles–Viernes:</strong> Estudiar SQL básico: SELECT, INSERT, UPDATE, DELETE. Recurso: sqlitetutorial.net (leer las secciones "SQLite SELECT", "INSERT", "UPDATE", "DELETE").</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 1 — Instalar Rust:</strong> Ir a rustup.rs y copiar el comando de instalación. En terminal ejecutarlo. Reiniciar la terminal. Verificar: <code>rustc --version</code> y <code>cargo --version</code>. Si estás en Windows, también instalar Visual Studio Build Tools (sigue la guía de tauri.app/start/prerequisites).</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 2 — Agregar Tauri al proyecto existente:</strong> En la raíz del proyecto ejecutar: <code>npm install --save-dev @tauri-apps/cli@next</code>. Luego: <code>npx tauri init</code>. Seguir el asistente: nombre "PrecioJusto", ventana ancho 1200, alto 800, URL dev http://localhost:5173.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 3 — Instalar plugin SQL:</strong> <code>npm install @tauri-apps/plugin-sql</code>. Luego en <code>src-tauri/Cargo.toml</code> agregar en [dependencies]: <code>tauri-plugin-sql = { version = "2", features = ["sqlite"] }</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 4 — Configurar permisos:</strong> En <code>src-tauri/capabilities/default.json</code> agregar el permiso: <code>"sql:allow-execute"</code> y <code>"sql:allow-select"</code> dentro del array de permissions.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 5 — Ejecutar y verificar:</strong> Correr <code>npm run tauri dev</code>. Esperar la compilación de Rust (la primera vez toma 3–5 minutos). Debe abrirse una ventana de escritorio nativa con la UI de React adentro.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 4</div>
+        <div class="criterio-item"><input type="checkbox" data-s="2" data-ca="1" onchange="upd()"><span class="criterio-id">CA-2.1a</span><span class="criterio-text">El comando <code>rustc --version</code> muestra una versión 1.70 o superior. No hay errores al instalar.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="2" data-ca="1" onchange="upd()"><span class="criterio-id">CA-2.1b</span><span class="criterio-text"><code>npm run tauri dev</code> compila sin errores y abre una ventana de escritorio nativa con el contenido de React. Hacer screenshot de la ventana.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🖥️</span><div class="entregable-text"><span>Entregable Sem 4:</span> Proyecto corriendo como app de escritorio nativa (ventana de Windows).</div></div>
+      <div class="recursos-section">
+        <div class="section-lbl" style="color:var(--mid)">📎 RECURSOS SEMANA 4</div>
+        <div class="recursos-grid">
+          <a href="https://tauri.app/start/prerequisites" target="_blank" class="recurso"><div class="r-icon r-doc">🦀</div><div><strong>Tauri — Prerequisites</strong><span class="r-type">Guía de instalación</span></div></a>
+          <a href="https://rustup.rs" target="_blank" class="recurso"><div class="r-icon r-tool">⚙️</div><div><strong>Rustup.rs</strong><span class="r-type">Instalar Rust</span></div></a>
+          <a href="https://sqlitetutorial.net" target="_blank" class="recurso"><div class="r-icon r-art">🗄️</div><div><strong>SQLite Tutorial</strong><span class="r-type">SELECT, INSERT, UPDATE</span></div></a>
+          <a href="https://sqlitebrowser.org" target="_blank" class="recurso"><div class="r-icon r-tool">🔍</div><div><strong>DB Browser for SQLite</strong><span class="r-type">Gratis — inspeccionar BD</span></div></a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /w4 -->
+
+  <!-- ── SEMANA 5 ── -->
+  <div class="week-card" id="w5">
+    <div class="week-header" onclick="tog('w5')">
+      <span class="week-tag wt2">Sem 5</span>
+      <div class="week-title">Crear el esquema de base de datos — las 12 tablas del modelo ER (incluye catálogo de medidas)</div>
+      <span class="week-stat" id="ws-w5">0 / 9</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Lunes–Martes:</strong> Estudiar claves primarias (PK) y foráneas (FK) en SQL. Leer sobre tablas de unión N:M y por qué existen quote_inputs (cotizacion_insumos), quote_services (cotizacion_servicios), etc. Recurso: sqlitetutorial.net/sqlite-foreign-key</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Miércoles–Viernes:</strong> Estudiar Zustand — leer zustand.docs.pmnd.rs. Entender la diferencia entre estado global (Zustand) y estado local (useState). Crear un store de prueba pequeño en un archivo temporal.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 1 — Crear migrations.ts:</strong> En <code>src/database/migrations.ts</code> escribir el SQL de creación de las 12 tablas: <code>measurement_types</code> (tipos de medida), <code>measurements</code> (medidas con equivalencia), <code>inputs</code> (insumos — usa FK <code>measurement_id</code>), <code>services</code> (servicios — igual), <code>payroll</code> (nomina), <code>taxes</code> (impuestos), <code>quotes</code> (cotizaciones), <code>quote_inputs</code>, <code>quote_services</code>, <code>quote_payroll</code>, <code>quote_taxes</code> y <code>settings</code> (configuracion). Nota: <code>inputs</code> ya no tiene columnas <code>unit_name</code>/<code>unit_symbol</code>/<code>measure_type</code>; usa <code>measurement_id TEXT NOT NULL REFERENCES measurements(id)</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 2 — Crear db/index.ts:</strong> Importar Database de <code>@tauri-apps/plugin-sql</code>. Crear función <code>initDatabase()</code> que abre la conexión con <code>Database.load("sqlite:preciojusto.db")</code> y ejecuta cada CREATE TABLE IF NOT EXISTS del migrations.ts.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 3 — Llamar initDatabase al iniciar:</strong> En <code>main.tsx</code> llamar <code>await initDatabase()</code> antes de renderizar la app con ReactDOM.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 4 — Insertar seed data de medidas e insumos:</strong> En <code>initDatabase()</code>, después de las tablas, insertar los 6 tipos de medida (Peso, Volumen, Longitud, Área, Tiempo, Unidad) y las 34 medidas con sus equivalencias (kg, g, mg, L, mL, m, cm, h, min, etc.). Luego insertar 2–3 insumos de prueba referenciando su <code>measurement_id</code> (ej: Azúcar → <code>'m-kg'</code>). Insertar la fila de configuración con id=1, idioma="es", moneda="COP".</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 5 — Verificar con DB Browser:</strong> Instalar DB Browser for SQLite (sqlitebrowser.org). Encontrar el archivo preciojusto.db en el directorio de datos de la app (Linux: <code>~/.local/share/com.tauri.dev/</code>). Abrir con DB Browser y verificar que las 12 tablas aparecen. La tabla <code>measurements</code> debe tener 34 filas y la tabla <code>measurement_types</code> debe tener 6 filas.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 5</div>
+        <div class="criterio-item"><input type="checkbox" data-s="2" data-ca="1" onchange="upd()"><span class="criterio-id">CA-2.2a</span><span class="criterio-text">Las 12 tablas del esquema ER existen en la BD SQLite. Captura de pantalla de DB Browser mostrando todas las tablas con sus columnas. La tabla <code>measurements</code> tiene 34 filas y <code>measurement_types</code> tiene 6 filas.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="2" data-ca="1" onchange="upd()"><span class="criterio-id">CA-2.2b</span><span class="criterio-text">La tabla <code>settings</code> tiene exactamente 1 fila con id=1, idioma="es", moneda="COP". La tabla <code>inputs</code> tiene al menos 2 filas de prueba. Cada insumo tiene un <code>measurement_id</code> válido que existe en <code>measurements</code>. Las columnas antiguas <code>unit_name</code>/<code>unit_symbol</code> ya no existen en <code>inputs</code>.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="2" data-ca="1" onchange="upd()"><span class="criterio-id">CA-2.2c</span><span class="criterio-text">La app inicia sin errores. <code>npm run tauri dev</code> muestra la ventana de escritorio y en la consola no hay errores de SQL.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">📦</span><div class="entregable-text"><span>Entregable Sem 5:</span> 10 tablas SQLite creadas + datos de prueba + verificación en DB Browser.</div></div>
+    </div>
+  </div><!-- /w5 -->
+
+  <!-- ── SEMANA 6 ── -->
+  <div class="week-card" id="w6">
+    <div class="week-header" onclick="tog('w6')">
+      <span class="week-tag wt2">Sem 6</span>
+      <div class="week-title">CRUD completo de Insumos — db + Zustand + React Hook Form + Zod + selects de medida en cascada</div>
+      <span class="week-stat" id="ws-w6">0 / 10</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Lunes–Miércoles:</strong> Profundizar en Zustand: acciones, selectores, y cuándo usar estado global vs local. Leer: zustand.docs.pmnd.rs/guides/practice-with-no-store-actions</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Jue–Vie:</strong> Repasar async/await en TypeScript. Entender cómo manejar errores con try/catch. Las funciones de base de datos siempre son asíncronas.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 1 — Crear database/inputs.ts e database/measurements.ts:</strong> En <code>inputs.ts</code>: función <code>getAllInputs()</code> con JOIN a <code>measurements</code> para traer <code>measurement_name</code> y <code>measurement_symbol</code>. Las funciones <code>createInput()</code> y <code>updateInput()</code> reciben <code>measurement_id</code> en lugar de <code>unit_name</code>/<code>unit_symbol</code>. En <code>measurements.ts</code>: funciones <code>getAllMeasurementTypes()</code> y <code>getAllMeasurements()</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 2 — Instalar Zustand + crear stores:</strong> <code>npm install zustand</code>. Crear <code>src/stores/useInputsStore.ts</code> con estado: <code>inputs: InputRow[]</code> y acciones load/add/edit/remove. Crear también <code>src/stores/useMeasurementsStore.ts</code> con estado: <code>types</code>, <code>measurements</code>, función <code>getByType(typeId, system)</code> para filtrar medidas.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 3 — Conectar stores a UI + crear selects en cascada:</strong> En <code>InputsPage.tsx</code> usar <code>useInputsStore</code> y <code>useMeasurementsStore</code>. El formulario tiene dos selects: primero "Tipo de medida" (carga <code>types</code>), segundo "Unidad" (se habilita al elegir tipo, filtra <code>measurements</code> por <code>type_id</code> y sistema). Al cambiar el tipo, el segundo select se reinicia. Verificar que se puede crear un insumo "Azúcar" con medida "kg".</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 4 — Probar persistencia y conversión:</strong> Crear un insumo "Sal" con precio de referencia en kg. Cerrar la app y volver a abrirla. El insumo debe aparecer en la lista con la medida correcta (no texto libre sino el nombre de la medida cargado via JOIN). Verificar en DB Browser que <code>inputs.measurement_id = 'm-kg'</code> y que no existe columna <code>unit_name</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="2" onchange="upd()"><span class="act-text"><strong>Paso 5 — Commit:</strong> <code>git add .</code> → <code>git commit -m "feat(sprint2): CRUD insumos + store Zustand conectado a SQLite"</code> → <code>git push</code>.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 6 / Sprint 2</div>
+        <div class="criterio-item"><input type="checkbox" data-s="2" data-ca="1" onchange="upd()"><span class="criterio-id">CA-2.3</span><span class="criterio-text">La función <code>getAllInputs()</code> retorna los insumos de prueba con la medida correcta (via JOIN). El campo <code>measurement_name</code> llega populado. Se puede ver la lista en la UI mostrando nombre y símbolo de la medida (ej: "Kilogramo (kg)").</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="2" data-ca="1" onchange="upd()"><span class="criterio-id">CA-2.4</span><span class="criterio-text">El formulario de Insumos tiene dos selects en cascada: al elegir "Peso" en el primer select, el segundo muestra únicamente kg, g, mg, t (y lb, oz si se incluye imperial). <code>npx tsc --noEmit</code> retorna vacío (sin errores de tipos).</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="2" data-ca="1" onchange="upd()"><span class="criterio-id">CA-2.5</span><span class="criterio-text">Se crea un insumo desde la UI eligiendo tipo y unidad del select, se cierra la app, se vuelve a abrir, y el insumo sigue en la lista con su medida. En DB Browser se confirma que <code>inputs</code> tiene columna <code>measurement_id</code> y NO tiene <code>unit_name</code> ni <code>unit_symbol</code>.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🏁</span><div class="entregable-text"><span>Entregable Sprint 2 / Sem 6:</span> CRUD de Insumos funcional de extremo a extremo — queries SQLite con JOIN de medidas + stores Zustand (inputs + measurements) + InputsPage con selects en cascada (tipo → unidad) + React Hook Form + Zod.</div></div>
+    </div>
+  </div><!-- /w6 -->
+</section>
+
+<!-- ╔══════════════════════════════════════════════════╗
+     ║  SPRINT 3 — UI + CRUD COMPLETO                  ║
+     ╚══════════════════════════════════════════════════╝ -->
+<section class="sprint-section" id="s3">
+  <div class="sprint-header">
+    <div class="sprint-num sn3">S3</div>
+    <div class="sprint-info">
+      <h2>Módulos del Catálogo — CRUD Completo con UI</h2>
+      <div class="sprint-meta">Semanas 7–10 &nbsp;·&nbsp; ≈56 horas &nbsp;·&nbsp; May 9 – Jun 5, 2026 &nbsp;·&nbsp; Nivel Medio</div>
+    </div>
+    <div class="sprint-pct-area"><span class="sprint-pct sp3" id="pct3">0%</span><div class="sprint-bar"><div class="sprint-bar-fill sf3" id="bar3" style="width:0%"></div></div></div>
+  </div>
+
+  <div class="week-card" id="w7">
+    <div class="week-header" onclick="tog('w7')">
+      <span class="week-tag wt3">Sem 7</span>
+      <div class="week-title">CRUD de Servicios, Nómina e Impuestos + React Router + Layout con Outlet</div>
+      <span class="week-stat" id="ws-w7">0 / 11</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Lunes–Martes:</strong> Leer React Router v6: <code>BrowserRouter</code>, <code>Routes</code>, <code>Route</code>, <code>Link</code>, <code>NavLink</code>, <code>Outlet</code>, <code>useNavigate</code>. Recurso: reactrouter.com/en/main/start/tutorial. Entender por qué en Tauri se usa <code>BrowserRouter</code> y no <code>HashRouter</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Miércoles:</strong> Estudiar el patrón de Layout anidado con <code>&lt;Outlet /&gt;</code>: un componente <code>AppLayout</code> que envuelve todas las páginas y renderiza el Titlebar + Sidebar + área de contenido. Las páginas hijas se renderizan donde está el Outlet.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Jue–Vie:</strong> Estudiar el patrón CRUD reutilizable: cómo los 4 catálogos (Insumos, Servicios, Nómina, Impuestos) siguen la misma arquitectura de <code>database/*.ts</code> + <code>stores/use*Store.ts</code> + <code>pages/*/</code>. Las diferencias solo están en los campos del formulario y la tabla SQL.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 1 — Instalar React Router:</strong> <code>npm install react-router-dom</code>. Configurar rutas en <code>App.tsx</code>: ruta raíz renderiza <code>AppLayout</code>, con subrutas <code>/inputs</code>, <code>/services</code>, <code>/payroll</code>, <code>/taxes</code>. Redirigir <code>/</code> a <code>/inputs</code> por defecto.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 2 — CRUD Servicios:</strong> Crear <code>src/database/services.ts</code> (mismas columnas que <code>inputs</code>, tabla <code>services</code>). Crear <code>src/stores/useServicesStore.ts</code>. Crear <code>src/pages/services/ServicesPage.tsx</code> copiando y renombrando el patrón de Insumos.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 3 — CRUD Nómina:</strong> Crear <code>src/database/payroll.ts</code> (tabla <code>payroll</code> con columnas: name, role, salary, period). Crear <code>usePayrollStore.ts</code> y <code>pages/payroll/PayrollPage.tsx</code> con select de período (semanal/quincenal/mensual).</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 4 — CRUD Impuestos:</strong> Crear <code>src/database/taxes.ts</code> (tabla <code>taxes</code>: name, rate, type). Crear <code>useTaxesStore.ts</code> y <code>pages/taxes/TaxesPage.tsx</code> con toggle tipo (porcentaje / valor fijo). Es la entidad más simple del sistema.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 5 — Conectar todo en App.tsx:</strong> Importar las 4 páginas y configurar las rutas. Además, cargar los stores globales una sola vez al arrancar: <code>useSettingsStore(s =&gt; s.load)</code> y <code>useMeasurementsStore(s =&gt; s.load)</code> en un <code>useEffect</code> en <code>App.tsx</code>. Las páginas individuales solo <em>consumen</em> estos stores — nunca los cargan. Verificar que al hacer clic en el Sidebar la URL cambia y <code>NavLink</code> resalta el enlace activo.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 7</div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.2a</span><span class="criterio-text">Las 4 páginas de catálogo (Insumos, Servicios, Nómina, Impuestos) son accesibles desde el Sidebar. Al hacer clic la URL cambia y se muestra la página correcta sin parpadeo (SPA navigation).</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.2b</span><span class="criterio-text">CRUD completo funciona en las 4 entidades — crear, editar, eliminar y los datos persisten al reiniciar la app. El formulario de Nómina tiene selector de período; el de Impuestos tiene toggle porcentaje/valor fijo.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.2c</span><span class="criterio-text">El enlace activo en el Sidebar tiene un estilo visualmente diferente al resto. <code>App.tsx</code> carga <code>useSettingsStore</code> y <code>useMeasurementsStore</code> una sola vez al arrancar. <code>npx tsc --noEmit</code> retorna vacío — cero errores de TypeScript en los stores y páginas nuevas.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">📦</span><div class="entregable-text"><span>Entregable Sem 7:</span> Las 4 pantallas de catálogo con CRUD completo + navegación React Router + <code>useSettingsStore</code> y <code>useMeasurementsStore</code> cargados globalmente en <code>App.tsx</code>. Nuevos archivos: <code>database/settings.ts</code>, <code>stores/useSettingsStore.ts</code>.</div></div>
+      <div class="recursos-section">
+        <div class="section-lbl" style="color:var(--mid)">📎 RECURSOS SEMANA 7</div>
+        <div class="recursos-grid">
+          <a href="https://reactrouter.com/en/main/start/tutorial" target="_blank" class="recurso"><div class="r-icon r-doc">🔗</div><div><strong>React Router v6 — Tutorial</strong><span class="r-type">Documentación oficial</span></div></a>
+          <a href="https://reactrouter.com/en/main/components/outlet" target="_blank" class="recurso"><div class="r-icon r-doc">🪟</div><div><strong>Outlet — Layout anidado</strong><span class="r-type">Referencia API</span></div></a>
+          <a href="https://zustand.docs.pmnd.rs" target="_blank" class="recurso"><div class="r-icon r-tool">🐻</div><div><strong>Zustand Docs</strong><span class="r-type">Estado global liviano</span></div></a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /w7 -->
+
+  <div class="week-card" id="w8">
+    <div class="week-header" onclick="tog('w8')">
+      <span class="week-tag wt3">Sem 8</span>
+      <div class="week-title">Feedback visual — toasts, loading states, empty states y custom hooks</div>
+      <span class="week-stat" id="ws-w8">0 / 9</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Lunes–Martes:</strong> Estudiar UX de feedback: toasts (notificaciones no bloqueantes), loading spinners, empty states (pantallas vacías) y confirmación de eliminación. Buscar la librería <code>react-hot-toast</code> — cómo funciona el <code>&lt;Toaster /&gt;</code> global.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Miércoles–Viernes:</strong> Estudiar custom hooks en React. Cómo extraer lógica reutilizable: un hook <code>useConfirmDelete</code> que maneje el estado del modal de confirmación. Recurso: react.dev/learn/reusing-logic-with-custom-hooks</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 1 — Agregar toasts:</strong> <code>npm install react-hot-toast</code>. Poner <code>&lt;Toaster /&gt;</code> únicamente en <code>AppLayout.tsx</code>. En los 4 stores (<code>useInputsStore</code>, <code>useServicesStore</code>, <code>usePayrolls</code>, <code>useTaxes</code>) envolver cada operación CRUD en try/catch con <code>toast.success()</code> y <code>toast.error()</code>. ✅ <em>Implementado</em></span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 2 — Empty states:</strong> Extraído como componente reutilizable <code>src/components/EmptyTable.tsx</code> (acepta <code>singleName</code>, <code>pluralName</code>, <code>icon</code>, <code>handleNew</code>). Usado en las 4 páginas. La tabla se oculta cuando <code>!isLoading &amp;&amp; items.length === 0</code>. ✅ <em>Implementado — componente compartido en lugar de código duplicado</em></span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 3 — Loading states:</strong> Flag <code>isLoading: boolean</code> en los 4 stores. Dos componentes de carga: <code>Spinner.tsx</code> (círculo terracota animado) y <code>LoaderTable.tsx</code> (skeleton de tabla con filas grises animadas, con paleta PrecioJusto). Ambos se muestran simultáneamente mientras <code>isLoading</code> es true. ✅ <em>Implementado — skeleton más sofisticado que el spinner básico del guide</em></span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 4 — Custom hook useConfirmDelete:</strong> Creado <code>src/hooks/useConfirmDelete.ts</code> genérico con <code>&lt;T&gt;</code>. El modal de confirmación se extrajo además como componente compartido <code>src/components/ConfirmDeleteDialog.tsx</code> (acepta <code>singleName</code>, <code>itemName</code>, <code>onConfirm</code>, <code>onCancel</code>; cierra al hacer clic fuera). Usado en las 4 páginas. ✅ <em>Implementado — hook + componente compartido, cero duplicación</em></span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Refactorizaciones adicionales (Sprint 3 completo):</strong> Cada página de catálogo fue dividida en 3 archivos: <code>*Page.tsx</code> (orquestador), <code>*Table.tsx</code> (tabla con acciones) y <code>*Modal.tsx</code> (formulario en overlay). Componente <code>HeaderTable.tsx</code> extrae el encabezado común (título + botón Agregar, oculta el botón en empty state). ✅ <em>Implementado</em></span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 8</div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.3a</span><span class="criterio-text">Los toasts de éxito (verde) y error (rojo) aparecen correctamente al crear, editar y eliminar en las 4 pantallas del catálogo. <code>&lt;Toaster /&gt;</code> está en <code>AppLayout.tsx</code>, los 4 stores tienen try/catch con toast. ✅ Completado</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.3b</span><span class="criterio-text">Cuando una tabla está vacía aparece <code>EmptyTable.tsx</code> con mensaje amigable y botón de acción. Mientras carga aparecen <code>LoaderTable.tsx</code> (skeleton) y <code>Spinner.tsx</code>. ✅ Completado</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.3c</span><span class="criterio-text">El hook <code>useConfirmDelete&lt;T&gt;</code> existe en <code>src/hooks/useConfirmDelete.ts</code> y es usado en las 4 páginas del catálogo. El modal vive en <code>ConfirmDeleteDialog.tsx</code>. Cero lógica de confirmación duplicada. ✅ Completado</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">📦</span><div class="entregable-text"><span>Entregable Sem 8 — ✅ Completado:</span> 4 páginas con feedback completo + patrón Page/Table/Modal + 5 componentes compartidos (ConfirmDeleteDialog, EmptyTable, HeaderTable, Spinner, LoaderTable) + hook useConfirmDelete.</div></div>
+    </div>
+  </div><!-- /w8 -->
+
+  <div class="week-card" id="w9">
+    <div class="week-header" onclick="tog('w9')">
+      <span class="week-tag wt3">Sem 9</span>
+      <div class="week-title">Pulido visual Sprint 3 — consistencia de estilos, accesibilidad y búsqueda avanzada</div>
+      <span class="week-stat" id="ws-w9">0 / 8</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Lunes–Martes:</strong> Estudiar accesibilidad básica en formularios: atributos <code>aria-label</code>, <code>aria-describedby</code>, <code>role</code>. Leer: developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA. Aplicar a los formularios de Zod ya construidos.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Miércoles–Viernes:</strong> Estudiar Tailwind responsive y dark mode (aunque PrecioJusto no tiene dark mode, entender las bases). Repasar las variables CSS de la paleta del proyecto y cómo los tokens <code>--primary</code>, <code>--bg</code>, etc., se aplican con <code>tailwind.config.js</code>.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 1 — Auditoría de estilos:</strong> Abrir las 4 páginas una a una y comparar con los mockups de <code>preciojusto-mockups.html</code>. Listar diferencias visuales (colores, espaciado, tipografía). Corregir las más evidentes para que todos los catálogos luzcan coherentes.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 2 — Búsqueda avanzada:</strong> Mejorar la barra de búsqueda en las 4 páginas: debounce de 300ms (usar <code>setTimeout</code> + <code>clearTimeout</code> en un useEffect) para no filtrar en cada tecla. Mostrar contador "X resultados" debajo de la barra.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 3 — Componentes compartidos:</strong> Extraer el modal de confirmación de eliminación a <code>src/components/ConfirmModal.tsx</code>. Extraer la barra de búsqueda a <code>src/components/SearchBar.tsx</code>. Reemplazar los duplicados en las 4 páginas con el componente compartido.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 4 — Commit de cierre Sprint 3:</strong> <code>git add .</code> → <code>git commit -m "feat(sprint3): CRUD completo + Router + feedback visual + componentes compartidos"</code> → <code>git push</code>.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 9</div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.4a</span><span class="criterio-text">Las 4 páginas del catálogo tienen estilos consistentes con la paleta del proyecto — fondo crema, primario terracota, textos en marrón oscuro. Ninguna página tiene colores fuera de la paleta.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.4b</span><span class="criterio-text"><code>ConfirmModal.tsx</code> y <code>SearchBar.tsx</code> existen en <code>src/components/</code> y son usados en las 4 páginas. No hay código duplicado de modal ni de barra de búsqueda.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">📦</span><div class="entregable-text"><span>Entregable Sem 9:</span> Sprint 3 pulido — catálogos visualmente consistentes con mockups, componentes compartidos y búsqueda con debounce.</div></div>
+    </div>
+  </div><!-- /w9 -->
+
+  <div class="week-card" id="w10">
+    <div class="week-header" onclick="tog('w10')">
+      <span class="week-tag wt3">Sem 10</span>
+      <div class="week-title">Revisión Sprint 3 — cero errores TypeScript + auditoría de calidad</div>
+      <span class="week-stat" id="ws-w10">0 / 7</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Semana completa:</strong> Estudiar accesibilidad web básica: labels en formularios, aria-labels, manejo de focus. Recurso: web.dev/learn/accessibility. Es importante para una app profesional.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom (Revisión)</div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 1 — Verificar TypeScript:</strong> Ejecutar <code>npx tsc --noEmit</code>. Si hay errores, corregirlos uno por uno antes de continuar. El objetivo es cero errores.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 2 — Probar el flujo completo:</strong> Crear un insumo → editarlo → buscarlo → eliminarlo. Repetir con Servicio, Nómina e Impuesto. Verificar que en todos los casos los datos persisten.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 3 — Revisar validaciones:</strong> Enviar cada formulario vacío y verificar que muestra errores. Enviar con datos inválidos (costo = -50, nombre vacío). Los mensajes deben ser claros.</span></div>
+          <div class="activity"><input type="checkbox" data-s="3" onchange="upd()"><span class="act-text"><strong>Paso 4 — Commit final Sprint 3:</strong> <code>git commit -m "sprint3: CRUD completo con UI para 4 entidades + navegación React Router"</code>. Push a GitHub.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Sprint 3 Completo</div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">CA-3.4</span><span class="criterio-text"><code>npx tsc --noEmit</code> retorna salida vacía. Cero errores TypeScript en todos los archivos del proyecto.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="3" data-ca="1" onchange="upd()"><span class="criterio-id">SPRINT 3</span><span class="criterio-text">Las 4 pantallas de catálogo (Insumos, Servicios, Nómina, Impuestos) tienen CRUD completo con UI, validación con Zod y navegación. Los datos persisten al reiniciar.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🏁</span><div class="entregable-text"><span>Entregable Sprint 3:</span> 4 pantallas de catálogo completas — CRUD + validación + navegación + cero errores TypeScript.</div></div>
+    </div>
+  </div><!-- /w10 -->
+</section>
+
+<!-- ╔══════════════════════════════════════════════════╗
+     ║  SPRINT 4 — WIZARD + MOTOR DE CÁLCULO           ║
+     ╚══════════════════════════════════════════════════╝ -->
+<section class="sprint-section" id="s4">
+  <div class="sprint-header">
+    <div class="sprint-num sn4 amber">S4</div>
+    <div class="sprint-info">
+      <h2>Wizard de Cotización y Motor de Cálculo</h2>
+      <div class="sprint-meta">Semanas 11–15 &nbsp;·&nbsp; ≈70 horas &nbsp;·&nbsp; Jun 6 – Jul 3, 2026 &nbsp;·&nbsp; Nivel Medio-Alto</div>
+    </div>
+    <div class="sprint-pct-area"><span class="sprint-pct sp4" id="pct4">0%</span><div class="sprint-bar"><div class="sprint-bar-fill sf4" id="bar4" style="width:0%"></div></div></div>
+  </div>
+
+  <div class="week-card" id="w11">
+    <div class="week-header" onclick="tog('w11')">
+      <span class="week-tag wt4">Sem 11</span>
+      <div class="week-title">Motor de cálculo — funciones puras + tests unitarios con Vitest</div>
+      <span class="week-stat" id="ws-w11">0 / 11</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Lunes:</strong> Entender la fórmula de precio de venta: <code>Precio Venta = Costo Total + Impuestos + Ganancia</code> donde <code>Costo Total = Σ(insumos consumidos) + Σ(servicios proporcionales) + Σ(nómina proporcional)</code>. Leer el documento de análisis sección 4.1 RF-06.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Martes:</strong> Diferencia entre margen y markup. Cálculo de costo proporcional de insumo: <code>costo_insumo_en_producto = (costo / cantidadCotizada) × cantidadConsumida</code>. Misma lógica para servicios y nómina.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Miércoles:</strong> Leer Vitest docs: vitest.dev/guide. Entender <code>describe()</code>, <code>it()</code>/<code>test()</code>, <code>expect()</code>, <code>toBe()</code>, <code>toBeCloseTo()</code>. Instalar: <code>npm install -D vitest</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Jue–Vie:</strong> Estudiar funciones puras: una función pura recibe datos, retorna un resultado y no tiene efectos secundarios (no llama a la BD, no modifica variables globales). Las funciones de cálculo DEBEN ser puras.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom</div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 1 — Crear src/utils/calculations.ts:</strong> Implementar las funciones: <code>calcInputsCost(insumos: QuoteInputItem[]): number</code>, <code>calcServicesCost(servicios: QuoteServiceItem[]): number</code>, <code>calcPayrollCost(nomina: QuotePayrollItem[]): number</code>, <code>calcTaxes(costoTotal: number, impuestos: QuoteTaxItem[]): number</code>, <code>calcSalePrice(costoTotal, impuestos, marginPercent): number</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 2 — Agregar Vitest config:</strong> En <code>vite.config.ts</code> agregar la configuración de test: <code>test: { globals: true, environment: 'node' }</code>. En package.json agregar script: <code>"test": "vitest run"</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 3 — Crear src/utils/calculations.test.ts:</strong> Escribir el caso de prueba de la panadería: 0.3kg azúcar (costo: $1200) + 0.5kg harina (costo: $1750) + 2h panadero ($6000/8h = $1500) + IVA 19% + 30% margen. Calcular el resultado esperado manualmente y verificar con <code>expect(resultado).toBeCloseTo(esperado, 2)</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 4 — Agregar más tests:</strong> Al menos 3 casos de prueba más: uno con impuesto de valor fijo, uno sin impuestos, uno sin margen de ganancia. Cada test debe tener un nombre descriptivo.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 5 — Ejecutar y verificar:</strong> <code>npm test</code>. Todos los tests deben aparecer en verde. Si alguno falla, revisar el cálculo (el error puede estar en la función o en el valor esperado del test).</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semana 11</div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.1a</span><span class="criterio-text">El archivo <code>src/utils/calculations.ts</code> tiene las 5 funciones puras de cálculo. Ninguna hace llamadas a la BD ni modifica estado externo.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.1b</span><span class="criterio-text">El archivo <code>calculations.test.ts</code> tiene mínimo 4 casos de prueba incluyendo el de la panadería. <code>npm test</code> muestra todos en verde.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.1c</span><span class="criterio-text">La función <code>calcSalePrice()</code> con el caso de la panadería retorna exactamente el valor documentado en el test (no aproximado, sino el valor correcto calculado paso a paso).</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🧮</span><div class="entregable-text"><span>Entregable Sem 11:</span> Motor de cálculo completo con tests unitarios en verde — la lógica más crítica del proyecto.</div></div>
+      <div class="recursos-section">
+        <div class="section-lbl" style="color:var(--mid)">📎 RECURSOS SEMANA 11</div>
+        <div class="recursos-grid">
+          <a href="https://vitest.dev/guide" target="_blank" class="recurso"><div class="r-icon r-doc">🧪</div><div><strong>Vitest Docs</strong><span class="r-type">Testing para proyectos Vite</span></div></a>
+          <a href="https://testing-library.com/docs/react-testing-library/intro" target="_blank" class="recurso"><div class="r-icon r-doc">🔬</div><div><strong>Testing Library React</strong><span class="r-type">Probar componentes</span></div></a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /w11 -->
+
+  <div class="week-card" id="w12">
+    <div class="week-header" onclick="tog('w12')">
+      <span class="week-tag wt4">Sem 12–13</span>
+      <div class="week-title">Wizard de Cotización — los 5 pasos guiados con contexto compartido</div>
+      <span class="week-stat" id="ws-w12">0 / 10</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Semana 12, Lunes–Miércoles:</strong> Estudiar <code>useReducer</code> en React (react.dev/learn/extracting-state-logic-into-a-reducer). Es ideal para el wizard porque el estado tiene múltiples campos que se actualizan en pasos diferentes.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Semana 12, Jue–Vie:</strong> Estudiar React Context API (react.dev/learn/passing-data-deeply-with-context). El wizard necesita compartir el estado entre 5 componentes de pasos sin prop drilling.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Semana 13, completa:</strong> Estudiar el patrón FSM (máquina de estados finita) para wizards. Ver el video de Midudev sobre máquinas de estado en YouTube.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom (2 semanas)</div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 1 — Contexto del wizard:</strong> Crear <code>src/pages/cotizacion/WizardContext.tsx</code>. Definir el estado del wizard: <code>productName: string</code>, <code>selectedInputs: QuoteInputItem[]</code>, <code>selectedServices</code>, <code>selectedPayrolls</code>, <code>selectedTaxes</code>, <code>marginPercent: number</code>, <code>priceType: "ESTATICO"|"DINAMICO"</code>, <code>currentStep: 1..5</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 2 — Componente WizardCotizacion.tsx:</strong> Estructura con barra de progreso visual (5 pasos). Botones "Anterior" y "Siguiente" que cambian el <code>currentStep</code>. El botón "Siguiente" en el paso 5 se convierte en "Guardar cotización".</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 3 — Paso 1 (Insumos):</strong> Lista de todos los insumos del catálogo con checkbox. Al seleccionar uno aparece un input de cantidad consumida. El subtotal se calcula en tiempo real usando <code>calcInputsCost()</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 4 — Pasos 2, 3, 4:</strong> Paso 2 igual que Paso 1 pero para Servicios (campo de tiempo/cantidad consumida). Paso 3: seleccionar colaborador de nómina + ingresar tiempo laborado en el producto. Paso 4: lista de impuestos con checkbox.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 5 — Resumen y precio:</strong> Nombre del producto (input). Slider de margen de ganancia (0% a 100%). Toggle estático/dinámico. Panel derecho con desglose: costo de insumos, servicios, nómina, impuestos, ganancia y precio de venta final (calculado en tiempo real).</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semanas 12–13</div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.2a</span><span class="criterio-text">El wizard muestra una barra de progreso visual con los 5 pasos. Se puede navegar entre pasos con los botones Anterior/Siguiente sin pérdida de datos.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.2b</span><span class="criterio-text">El precio de venta en el Paso 5 se actualiza en tiempo real al mover el slider de margen. El desglose muestra los costos correctos (usando las funciones de calculations.ts).</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.2c</span><span class="criterio-text">Los datos del wizard (insumos seleccionados, cantidades) persisten al navegar entre pasos. Al volver al Paso 1 desde el Paso 3, los checkboxes siguen marcados.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🧙</span><div class="entregable-text"><span>Entregable Sem 12–13:</span> Wizard de 5 pasos funcionando con cálculo en tiempo real del precio de venta.</div></div>
+    </div>
+  </div><!-- /w12 -->
+
+  <div class="week-card" id="w13">
+    <div class="week-header" onclick="tog('w13')">
+      <span class="week-tag wt4">Sem 14–15</span>
+      <div class="week-title">Guardar cotizaciones en BD + precio estático vs dinámico + historial</div>
+      <span class="week-stat" id="ws-w13">0 / 10</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Semana 14:</strong> Estudiar el patrón "snapshot" en bases de datos: por qué una cotización estática almacena el precio del insumo en el momento de creación (costo_snapshot) en lugar de referenciarlo directamente. Leer el diccionario de términos del documento de análisis.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Semana 15:</strong> Estudiar transacciones SQL: <code>BEGIN TRANSACTION</code>, <code>COMMIT</code>, <code>ROLLBACK</code>. Una cotización inserta en 5 tablas al mismo tiempo — si una falla, todas deben revertirse.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom (2 semanas)</div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 1 — Crear database/quotes.ts:</strong> Función <code>saveQuote(data)</code> que en una transacción: (1) inserta en <code>quotes</code> (cotizaciones), (2) inserta en <code>quote_inputs</code> (cotizacion_insumos) con cost_snapshot = costo actual del input, (3) igual para services (servicios), payroll (nomina) e taxes (impuestos).</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 2 — Conectar el Paso 5 del wizard:</strong> El botón "Guardar cotización" llama a <code>saveCotizacion()</code> con todos los datos del wizard. Si tiene éxito, navegar a la pantalla de historial con un toast de éxito.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 3 — Crear pantalla de historial (pages/Cotizaciones.tsx):</strong> Lista de cotizaciones guardadas con: nombre del producto, fecha, precio de venta final y un badge que indica si es ESTÁTICA o DINÁMICA.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 4 — Implementar precio dinámico (trigger automático):</strong> Función interna <code>recalculatePrice(quoteId)</code> + tres funciones de disparo: <code>updateDynamicQuotesByInput(inputId)</code>, <code>updateDynamicQuotesByService(serviceId)</code>, <code>updateDynamicQuotesByPayroll(employeeId)</code>. Cada store (useInputsStore, useServicesStore, usePayrolls) llama a su función correspondiente después de guardar el cambio de precio — sin botón manual.</span></div>
+          <div class="activity"><input type="checkbox" data-s="4" onchange="upd()"><span class="act-text"><strong>Paso 5 — Probar ambos tipos:</strong> Crear una cotización ESTÁTICA. Cambiar el precio de un insumo. Verificar que el precio de la cotización NO cambia. Crear una DINÁMICA, cambiar el precio del mismo insumo, ir al historial sin hacer nada más y verificar que el precio ya se actualizó automáticamente.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semanas 14–15 / Sprint 4</div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.2</span><span class="criterio-text">El wizard completa los 5 pasos y guarda la cotización en SQLite. La pantalla de historial muestra la cotización guardada con nombre, fecha y precio. Screenshots del flujo.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.3</span><span class="criterio-text">Una cotización ESTÁTICA mantiene su precio original aunque se cambie el costo de un insumo. Prueba documentada paso a paso.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.4</span><span class="criterio-text">Una cotización DINÁMICA se recalcula automáticamente al editar el precio de cualquier insumo, servicio o colaborador que referencia. El store dispara <code>updateDynamicQuotesBy*(id)</code> sin intervención del usuario — al abrir el historial el precio ya refleja el cambio. No hay botón manual.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="4" data-ca="1" onchange="upd()"><span class="criterio-id">CA-4.5</span><span class="criterio-text"><code>npm test</code> con todos los tests de calculations.test.ts en verde. La salida del comando muestra "X passed" sin fallidos.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🏁</span><div class="entregable-text"><span>Entregable Sprint 4:</span> Cotizaciones funcionando — wizard completo + precio estático y dinámico + historial + tests en verde.</div></div>
+    </div>
+  </div><!-- /w13 -->
+</section>
+
+<!-- ╔══════════════════════════════════════════════════╗
+     ║  SPRINT 5 — i18n + BUILD + LANZAMIENTO          ║
+     ╚══════════════════════════════════════════════════╝ -->
+<section class="sprint-section" id="s5">
+  <div class="sprint-header">
+    <div class="sprint-num sn5">S5</div>
+    <div class="sprint-info">
+      <h2>Configuración, Idiomas y Empaquetado Final</h2>
+      <div class="sprint-meta">Semanas 16–20 &nbsp;·&nbsp; ≈70 horas &nbsp;·&nbsp; Jul 4 – Ago 14, 2026 &nbsp;·&nbsp; Nivel Medio</div>
+    </div>
+    <div class="sprint-pct-area"><span class="sprint-pct sp5" id="pct5">0%</span><div class="sprint-bar"><div class="sprint-bar-fill sf5" id="bar5" style="width:0%"></div></div></div>
+  </div>
+
+  <div class="week-card" id="w14">
+    <div class="week-header" onclick="tog('w14')">
+      <span class="week-tag wt5">Sem 16–17</span>
+      <div class="week-title">Pantalla de Configuración + i18next en español, inglés, portugués y francés</div>
+      <span class="week-stat" id="ws-w14">0 / 11</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Semana 16, Lunes–Miércoles:</strong> Leer i18next.com/overview/getting-started y react-i18next.com. Entender namespaces, keys, interpolación de variables: <code>t('key', { nombre: 'Juan' })</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Semana 16, Jue–Vie:</strong> Estudiar <code>Intl.NumberFormat</code> para formato de moneda. Diferencia entre COP, USD, EUR. Cómo formatear con símbolo correcto según la configuración del usuario.</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Semana 17, completa:</strong> Repasar: cómo cargar la configuración del usuario desde SQLite al iniciar la app y cómo un cambio de idioma actualiza toda la UI sin recargar (i18next lo hace automáticamente con <code>i18n.changeLanguage()</code>).</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom (2 semanas)</div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 1 — Instalar i18next:</strong> <code>npm install i18next react-i18next i18next-browser-languagedetector</code>. Crear <code>src/i18n/index.ts</code> con la configuración inicial: recursos, idioma por defecto "es", fallback "es".</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 2 — Crear archivos de traducción:</strong> <code>src/i18n/es.json</code> (español base), <code>en.json</code>, <code>pt.json</code>, <code>fr.json</code>. El JSON de español es el primero que llenas. Mínimo 80 claves que cubran todos los textos visibles de la app (labels, botones, mensajes de error, títulos de página).</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 3 — Reemplazar textos hardcodeados:</strong> En cada componente, cambiar texto literal por <code>t("clave.subclave")</code>. Ejemplo: <code>&lt;button&gt;Guardar&lt;/button&gt;</code> → <code>&lt;button&gt;{t("common.guardar")}&lt;/button&gt;</code>. Cubrir toda la app.</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 4 — Crear pages/Settings.tsx:</strong> Selector de idioma (dropdown con ES/EN/PT/FR). Selector de moneda (COP/USD/EUR/BRL). Toggle de sistema de unidades (Internacional/Imperial). Campo de perfil de usuario. Al guardar, actualizar la fila id=1 de la tabla <code>settings</code> (configuracion) en SQLite.</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 5 — Cargar configuración al inicio:</strong> En <code>main.tsx</code> o en un efecto de inicialización, leer la configuración de SQLite. Si idioma es "en", llamar <code>i18n.changeLanguage("en")</code>. Aplicar la moneda guardada al formatear números en toda la app.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semanas 16–17</div>
+        <div class="criterio-item"><input type="checkbox" data-s="5" data-ca="1" onchange="upd()"><span class="criterio-id">CA-5.1</span><span class="criterio-text">Cambiar el idioma en la pantalla de Configuración actualiza <strong>todos</strong> los textos visibles de la app instantáneamente, sin recargar la ventana. Video o GIF demostrando el cambio.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="5" data-ca="1" onchange="upd()"><span class="criterio-id">CA-5.2</span><span class="criterio-text">El archivo <code>en.json</code> tiene mínimo 80 claves de traducción. Cada clave en en.json tiene su equivalente en es.json, pt.json y fr.json.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="5" data-ca="1" onchange="upd()"><span class="criterio-id">CA-5.2b</span><span class="criterio-text">La configuración de idioma y moneda persiste al cerrar y volver a abrir la app. Si el usuario eligió inglés, la próxima vez abre en inglés.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🌍</span><div class="entregable-text"><span>Entregable Sem 16–17:</span> App en 4 idiomas + pantalla de configuración persistente.</div></div>
+      <div class="recursos-section">
+        <div class="section-lbl" style="color:var(--mid)">📎 RECURSOS SEMANAS 16–17</div>
+        <div class="recursos-grid">
+          <a href="https://i18next.com/overview/getting-started" target="_blank" class="recurso"><div class="r-icon r-doc">🌐</div><div><strong>i18next Docs</strong><span class="r-type">Guía oficial</span></div></a>
+          <a href="https://react-i18next.com" target="_blank" class="recurso"><div class="r-icon r-doc">⚛️</div><div><strong>react-i18next</strong><span class="r-type">Integración con React</span></div></a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /w14 -->
+
+  <div class="week-card" id="w15">
+    <div class="week-header" onclick="tog('w15')">
+      <span class="week-tag wt5">Sem 18–19</span>
+      <div class="week-title">Empaquetar .exe para Windows + probar instalación + página de producto en Gumroad</div>
+      <span class="week-stat" id="ws-w15">0 / 10</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-grid">
+        <div class="body-col">
+          <div class="section-lbl" style="color:var(--primary)">📚 TEORÍA — Lu a Vi · 6–8 pm</div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Semana 18, Lunes–Miércoles:</strong> Leer tauri.app/distribute — cómo Tauri genera el instalador .msi y el bundle .exe con Rust. Entender por qué el primer build toma más tiempo (compila todo Rust).</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Semana 18, Jue–Vie:</strong> Estudiar code signing en Windows: por qué los antivirus marcan apps sin firma y las opciones para firmarlo (certificado OV, EV). Para la v1.0 puede distribuirse sin firma con una advertencia al usuario.</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Semana 19, completa:</strong> Leer la guía de vendedor de Gumroad (help.gumroad.com) y/o Lemon Squeezy (lemonsqueezy.com). Cómo crear un producto, definir precio, configurar métodos de pago en Latinoamérica.</span></div>
+        </div>
+        <div class="body-col">
+          <div class="section-lbl" style="color:#0D7A4A">⚙️ PRÁCTICA — Sáb/Dom (2 semanas)</div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 1 — Configurar tauri.conf.json:</strong> Actualizar: <code>productName: "PrecioJusto"</code>, <code>version: "1.0.0"</code>, <code>identifier: "com.elansksoft.preciojusto"</code>. En la sección bundle: agregar descripción, copyright, categoría "Productivity".</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 2 — Crear ícono personalizado:</strong> Usar el logo de Elan SK Soft. Crear versiones en los tamaños requeridos por Tauri (32x32, 128x128, 256x256 en PNG y también .ico para Windows). Colocarlos en <code>src-tauri/icons/</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 3 — Generar el instalador:</strong> <code>npm run tauri build</code>. Esperar (puede tomar 10–15 minutos la primera vez). El instalador .msi y el ejecutable aparecen en <code>src-tauri/target/release/bundle/</code>.</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 4 — Probar instalación:</strong> Instalar el .msi en tu PC (o en una VM limpia si tienes). Verificar que la app instala correctamente, abre, funciona offline y los datos persisten entre sesiones. Hacer screenshot de la app instalada.</span></div>
+          <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 5 — Crear página de producto:</strong> Crear cuenta en Gumroad o Lemon Squeezy. Crear el producto "PrecioJusto" con: descripción del problema que resuelve, capturas de pantalla de todas las funciones, precio inicial de lanzamiento ($5–$10 USD). Configurar entrega automática del instalador.</span></div>
+        </div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Semanas 18–19</div>
+        <div class="criterio-item"><input type="checkbox" data-s="5" data-ca="1" onchange="upd()"><span class="criterio-id">CA-5.3</span><span class="criterio-text"><code>npm run tauri build</code> genera el instalador sin errores. Compartir el tamaño del archivo .msi generado y cualquier warning de compilación.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="5" data-ca="1" onchange="upd()"><span class="criterio-id">CA-5.4</span><span class="criterio-text">La app instalada en Windows funciona offline completamente. Con internet desactivado, se puede: abrir la app, crear insumos, hacer una cotización, ver el resultado. Screenshot de la app instalada con datos reales.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="5" data-ca="1" onchange="upd()"><span class="criterio-id">CA-5.5</span><span class="criterio-text">La app tiene ícono personalizado de Elan SK Soft (no el ícono por defecto de Tauri) y la versión es 1.0.0 en tauri.conf.json.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">📦</span><div class="entregable-text"><span>Entregable Sem 18–19:</span> Instalador .exe funcional + página de producto configurada en Gumroad.</div></div>
+    </div>
+  </div><!-- /w15 -->
+
+  <div class="week-card" id="w16">
+    <div class="week-header" onclick="tog('w16')">
+      <span class="week-tag wt5">Sem 20</span>
+      <div class="week-title">🎉 Lanzamiento oficial — PrecioJusto v1.0 publicado</div>
+      <span class="week-stat" id="ws-w16">0 / 5</span>
+      <span class="chevron">⌃</span>
+    </div>
+    <div class="week-body">
+      <div class="body-full">
+        <div class="section-lbl" style="color:var(--primary)">⚙️ ACTIVIDADES FINALES DE LANZAMIENTO</div>
+        <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 1 — Documentación:</strong> Escribir el README.md del repositorio en GitHub con: descripción del proyecto, capturas de pantalla, instrucciones de instalación, características principales, tecnologías usadas, cómo reportar bugs.</span></div>
+        <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 2 — Publicar en Gumroad:</strong> Activar el producto. Configurar precio. Subir el instalador .msi como archivo de entrega. Hacer una compra de prueba para verificar el flujo completo.</span></div>
+        <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 3 — Difusión:</strong> Publicar en LinkedIn, redes sociales y grupos de emprendedores. Mostrar el producto funcionando, el problema que resuelve y cómo descargarlo. Ser honesto: es v1.0, abierto a feedback.</span></div>
+        <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>Paso 4 — Retrospectiva:</strong> Documentar todo lo aprendido: qué funcionó, qué harías diferente, cuánto tardó realmente cada sprint vs lo planeado. Esto te ayudará a estimar mejor tus próximos proyectos.</span></div>
+        <div class="activity"><input type="checkbox" data-s="5" onchange="upd()"><span class="act-text"><strong>🎉 Paso 5 — Celebrar:</strong> Calcular cuántas ventas necesitas para recuperar las 280 horas. Con $10 USD × 28 ventas = $280 USD. El objetivo real no es el dinero de inmediato — es que tu primer producto de software está en el mercado.</span></div>
+      </div>
+      <div class="criterios-section">
+        <div class="section-lbl" style="color:#0D7A4A">✅ CRITERIOS DE ACEPTACIÓN — Sprint 5 Completo</div>
+        <div class="criterio-item"><input type="checkbox" data-s="5" data-ca="1" onchange="upd()"><span class="criterio-id">CA-5.1–5</span><span class="criterio-text">Todos los criterios CA-5.1 a CA-5.5 cumplidos. La app está publicada y disponible para comprar. Se puede comprar y descargar desde Gumroad o Lemon Squeezy.</span></div>
+        <div class="criterio-item"><input type="checkbox" data-s="5" data-ca="1" onchange="upd()"><span class="criterio-id">SPRINT 5</span><span class="criterio-text">README.md completo en GitHub. El repositorio documenta el proyecto. La retrospectiva del sprint está escrita. Link del producto público compartido.</span></div>
+      </div>
+      <div class="entregable"><span class="entregable-icon">🚀</span><div class="entregable-text"><span>Entregable Sprint 5 — Meta Final:</span> PrecioJusto v1.0 instalable en Windows, disponible para vender en Gumroad. 20 semanas completadas.</div></div>
+      <div class="recursos-section">
+        <div class="section-lbl" style="color:var(--mid)">📎 RECURSOS FINALES</div>
+        <div class="recursos-grid">
+          <a href="https://gumroad.com" target="_blank" class="recurso"><div class="r-icon r-tool">💰</div><div><strong>Gumroad</strong><span class="r-type">Plataforma de venta digital</span></div></a>
+          <a href="https://lemonsqueezy.com" target="_blank" class="recurso"><div class="r-icon r-tool">🍋</div><div><strong>Lemon Squeezy</strong><span class="r-type">Mejor soporte Latam</span></div></a>
+          <a href="https://tauri.app/distribute" target="_blank" class="recurso"><div class="r-icon r-doc">📦</div><div><strong>Tauri — Distribute</strong><span class="r-type">Guía de empaquetado</span></div></a>
+          <a href="https://help.gumroad.com" target="_blank" class="recurso"><div class="r-icon r-art">📖</div><div><strong>Gumroad Seller Guide</strong><span class="r-type">Cómo cobrar y distribuir</span></div></a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /w16 -->
+</section>
+
+</main><!-- /main -->
+
+<script>
+// ══════════════════════════════════════════
+// Estado y persistencia
+// ══════════════════════════════════════════
+const KEY = 'preciojusto_tracker_v3';
+
+// Mapa de semana → cantidad de checkboxes (tareas + criterios)
+const WK = {
+  w1:13, w2:11, w3:6,
+  w4:10, w5:9,  w6:10,
+  w7:11, w8:9,  w9:8,  w10:7,
+  w11:11, w12:10, w13:10,
+  w14:11, w15:10, w16:5
+};
+
+// Semanas por sprint
+const SP = {
+  1:['w1','w2','w3'],
+  2:['w4','w5','w6'],
+  3:['w7','w8','w9','w10'],
+  4:['w11','w12','w13'],
+  5:['w14','w15','w16']
+};
+
+function tog(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function save() {
+  const all = document.querySelectorAll('input[type=checkbox]');
+  const s = {};
+  all.forEach((c,i) => s[i] = c.checked);
+  localStorage.setItem(KEY, JSON.stringify(s));
+}
+
+function load() {
+  const raw = localStorage.getItem(KEY);
+  if (!raw) return;
+  const s = JSON.parse(raw);
+  const all = document.querySelectorAll('input[type=checkbox]');
+  all.forEach((c,i) => {
+    if (s[i]) {
+      c.checked = true;
+      markDone(c);
+    }
+  });
+}
+
+function markDone(cb) {
+  const t = cb.nextElementSibling;
+  if (!t) return;
+  const cls = t.classList.contains('criterio-text') ? 'done' : 'done';
+  t.classList.toggle(cls, cb.checked);
+}
+
+function upd() {
+  save();
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => markDone(cb));
+
+  let wkIdx = 0;
+  let totalAll = 0, doneAll = 0;
+  let totalCA = 0, doneCA = 0;
+  const allCbs = document.querySelectorAll('input[type=checkbox]');
+
+  for (let sp = 1; sp <= 5; sp++) {
+    let spTotal = 0, spDone = 0;
+    SP[sp].forEach(wid => {
+      const sz = WK[wid] || 0;
+      let wd = 0;
+      for (let i = wkIdx; i < wkIdx + sz; i++) {
+        if (allCbs[i]?.checked) wd++;
+      }
+      spTotal += sz; spDone += wd;
+      const el = document.getElementById(`ws-${wid}`);
+      if (el) el.textContent = `${wd} / ${sz}`;
+      wkIdx += sz;
+    });
+    const pct = spTotal > 0 ? Math.round(spDone / spTotal * 100) : 0;
+    const pe = document.getElementById(`pct${sp}`);
+    const be = document.getElementById(`bar${sp}`);
+    const ne = document.getElementById(`np${sp}`);
+    if (pe) pe.textContent = pct + '%';
+    if (be) be.style.width = pct + '%';
+    if (ne) ne.textContent = `${spDone}/${spTotal}`;
+    totalAll += spTotal; doneAll += spDone;
+  }
+
+  // Criterios de aceptación (data-ca)
+  document.querySelectorAll('input[data-ca]').forEach(cb => {
+    totalCA++;
+    if (cb.checked) doneCA++;
+  });
+
+  const ov = totalAll > 0 ? Math.round(doneAll / totalAll * 100) : 0;
+  document.getElementById('overall-pct').textContent = ov + '%';
+  document.getElementById('overall-fill').style.width = ov + '%';
+  document.getElementById('stat-done').textContent = doneAll;
+  document.getElementById('stat-ca').textContent = doneCA + '/' + totalCA;
+}
+
+function setDate() {
+  const start = new Date('2026-03-28');
+  const today = new Date();
+  const wk = Math.max(1, Math.min(20, Math.floor((today - start) / (7*24*3600*1000)) + 1));
+  document.getElementById('current-week').textContent = `Semana ${wk} de 20`;
+  document.getElementById('today-date').textContent =
+    today.toLocaleDateString('es-CO', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  load();
+  upd();
+  setDate();
+  document.querySelectorAll('input[type=checkbox]').forEach(cb =>
+    cb.addEventListener('change', upd)
+  );
+});
+</script>
+</body>
+</html>

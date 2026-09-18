@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sync Agent Skills"
+  short_description: "Synchronize skills across Claude, Codex, and Agents."
+  default_prompt: "Synchronize all agent skill folders, preferring the newest file when conflicts exist."

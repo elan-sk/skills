@@ -1,0 +1,35 @@
+/*==================================================
+  BADGES / ETIQUETAS — PrecioJusto
+  Uso: <span class="badge badge-warm">
+==================================================*/
+
+@layer components {
+
+  /*=== BASE — siempre va junto a la variante en el HTML ===*/
+  .badge {
+    @apply inline-flex items-center font-sans font-semibold whitespace-nowrap;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  /*=== VARIANTES ===*/
+
+  /* Terracota claro */
+  .badge-warm  { @apply bg-primary-lt text-primary }
+
+  /* Jade claro */
+  .badge-green { @apply bg-secondary-lt text-secondary-dk }
+
+  /* Dorado claro */
+  .badge-gold  { @apply bg-tertiary-lt text-tertiary-dk }
+
+  /* Gris beige (neutro) */
+  .badge-gray  { @apply bg-panel text-mid }
+
+  /* Oscuro — para usar sobre fondos dark */
+  .badge-dark  { color: rgba(255,255,255,.75); background: rgba(255,255,255,.12); }
+
+  /* Azul — informativo */
+  .badge-blue  { background: #E8F0FF; color: #1A4BAB; }
+}

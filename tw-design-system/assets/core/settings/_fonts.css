@@ -1,0 +1,16 @@
+/*==================================================
+  IMPORTACIÓN DE FUENTES
+ ==================================================*/
+
+/* Se usaran estas variables por defecto para los proyectos
+  nota:
+    --font-serif: usada normalmente para títulos
+    --font-sans: usada normalmente para textos
+    --font-sans: usada normalmente para Código, Eyesbrown,etc
+*/
+
+@theme {
+  --font-serif: 'Inter', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Inter', sans-serif;
+}

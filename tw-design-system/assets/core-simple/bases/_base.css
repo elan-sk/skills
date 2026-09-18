@@ -1,0 +1,63 @@
+/*==================================================
+  B A S E S : Maquetado básico PrecioJusto
+==================================================*/
+
+@layer base {
+  * { @apply select-none }
+  :is(body, html) { @apply scroll-smooth }
+  html { @apply bg-background; font-size: 14px; }
+  body { @apply text-base text-black overflow-x-hidden break-words }
+  img  { @apply pointer-events-none }
+
+  /*=== TÍTULOS ===*/
+  h1 { @apply text-h1 }
+  h2 { @apply text-h2 }
+  h3 { @apply text-h3 }
+  h4 { @apply text-h4 }
+  h5 { @apply text-h5 }
+  h6 { @apply text-h6 }
+
+  h1, h2, h3, h4, h5, h6,
+  .text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6 {
+    @apply mb-4;
+  }
+  * + :is(h1, h2, h3, h4, h5, h6,
+          .text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6) {
+    @apply mt-6;
+  }
+
+  /*=== TEXTO ===*/
+  p   { @apply mb-6 leading-relaxed text-base }
+  :is(b, strong) { @apply font-bold }
+  :is(em, i)     { @apply italic }
+
+  /*=== RESET LINKS Y BOTONES — sin color por defecto, cada átomo lo define ===*/
+  :is(a, button) {
+    @apply !no-underline font-semibold text-button
+           transition-colors duration-150 cursor-pointer;
+  }
+
+  /*=== LISTAS ===*/
+  ul { @apply my-4 pl-8 list-disc }
+  ol { @apply my-4 pl-8 list-decimal }
+  li { @apply mb-1 }
+
+  /*=== CÓDIGO ===*/
+  code { @apply px-1.5 py-0.5 rounded font-mono }
+  pre  { @apply p-4 rounded-xl overflow-x-auto mb-4 }
+  pre code { @apply p-0 }
+
+  /*=== DIVISORES ===*/
+  hr { @apply border-0 border-t border-outline my-8 }
+
+  /*=== TABLAS BASE ===*/
+  table    { @apply w-full border-collapse mb-4 }
+  :is(th, td) { @apply border border-outline p-2 }
+  th       { @apply font-semibold }
+
+  /*=== INPUTS Y SELECTS ===*/
+  input, textarea, select { @apply font-sans }
+  select { @apply appearance-none }
+
+  section { @apply overflow-hidden }
+}

@@ -1,0 +1,36 @@
+/*==================================================
+  TABLA DE DATOS — PrecioJusto
+==================================================*/
+
+@layer components {
+
+  .data-table {
+    @apply w-full;
+    border-collapse: collapse;
+  }
+
+  .data-table th {
+    @apply text-left font-sans font-bold uppercase text-mid
+           border-b border-outline;
+    font-size: 10px;
+    letter-spacing: .07em;
+    padding: 0 12px 10px;
+  }
+
+  .data-table td {
+    @apply font-sans text-black border-b border-outline;
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  /* Sin borde en la última fila */
+  .data-table tr:last-child td { @apply border-none }
+
+  /* Hover de fila */
+  .data-table tr:hover td { @apply bg-panel }
+
+  /*=== VARIANTES DE CELDA ===*/
+  .td-name { @apply font-semibold }
+  .td-mono { @apply font-mono text-mid; font-size: 11px; }
+  .td-sub  { @apply text-mid; font-size: 10px; }
+}

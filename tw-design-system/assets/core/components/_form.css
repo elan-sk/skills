@@ -1,0 +1,118 @@
+@layer utilities {
+/* ===== Estilos generales del formulario ===== */
+.wpcf7 form {
+  padding: 2rem;
+  border-radius: 0.5rem;
+  max-width: 600px;
+  @apply lg:ml-15
+}
+
+/* ===== Campos de texto y select ===== */
+.wpcf7 form input[type="text"],
+.wpcf7 form input[type="email"],
+.wpcf7 form select,
+.wpcf7 form textarea {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  border: 0.1875rem solid;
+  border-radius: 9999px;
+  background-color: transparent;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 1rem;
+  @apply border-primary
+}
+
+.wpcf7 .fields-content-two p {
+  @apply md:grid md:grid-cols-2 md:gap-2;
+}
+
+.wpcf7 form textarea {
+  border-radius: 1rem;
+  height: 150px;
+  resize: vertical;
+  margin-bottom: 0;
+}
+
+/* Hover y focus */
+.wpcf7 form input[type="text"]:focus,
+.wpcf7 form input[type="email"]:focus,
+.wpcf7 form input[type="text"]:not(:placeholder-shown),
+.wpcf7 form input[type="email"]:not(:placeholder-shown),
+.wpcf7 form select:focus,
+.wpcf7 form textarea:focus,
+.wpcf7 form textarea:not(:placeholder-shown) {
+  background-color: #fff;
+  border-color: #000;
+}
+
+/* ===== Campos en línea (Cargo y Entidad) ===== */
+.wpcf7 form .inline-fields {
+  display: flex;
+  gap: 1rem;
+}
+
+.wpcf7 form .inline-fields p {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* ===== Checkbox ===== */
+.wpcf7 form input[type="checkbox"] {
+  accent-color: #000;
+  transform: scale(1.3);
+  margin-right: 0.5rem;
+}
+
+.wpcf7 form label {
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+/* ===== Enlace de términos ===== */
+
+.wpcf7 .accept-wrapper { @apply mt-6 }
+.wpcf7 .wpcf7-list-item-label {
+  @apply text-button font-normal mb-0;
+}
+
+.wpcf7 form a {
+  color: #000;
+  text-decoration-line: initial !important;
+  font-weight: 600;
+  position: relative;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+  }
+  @apply hover:text-secondary-dk
+}
+
+/* ===== Botón de enviar ===== */
+.wpcf7 form input[type="submit"] {
+  background-color: #2d2d2d;
+  cursor: pointer;
+  @apply mt-4 px-12
+}
+
+.wpcf7 form input[type="submit"]:hover {
+  background-color: #444;
+}
+
+/* ===== Texto pequeño ===== */
+.wpcf7 form .wpcf7-form-control-wrap + small,
+.wpcf7 form small {
+  display: block;
+  font-size: 0.85rem;
+  color: #333;
+}
+}

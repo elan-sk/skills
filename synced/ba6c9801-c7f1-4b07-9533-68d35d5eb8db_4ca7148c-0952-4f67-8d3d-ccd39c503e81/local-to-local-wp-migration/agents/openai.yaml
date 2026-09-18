@@ -1,0 +1,4 @@
+interface:
+  display_name: "Local WP Migration"
+  short_description: "Package and restore local DDEV WordPress sites"
+  default_prompt: "Use $local-to-local-wp-migration to create or restore a local WordPress DDEV handoff package."

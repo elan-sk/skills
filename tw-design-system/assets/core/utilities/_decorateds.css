@@ -1,0 +1,38 @@
+/*==================================================
+  DECORADOS DEL SITIO
+==================================================*/
+/* === SCROLL BAR === */
+@utility scroll-bar-decorated {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.tertiary-dk') theme('colors.primary-lt');
+}
+
+/*======================================================
+  IMÁGENES
+=======================================================*/
+/* Organizar imagen de fondo
+  esta se be usar junto a bg-[url('../imagen.jpg')]
+
+  Nota: bg-[url('../imagen.jpg')] solo va a funcionar
+  si se coloca de forma directa en la clase,
+  y no cuando se genera con código dinámicamente con js, php o twig
+*/
+@utility bg-cover {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: block;
+  overflow: hidden;
+}
+
+/* Oculta el texto en caso de que se requiera */
+@utility text-hidden {
+  font-size: 0;
+  text-indent: -999999px
+}
+
+/* Botón para subir */
+.hfe-scroll-to-top-button {
+  @apply !size-px-50;
+  & i { @apply !text-[1rem] leading-[1rem] !m-0}
+}

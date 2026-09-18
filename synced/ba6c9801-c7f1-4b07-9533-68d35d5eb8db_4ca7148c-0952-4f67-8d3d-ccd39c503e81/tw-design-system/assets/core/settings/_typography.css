@@ -1,0 +1,35 @@
+/*==================================================
+  Typography:
+==================================================*/
+@theme {
+  /* Se crean tipografía responsiva con la función
+    Dejo herramienta para calcular lo tamaños":
+    https://elan-sk.github.io/calculadora-clamp-css/
+  */
+  --text-h1: clamp(2.5rem, 2.151rem + 0.97vw, 3rem);            /*40-48px*/
+  --text-h2: clamp(2rem, 1.651rem + 0.97vw, 2.5rem);           /*32-40px*/
+  --text-h3: clamp(1.5rem, 1.151rem + 0.97vw, 2rem);             /*24-32px*/
+  --text-large: clamp(1.25rem, 1.075rem + 0.49vw, 1.5rem);     /*20-24px*/
+  --text-button: clamp(0.938rem, 0.806rem + 0.36vw, 1.125rem);   /*15-16px*/
+  --text-base: clamp(0.938rem, 0.894rem + 0.12vw, 1rem);    /*15-16px*/
+  --text-small: clamp(0.75rem, 0.662rem + 0.24vw, 0.875rem);   /*12-14px*/
+}
+
+/* Se crean las clase de utilidad */
+@utility text-h1 {
+  @apply font-serif text-balance text-center font-bold leading-tight mb-6;
+  font-size: var(--text-h1);}
+@utility text-h2 { @apply text-h1; font-size: var(--text-h2);}
+@utility text-h3 { @apply text-h2; font-size: var(--text-h3); }
+/* h4/h5/h6: mismo tratamiento serif/negrita/centrado de la familia text-h*,
+   pero reusando los tamaños que ya existen (text-large/button/small) en vez
+   de inventar clamps nuevos — sigue la jerarquía h1>h2>h3>h4>h5>h6 sin
+   agregar tokens de tamaño redundantes. */
+@utility text-h4 { @apply text-h3; font-size: var(--text-large); }
+@utility text-h5 { @apply text-h3; font-size: var(--text-button); }
+@utility text-h6 { @apply text-h3; font-size: var(--text-small); }
+@utility text-large { @apply font-sans font-semibold text-balance mb-6; font-size: var(--text-large); }
+@utility text-button { @apply text-large; font-size: var(--text-button); }
+@utility text-base { @apply text-button font-normal text-wrap; font-size: var(--text-base); }
+@utility text-small { @apply text-base; font-size: var(--text-small); }
+

@@ -1,0 +1,43 @@
+@theme {
+  /*=== TERRACOTA — PRIMARIO ===*/
+  --color-primary:     #C83000;
+  --color-primary-dk:  #A82600;
+  --color-primary-lt:  #FCEEE9;
+  --color-primary-mid: #F5D5CB;
+
+  /*=== JADE — SECUNDARIO ===*/
+  --color-secondary:    #1EE492;
+  --color-secondary-dk: #0D7A4A;
+  --color-secondary-lt: #E4FCF3;
+
+  /*=== DORADO — ACENTO / ADVERTENCIA ===*/
+  --color-tertiary:    #FDE000;
+  --color-tertiary-dk: #8B6B00;
+  --color-tertiary-lt: #FFF9CC;
+
+  /*=== SUPERFICIES ===*/
+  --color-background: #FDFAF5;  /* crema — fondo principal */
+  --color-surface:    #FFFFFF;  /* blanco — tarjetas */
+  --color-panel:      #F6EFE9;  /* beige — paneles secundarios */
+  --color-dark:       #28201A;  /* marrón oscuro — titlebar, sidebar */
+  --color-sidebar:    #211A14;  /* más oscuro — sidebar fondo */
+
+  /*=== BORDES Y TEXTOS ===*/
+  --color-outline: #EDE5DF;  /* borde estándar */
+  --color-mid:     #7A655C;  /* texto secundario / muted */
+  --color-lt:      #D9CCC7;  /* placeholder, disabled */
+
+  /*=== ESTADOS ===*/
+  --color-success: #2EAA6E;
+  --color-warning: #D97706;
+  --color-error:   #C83000;
+
+  /*=== NEUTROS ===*/
+  --color-black: #28201A;  /* oscuro cálido (reemplaza negro puro) */
+  --color-white: #FFFFFF;
+
+  /*=== SOMBRAS CÁLIDAS ===*/
+  --shadow-sm: 0 2px 10px rgba(40,32,26,.06);
+  --shadow:    0 4px 24px rgba(40,32,26,.09);
+  --shadow-lg: 0 12px 40px rgba(40,32,26,.14);
+}

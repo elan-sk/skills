@@ -1,0 +1,206 @@
+/*==================================================
+  Sizes: Toma los valores en px y los convierte en rem
+==================================================*/
+
+/* === WIDTH Y HEIGHT === */
+@utility size-px-* {
+  height: calc(--value(number) / 16 * 1rem);
+  width: calc(--value(number) / 16 * 1rem);
+}
+
+/* === WIDTHS === */
+@utility w-px-* {
+  width: calc(--value(number) / 16 * 1rem);
+}
+
+@utility max-w-px-* {
+  max-width: calc(--value(number) / 16 * 1rem);
+}
+
+@utility min-w-px-* {
+  min-width: calc(--value(number) / 16 * 1rem);
+}
+
+
+/* === HEIGHTS === */
+@utility h-px-* {
+  height: calc(--value(number) / 16 * 1rem);
+}
+
+@utility max-h-px-* {
+  max-height: calc(--value(number) / 16 * 1rem);
+}
+
+@utility min-h-px-* {
+  min-height: calc(--value(number) / 16 * 1rem);
+}
+
+
+/* === POSITIONS === */
+@utility top-px-* {
+  top: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -top-px-* {
+  top: calc(--value(number) / -16 * 1rem);
+}
+
+@utility bottom-px-* {
+  bottom: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -bottom-px-* {
+  bottom: calc(--value(number) / -16 * 1rem);
+}
+
+@utility left-px-* {
+  left: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -left-px-* {
+  left: calc(--value(number) / -16 * 1rem);
+}
+
+@utility right-px-* {
+  right: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -right-px-* {
+  right: calc(--value(number) / -16 * 1rem);
+}
+
+@utility inset-px-* {
+  inset: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -inset-px-* {
+  inset: calc(--value(number) / -16 * 1rem);
+}
+
+@utility inset-x-px-* {
+  left: calc(--value(number) / 16 * 1rem);
+  right: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -inset-x-px-* {
+  left: calc(--value(number) / -16 * 1rem);
+  right: calc(--value(number) / -16 * 1rem);
+}
+
+@utility inset-y-px-* {
+  top: calc(--value(number) / 16 * 1rem);
+  bottom: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -inset-y-px-* {
+  top: calc(--value(number) / -16 * 1rem);
+  bottom: calc(--value(number) / -16 * 1rem);
+}
+
+
+/* === PADDING === */
+@utility p-px-* {
+  padding: calc(--value(number) / 16 * 1rem);
+}
+
+@utility px-px-* {
+  padding-left: calc(--value(number) / 16 * 1rem);
+  padding-right: calc(--value(number) / 16 * 1rem);
+}
+
+@utility py-px-* {
+  padding-top: calc(--value(number) / 16 * 1rem);
+  padding-bottom: calc(--value(number) / 16 * 1rem);
+}
+
+@utility pt-px-* {
+  padding-top: calc(--value(number) / 16 * 1rem);
+}
+
+@utility pr-px-* {
+  padding-right: calc(--value(number) / 16 * 1rem);
+}
+
+@utility pb-px-* {
+  padding-bottom: calc(--value(number) / 16 * 1rem);
+}
+
+@utility pl-px-* {
+  padding-left: calc(--value(number) / 16 * 1rem);
+}
+
+
+/* === MARGIN === */
+@utility m-px-* {
+  margin: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -m-px-* {
+  margin: calc(--value(number) / -16 * 1rem);
+}
+
+@utility mx-px-* {
+  margin-left: calc(--value(number) / 16 * 1rem);
+  margin-right: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -mx-px-* {
+  margin-left: calc(--value(number) / -16 * 1rem);
+  margin-right: calc(--value(number) / -16 * 1rem);
+}
+
+@utility my-px-* {
+  margin-top: calc(--value(number) / 16 * 1rem);
+  margin-bottom: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -my-px-* {
+  margin-top: calc(--value(number) / -16 * 1rem);
+  margin-bottom: calc(--value(number) / -16 * 1rem);
+}
+
+@utility mt-px-* {
+  margin-top: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -mt-px-* {
+  margin-top: calc(--value(number) / -16 * 1rem);
+}
+
+@utility mr-px-* {
+  margin-right: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -mr-px-* {
+  margin-right: calc(--value(number) / -16 * 1rem);
+}
+
+@utility mb-px-* {
+  margin-bottom: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -mb-px-* {
+  margin-bottom: calc(--value(number) / -16 * 1rem);
+}
+
+@utility ml-px-* {
+  margin-left: calc(--value(number) / 16 * 1rem);
+}
+
+@utility -ml-px-* {
+  margin-left: calc(--value(number) / -16 * 1rem);
+}
+
+
+/* === GAPS === */
+@utility gap-px-* {
+  gap: calc(--value(number) / 16 * 1rem);
+}
+
+@utility gap-x-px-* {
+  column-gap: calc(--value(number) / 16 * 1rem);
+}
+
+@utility gap-y-px-* {
+  row-gap: calc(--value(number) / 16 * 1rem);
+}

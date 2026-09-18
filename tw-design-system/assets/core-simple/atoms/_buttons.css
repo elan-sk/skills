@@ -1,0 +1,70 @@
+/*==================================================
+  BOTONES — PrecioJusto
+  Uso: <button class="btn btn-primary">
+       <button class="btn btn-primary btn-sm">
+==================================================*/
+
+@layer components {
+
+  /*=== BASE — siempre va junto a la variante en el HTML ===*/
+  .btn {
+    @apply inline-flex items-center gap-1.5
+           font-sans font-semibold whitespace-nowrap
+           cursor-pointer transition-colors duration-150 select-none;
+    text-decoration: none;
+    font-size: 13px;
+  }
+
+  /*=== PADDING Y RADIO COMPARTIDO ===*/
+  :is(.btn-primary, .btn-ghost, .btn-outline, .btn-jade) {
+    @apply rounded-md;
+    padding: 8px 18px;
+  }
+
+  /*=== PRIMARY — terracota ===*/
+  .btn-primary {
+    @apply bg-primary text-white;
+    border: none;
+    &:hover, &:focus-visible { @apply bg-primary-dk }
+  }
+
+  /*=== GHOST — neutro con borde ===*/
+  .btn-ghost {
+    @apply bg-transparent text-mid border border-outline;
+    &:hover, &:focus-visible { @apply bg-panel text-black }
+  }
+
+  /*=== OUTLINE — borde terracota ===*/
+  .btn-outline {
+    @apply bg-transparent text-primary;
+    border: 1.5px solid var(--color-primary);
+    &:hover, &:focus-visible { @apply bg-primary-lt }
+  }
+
+  /*=== JADE — acción positiva ===*/
+  .btn-jade {
+    @apply bg-secondary text-black;
+    border: none;
+    &:hover, &:focus-visible { @apply bg-secondary-dk text-white }
+  }
+
+  /*=== MODIFICADORES DE TAMAÑO ===*/
+  /* Uso: class="btn btn-primary btn-sm" */
+  .btn-sm {
+    @apply rounded-sm;
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+
+  .btn-lg {
+    @apply rounded-lg;
+    font-size: 15px;
+    padding: 11px 24px;
+  }
+
+  /*=== ICONO — solo ícono sin texto ===*/
+  .btn-icon {
+    @apply rounded-md;
+    padding: 7px;
+  }
+}

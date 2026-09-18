@@ -1,0 +1,59 @@
+/*==================================================
+  DECORADOS DEL SITIO
+==================================================*/
+/* === SCROLL BAR === */
+@utility scroll-bar-decorated {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.tertiary-dk') transparent;
+}
+@utility scroll-bar-decorated-secondary {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.secondary') transparent;
+}
+
+/*======================================================
+  IMÁGENES
+=======================================================*/
+/* Organizar imagen de fondo
+  esta se be usar junto a bg-[url('../imagen.jpg')]
+
+  Nota: bg-[url('../imagen.jpg')] solo va a funcionar
+  si se coloca de forma directa en la clase,
+  y no cuando se genera con código dinámicamente con js, php o twig
+*/
+@utility bg-cover {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: block;
+  overflow: hidden;
+}
+
+/*======================================================
+  CHECKBOX PERSONALIZADO
+=======================================================*/
+/* Sin marcar: borde gris, fondo blanco. Marcado: jade con tilde blanca. */
+.checkbox {
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-lt);
+  border-radius: 0.25rem;
+  background-color: var(--color-surface);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 150ms, border-color 150ms;
+
+  &:checked {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8l3.5 3.5L13 4.5' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+  }
+}
+
+/* Oculta el texto en caso de que se requiera */
+@utility text-hidden {
+  font-size: 0;
+  text-indent: -999999px
+}

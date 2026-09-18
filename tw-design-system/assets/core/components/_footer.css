@@ -1,0 +1,21 @@
+@layer components {
+    footer {
+        @apply bg-primary-dk;
+        .elementor-widget-icon-list {
+            .elementor-icon-list-text {
+                @apply !font-light
+            }
+        }
+        .elementor-icon:is(:hover, :focus, :active) {
+            @apply cursor-pointer
+        }
+        .elementor-icon-list-text {
+            @apply block text-center md:inline-block md:text-left
+        }
+
+        .elementor-icon-list-item a {
+            @apply mb-3;
+        }
+    }
+}
+

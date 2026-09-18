@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Semana 4 — PrecioJusto · Elan SK Soft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary:     #C83000;
+  --primary-lt:  #FCEEE9;
+  --primary-mid: #f0dcd5;
+  --jade:        #1EE492;
+  --jade-lt:     #E4FCF3;
+  --jade-dk:     #0D7A4A;
+  --gold:        #FDE000;
+  --gold-lt:     #FFF9CC;
+  --gold-dk:     #9A8500;
+  --bg:          #FDFAF5;
+  --bg-card:     #FFFFFF;
+  --bg-mid:      #F6EFE9;
+  --bg-code:     #1E1712;
+  --dark:        #28201A;
+  --mid:         #7A655C;
+  --light:       #D9CCC7;
+  --border:      #EDE5DF;
+  --rust:        #B7410E;
+  --rust-lt:     #FFF0EB;
+  --blue:        #2563EB;
+  --blue-lt:     #EFF6FF;
+  --font:        'Sora', sans-serif;
+  --mono:        'JetBrains Mono', monospace;
+  --r:           12px;
+  --shadow:      0 4px 24px rgba(40,32,26,.10);
+  --shadow-sm:   0 2px 8px rgba(40,32,26,.06);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--dark);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--border); z-index: 999;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--primary), var(--jade));
+  width: 0%; transition: width .3s ease;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position: fixed; left: 0; top: 3px; bottom: 0;
+  width: 260px; background: var(--dark);
+  overflow-y: auto; padding: 24px 0;
+  display: flex; flex-direction: column;
+  z-index: 100;
+}
+.sidebar-brand {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  margin-bottom: 8px;
+}
+.sidebar-brand .app-name {
+  font-size: 16px; font-weight: 700; color: #fff;
+  letter-spacing: -.3px;
+}
+.sidebar-brand .app-sub {
+  font-size: 11px; color: rgba(255,255,255,.35);
+  font-family: var(--mono);
+}
+.sidebar-brand .week-badge {
+  display: inline-block; margin-top: 8px;
+  background: var(--primary); color: #fff;
+  font-size: 10px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px;
+  letter-spacing: .5px; text-transform: uppercase;
+}
+
+.nav-section-label {
+  font-size: 9px; font-weight: 600; letter-spacing: 1.5px;
+  color: rgba(255,255,255,.25); text-transform: uppercase;
+  padding: 16px 20px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px; cursor: pointer;
+  text-decoration: none; color: rgba(255,255,255,.55);
+  font-size: 13px; font-weight: 400;
+  transition: all .2s; border-left: 2px solid transparent;
+}
+.nav-item:hover { color: #fff; background: rgba(255,255,255,.04); }
+.nav-item.active { color: #fff; border-left-color: var(--primary); background: rgba(200,48,0,.12); }
+.nav-item .nav-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+}
+.nav-item .nav-check {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1.5px solid rgba(255,255,255,.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 10px;
+}
+.nav-item.done .nav-check { background: var(--jade); border-color: var(--jade); }
+
+.sidebar-footer {
+  margin-top: auto; padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.sidebar-footer .ca-counter {
+  font-size: 11px; color: rgba(255,255,255,.35);
+  font-family: var(--mono);
+}
+
+/* ── MAIN ── */
+.main {
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--dark);
+  padding: 60px 64px 48px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(200,48,0,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -40px; left: 40%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(30,228,146,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-sprint-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(200,48,0,.15); border: 1px solid rgba(200,48,0,.3);
+  color: var(--primary); font-size: 11px; font-weight: 600;
+  padding: 5px 12px; border-radius: 20px; letter-spacing: .5px;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: 32px; font-weight: 700; color: #fff;
+  line-height: 1.2; letter-spacing: -.5px;
+  max-width: 640px; margin-bottom: 12px;
+}
+.hero h1 span { color: var(--primary); }
+.hero p {
+  color: rgba(255,255,255,.5); font-size: 15px;
+  max-width: 560px; line-height: 1.7;
+}
+.hero-meta {
+  display: flex; gap: 24px; margin-top: 28px;
+  flex-wrap: wrap;
+}
+.hero-meta-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: rgba(255,255,255,.4);
+  font-family: var(--mono);
+}
+.hero-meta-item strong { color: rgba(255,255,255,.75); font-weight: 500; }
+
+/* ── CONTENT ── */
+.content { padding: 0 64px 80px; }
+
+/* ── SECTION ── */
+.section { padding-top: 56px; }
+.section-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 28px;
+}
+.section-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0; margin-top: 2px;
+}
+.section-icon.teoria  { background: var(--primary-lt); }
+.section-icon.practica { background: var(--jade-lt); }
+.section-icon.sql     { background: var(--gold-lt); }
+.section-icon.ca      { background: var(--blue-lt); }
+
+.section-header-text h2 {
+  font-size: 22px; font-weight: 700; letter-spacing: -.3px;
+  color: var(--dark); line-height: 1.2;
+}
+.section-header-text p {
+  font-size: 13px; color: var(--mid); margin-top: 4px;
+}
+.section-header-text .tag {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  letter-spacing: .8px; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 4px; margin-bottom: 6px;
+}
+.tag.teoria  { background: var(--primary-lt); color: var(--primary); }
+.tag.practica { background: var(--jade-lt); color: var(--jade-dk); }
+.tag.sql     { background: var(--gold-lt); color: var(--gold-dk); }
+.tag.ca      { background: var(--blue-lt); color: var(--blue); }
+
+/* ── DAY CARD ── */
+.day-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.day-card-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; cursor: pointer;
+  user-select: none;
+  transition: background .15s;
+}
+.day-card-header:hover { background: var(--bg); }
+.day-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 6px;
+  flex-shrink: 0; font-family: var(--mono);
+}
+.day-tag.lunes    { background: var(--primary-lt); color: var(--primary); }
+.day-tag.martes   { background: var(--primary-lt); color: var(--primary); }
+.day-tag.mievier  { background: var(--primary-lt); color: var(--primary); }
+.day-tag.sabado   { background: var(--jade-lt); color: var(--jade-dk); }
+.day-tag.sql      { background: var(--gold-lt); color: var(--gold-dk); }
+
+.day-card-header h3 {
+  font-size: 15px; font-weight: 600; color: var(--dark);
+  flex: 1;
+}
+.day-card-header .time-badge {
+  font-size: 11px; color: var(--mid); font-family: var(--mono);
+  flex-shrink: 0;
+}
+.chevron {
+  font-size: 12px; color: var(--mid); transition: transform .2s;
+  flex-shrink: 0;
+}
+.day-card.open .chevron { transform: rotate(180deg); }
+
+.day-card-body {
+  display: none; padding: 0 20px 20px;
+  border-top: 1px solid var(--border);
+}
+.day-card.open .day-card-body { display: block; }
+
+/* ── CONCEPT ── */
+.concept { margin-top: 20px; }
+.concept-lead {
+  font-size: 14px; color: var(--mid); line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.callout {
+  border-radius: 10px; padding: 14px 16px;
+  margin: 16px 0; display: flex; gap: 12px; align-items: flex-start;
+}
+.callout.info    { background: var(--blue-lt); border-left: 3px solid var(--blue); }
+.callout.warn    { background: var(--gold-lt); border-left: 3px solid var(--gold); }
+.callout.tip     { background: var(--jade-lt); border-left: 3px solid var(--jade); }
+.callout.danger  { background: var(--primary-lt); border-left: 3px solid var(--primary); }
+.callout-icon    { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.callout-text    { font-size: 13px; line-height: 1.7; color: var(--dark); }
+.callout-text strong { font-weight: 600; display: block; margin-bottom: 3px; }
+
+/* ── CODE ── */
+pre {
+  background: var(--bg-code);
+  border-radius: 10px; padding: 16px 20px;
+  overflow-x: auto; margin: 12px 0;
+  position: relative;
+}
+pre .lang-badge {
+  position: absolute; top: 10px; right: 14px;
+  font-size: 10px; font-family: var(--mono);
+  color: rgba(255,255,255,.25); text-transform: uppercase; letter-spacing: 1px;
+}
+code {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.8;
+}
+pre code { color: #E8D5C4; background: none; padding: 0; }
+:not(pre) > code {
+  background: var(--primary-lt);
+  color: var(--primary);
+  padding: 2px 7px; border-radius: 5px; font-size: 12.5px;
+}
+.code-comment { color: #6B5A50; }
+.code-keyword { color: #FF7B54; }
+.code-string  { color: #A8E6A3; }
+.code-fn      { color: #7EC8E3; }
+.code-type    { color: #FFD580; }
+.code-punct   { color: rgba(232,213,196,.5); }
+
+/* ── COMPARISON TABLE ── */
+.compare-table {
+  width: 100%; border-collapse: collapse;
+  border-radius: 10px; overflow: hidden;
+  margin: 16px 0; border: 1px solid var(--border);
+}
+.compare-table th {
+  background: var(--bg-mid); font-size: 12px;
+  font-weight: 600; color: var(--mid); letter-spacing: .3px;
+  text-align: left; padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.compare-table td {
+  font-size: 13px; color: var(--dark); padding: 10px 16px;
+  border-bottom: 1px solid var(--border); vertical-align: top;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: var(--bg); }
+.badge-bad  { background: #FEE2E2; color: #991B1B; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.badge-good { background: var(--jade-lt); color: var(--jade-dk); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+
+/* ── DIAGRAM ── */
+.diagram {
+  background: var(--bg-code);
+  border-radius: 10px; padding: 20px;
+  margin: 16px 0; font-family: var(--mono);
+  font-size: 13px; line-height: 1.8; color: #E8D5C4;
+  overflow-x: auto;
+}
+
+/* ── STEP LIST ── */
+.step-list { list-style: none; margin: 16px 0; }
+.step-item {
+  display: flex; gap: 16px; margin-bottom: 20px;
+}
+.step-num {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--primary); color: #fff;
+  font-size: 12px; font-weight: 700; font-family: var(--mono);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.step-num.green { background: var(--jade-dk); }
+.step-num.gold  { background: var(--gold-dk); }
+.step-content { flex: 1; }
+.step-content h4 {
+  font-size: 14px; font-weight: 600; color: var(--dark);
+  margin-bottom: 6px;
+}
+.step-content p, .step-content li {
+  font-size: 13px; color: var(--mid); line-height: 1.8;
+}
+.step-content ul { padding-left: 16px; margin-top: 6px; }
+.step-content li { margin-bottom: 3px; }
+
+/* ── PRACTICE BLOCK ── */
+.practice-block {
+  background: var(--bg-card);
+  border: 1.5px solid var(--jade);
+  border-radius: var(--r);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.practice-block-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px; cursor: pointer;
+  background: var(--jade-lt);
+}
+.practice-block-header:hover { background: #d9f8ed; }
+.paso-num {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--jade-dk); color: #fff;
+  font-size: 12px; font-weight: 700; font-family: var(--mono);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.practice-block-header h3 {
+  font-size: 14px; font-weight: 600; color: var(--jade-dk); flex: 1;
+}
+.practice-block-header .est-time {
+  font-size: 11px; color: var(--jade-dk); font-family: var(--mono);
+  background: rgba(30,228,146,.2); padding: 3px 10px; border-radius: 20px;
+}
+.practice-block-body {
+  display: none; padding: 20px;
+  border-top: 1px solid rgba(30,228,146,.3);
+}
+.practice-block.open .practice-block-body { display: block; }
+.practice-block .chevron { color: var(--jade-dk); }
+.practice-block.open .chevron { transform: rotate(180deg); }
+
+/* ── CA ITEMS ── */
+.ca-grid { display: grid; gap: 10px; margin-top: 16px; }
+.ca-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+}
+.ca-item input[type="checkbox"] {
+  width: 18px; height: 18px; margin-top: 1px;
+  accent-color: var(--jade-dk); cursor: pointer;
+  flex-shrink: 0;
+}
+.ca-item.checked { border-color: var(--jade); background: var(--jade-lt); }
+.ca-id {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  color: var(--blue); background: var(--blue-lt);
+  padding: 2px 8px; border-radius: 4px; flex-shrink: 0; white-space: nowrap;
+}
+.ca-text { font-size: 13px; color: var(--dark); line-height: 1.6; flex: 1; }
+.ca-text code { font-size: 12px; }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
+
+/* ── ENTREGABLE ── */
+.entregable {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--dark); border-radius: 12px;
+  padding: 20px 24px; margin-top: 32px;
+}
+.entregable-icon { font-size: 28px; flex-shrink: 0; }
+.entregable-text h3 { font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
+.entregable-text p  { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.6; }
+
+/* ── FILE TREE ── */
+.file-tree {
+  background: var(--bg-code); border-radius: 10px;
+  padding: 16px 20px; margin: 12px 0;
+  font-family: var(--mono); font-size: 13px;
+  line-height: 2; color: #E8D5C4;
+}
+.file-tree .folder { color: #FFD580; }
+.file-tree .file   { color: #A8E6A3; }
+.file-tree .comment { color: #6B5A50; font-size: 12px; }
+.file-tree .new    { color: var(--jade); }
+
+/* ── RESOURCES ── */
+.resources-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.resource-link {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  text-decoration: none; transition: all .2s;
+}
+.resource-link:hover { border-color: var(--primary); background: var(--primary-lt); }
+.resource-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.resource-text strong { display: block; font-size: 13px; font-weight: 600; color: var(--dark); }
+.resource-text span   { font-size: 11px; color: var(--mid); }
+
+/* ── TIMELINE ── */
+.timeline {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 6px; margin: 16px 0;
+}
+.timeline-day {
+  text-align: center; border-radius: 8px;
+  padding: 10px 4px; font-size: 11px;
+}
+.timeline-day .day-name { font-weight: 600; color: var(--dark); display: block; }
+.timeline-day .day-topic { font-size: 10px; color: var(--mid); margin-top: 2px; line-height: 1.3; }
+.timeline-day.teoria  { background: var(--primary-lt); }
+.timeline-day.practica { background: var(--jade-lt); }
+.timeline-day.libre   { background: var(--bg-mid); }
+
+/* ── CHECKBOX INTERACTION ── */
+.check-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.check-row:last-child { border-bottom: none; }
+.check-row input { accent-color: var(--primary); width: 15px; height: 15px; cursor: pointer; }
+.check-row label { font-size: 13px; color: var(--dark); cursor: pointer; flex: 1; line-height: 1.5; }
+.check-row.checked label { color: var(--mid); text-decoration: line-through; }
+
+/* ── SCROLL ANIMATIONS ── */
+.fade-in {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── UTILITY ── */
+.text-primary { color: var(--primary); }
+.text-jade    { color: var(--jade-dk); }
+.text-gold    { color: var(--gold-dk); }
+.mt-4  { margin-top: 4px; }
+.mt-8  { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+
+/* ── KEYWORD GLOSSARY ── */
+.glossary {
+  background: var(--bg-mid); border-radius: 10px;
+  padding: 16px 20px; margin: 16px 0;
+}
+.glossary-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--mid); margin-bottom: 10px;
+}
+.glossary-item {
+  display: flex; gap: 10px; padding: 6px 0;
+  border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.glossary-item:last-child { border-bottom: none; }
+.glossary-term { font-family: var(--mono); color: var(--primary); font-weight: 600; min-width: 120px; }
+.glossary-def  { color: var(--dark); }
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .hero, .content { padding-left: 24px; padding-right: 24px; }
+  .resources-grid { grid-template-columns: 1fr; }
+  .timeline { grid-template-columns: repeat(4, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="app-name">PrecioJusto</div>
+    <div class="app-sub">Elan SK Soft · ecovia2@gmail.com</div>
+    <span class="week-badge">Sprint 2 · Semana 4</span>
+  </div>
+
+  <div class="nav-section-label">Teoría (Lun–Vie)</div>
+  <a href="#lunes" class="nav-item">
+    <div class="nav-dot" style="background:var(--primary)"></div>
+    Lunes — ¿Qué es Tauri?
+  </a>
+  <a href="#martes" class="nav-item">
+    <div class="nav-dot" style="background:var(--primary)"></div>
+    Martes — Commands (invoke)
+  </a>
+  <a href="#sql" class="nav-item">
+    <div class="nav-dot" style="background:var(--gold)"></div>
+    Mié–Vie — SQL básico
+  </a>
+
+  <div class="nav-section-label">Práctica (Sáb–Dom)</div>
+  <a href="#paso1" class="nav-item">
+    <div class="nav-dot" style="background:var(--jade)"></div>
+    Paso 1 — Instalar Rust
+  </a>
+  <a href="#paso2" class="nav-item">
+    <div class="nav-dot" style="background:var(--jade)"></div>
+    Paso 2 — Inicializar Tauri
+  </a>
+  <a href="#paso3" class="nav-item">
+    <div class="nav-dot" style="background:var(--jade)"></div>
+    Paso 3 — Plugin SQL
+  </a>
+  <a href="#paso4" class="nav-item">
+    <div class="nav-dot" style="background:var(--jade)"></div>
+    Paso 4 — Permisos
+  </a>
+  <a href="#paso5" class="nav-item">
+    <div class="nav-dot" style="background:var(--jade)"></div>
+    Paso 5 — Ejecutar
+  </a>
+
+  <div class="nav-section-label">Verificación</div>
+  <a href="#criterios" class="nav-item">
+    <div class="nav-dot" style="background:var(--blue)"></div>
+    Criterios de aceptación
+  </a>
+  <a href="#recursos" class="nav-item">
+    <div class="nav-dot" style="background:var(--mid)"></div>
+    Recursos de la semana
+  </a>
+
+  <div class="sidebar-footer">
+    <div class="ca-counter" id="caCounter">0 / 2 criterios completados</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-sprint-tag">🦀 Sprint 2 · Semana 4 · Abr 18–25, 2026</div>
+    <h1>Instalar <span>Rust</span> + configurar Tauri 2.0 en el proyecto</h1>
+    <p>Esta semana es el momento en que PrecioJusto deja de ser una app web y se convierte en una aplicación de escritorio nativa. Vas a instalar las herramientas de bajo nivel que hacen posible que tu código React corra como una app de Windows.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">⏱ <strong>~22 horas</strong> esta semana</div>
+      <div class="hero-meta-item">📚 <strong>Lu–Vi 6–8 pm</strong> teoría</div>
+      <div class="hero-meta-item">⚙️ <strong>Sáb–Dom</strong> práctica</div>
+      <div class="hero-meta-item">🎯 <strong>Entregable:</strong> App corriendo como ventana nativa</div>
+    </div>
+
+    <div class="timeline" style="margin-top:28px;">
+      <div class="timeline-day teoria"><span class="day-name">Lun</span><span class="day-topic">¿Qué es Tauri?</span></div>
+      <div class="timeline-day teoria"><span class="day-name">Mar</span><span class="day-topic">Commands invoke</span></div>
+      <div class="timeline-day sql"><span class="day-name">Mié</span><span class="day-topic">SQL SELECT</span></div>
+      <div class="timeline-day sql"><span class="day-name">Jue</span><span class="day-topic">SQL INSERT UPDATE</span></div>
+      <div class="timeline-day sql"><span class="day-name">Vie</span><span class="day-topic">SQL DELETE</span></div>
+      <div class="timeline-day practica"><span class="day-name">Sáb</span><span class="day-topic">Pasos 1–3</span></div>
+      <div class="timeline-day practica"><span class="day-name">Dom</span><span class="day-topic">Pasos 4–5 + CA</span></div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ═══════════════════════════════════════════
+         LUNES
+    ═══════════════════════════════════════════ -->
+    <div class="section fade-in" id="lunes">
+      <div class="section-header">
+        <div class="section-icon teoria">🦀</div>
+        <div class="section-header-text">
+          <span class="tag teoria">📚 Teoría · Lunes 6–8 pm</span>
+          <h2>¿Qué es Tauri y por qué lo usamos?</h2>
+          <p>Lee "Why Tauri" y "Architecture" en tauri.app — Entiende el modelo frontend + backend</p>
+        </div>
+      </div>
+
+      <div class="day-card open" id="card-lunes">
+        <div class="day-card-header" onclick="toggleCard('card-lunes')">
+          <span class="day-tag lunes">Lunes</span>
+          <h3>El problema que Tauri resuelve — y por qué React solo no alcanza</h3>
+          <span class="time-badge">6–8 pm · 2h</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="day-card-body">
+
+          <div class="callout info">
+            <span class="callout-icon">💡</span>
+            <div class="callout-text">
+              <strong>Contexto: ¿por qué no publicar PrecioJusto como una web normal?</strong>
+              Una app web no puede acceder a la base de datos local del usuario, no puede guardar archivos en el sistema operativo, y requiere conexión a internet. PrecioJusto necesita todo eso — por eso necesitamos convertirla en una <em>aplicación de escritorio nativa</em>.
+            </div>
+          </div>
+
+          <div class="concept">
+            <p class="concept-lead">Cuando quieres crear una app de escritorio con tecnología web (React, TypeScript, HTML/CSS), tienes básicamente dos opciones grandes: <strong>Electron</strong> o <strong>Tauri</strong>. Entender la diferencia te ayudará a apreciar por qué elegimos Tauri para PrecioJusto.</p>
+
+            <h4 style="margin:20px 0 10px; font-size:14px; color:var(--dark)">Electron — el enfoque tradicional</h4>
+            <p style="font-size:13px; color:var(--mid); margin-bottom:12px">Electron es la tecnología que usa VS Code, Slack, WhatsApp Desktop y Discord. Funciona así: <em>incluye un navegador Chrome completo + Node.js dentro de cada app</em>. Eso significa que cada app Electron lleva su propio navegador empaquetado.</p>
+
+            <table class="compare-table">
+              <tr>
+                <th>Característica</th>
+                <th>Electron</th>
+                <th>Tauri 2.0</th>
+              </tr>
+              <tr>
+                <td>Tamaño del instalador</td>
+                <td><span class="badge-bad">80–200 MB</span></td>
+                <td><span class="badge-good">3–10 MB</span></td>
+              </tr>
+              <tr>
+                <td>Uso de RAM al iniciar</td>
+                <td><span class="badge-bad">~200 MB mínimo</span></td>
+                <td><span class="badge-good">~30 MB</span></td>
+              </tr>
+              <tr>
+                <td>Lenguaje backend</td>
+                <td>Node.js (JavaScript)</td>
+                <td>Rust (compilado, nativo)</td>
+              </tr>
+              <tr>
+                <td>Motor de renderizado</td>
+                <td>Chromium incluido en el .exe</td>
+                <td>WebView del sistema (Edge en Windows)</td>
+              </tr>
+              <tr>
+                <td>Velocidad de arranque</td>
+                <td><span class="badge-bad">Lento (carga Chromium)</span></td>
+                <td><span class="badge-good">Rápido (WebView ya existe)</span></td>
+              </tr>
+              <tr>
+                <td>Curva de aprendizaje</td>
+                <td>Fácil (todo JS)</td>
+                <td>Medio (Rust es nuevo)</td>
+              </tr>
+            </table>
+
+            <h4 style="margin:20px 0 10px; font-size:14px; color:var(--dark)">¿Cómo funciona Tauri internamente?</h4>
+            <p style="font-size:13px; color:var(--mid); margin-bottom:12px">Tauri tiene dos partes que trabajan juntas:</p>
+
+            <div class="diagram">
+┌────────────────────────────────────────────────┐<br>
+│  <span style="color:#FFD580">FRONTEND</span>  (lo que el usuario VE)              │<br>
+│  Tu código React + TypeScript + TailwindCSS    │<br>
+│  Corre dentro del WebView de Windows (Edge)    │<br>
+│                                                │<br>
+│  ✓ Formularios, botones, pantallas             │<br>
+│  ✓ Zustand para estado de la app               │<br>
+│  ✗ NO puede acceder a archivos del sistema     │<br>
+│  ✗ NO puede hablar con SQLite directamente     │<br>
+└───────────────────┬────────────────────────────┘<br>
+                    │<br>
+           invoke("guardar_insumo", datos)<br>
+                    │<br>
+┌───────────────────▼────────────────────────────┐<br>
+│  <span style="color:#A8E6A3">BACKEND</span>  (lo que el usuario NO VE)          │<br>
+│  Código Rust (src-tauri/)                      │<br>
+│  Compilado a código nativo — ultra rápido      │<br>
+│                                                │<br>
+│  ✓ Lee y escribe en SQLite                     │<br>
+│  ✓ Accede al sistema de archivos               │<br>
+│  ✓ Controla la ventana nativa                  │<br>
+│  ✓ Accede a recursos del sistema operativo     │<br>
+└────────────────────────────────────────────────┘
+            </div>
+
+            <div class="callout tip">
+              <span class="callout-icon">🎯</span>
+              <div class="callout-text">
+                <strong>¿Cómo aplica esto a PrecioJusto?</strong>
+                Cuando el usuario haga clic en "Guardar insumo", React captura los datos del formulario → llama a Rust con <code>invoke()</code> → Rust los escribe en SQLite → responde "OK" → React actualiza la pantalla. El usuario no sabe que Rust existe, pero él hace el trabajo pesado.
+              </div>
+            </div>
+
+            <h4 style="margin:20px 0 10px; font-size:14px; color:var(--dark)">¿Qué es Rust (en términos simples)?</h4>
+            <p style="font-size:13px; color:var(--mid)">Rust es un lenguaje de programación creado por Mozilla, similar a C++ pero sin los errores de memoria que hacen tan problemático a C++. Es extremadamente rápido — comparable al código compilado de C — y es usado por empresas como Mozilla, Discord, Cloudflare y Microsoft para partes críticas de su infraestructura.</p>
+            <div class="callout warn" style="margin-top:12px;">
+              <span class="callout-icon">⚠️</span>
+              <div class="callout-text">
+                <strong>No necesitas aprender Rust a fondo ahora</strong>
+                Para esta semana y las próximas, Tauri genera la estructura base de Rust automáticamente. Solo vas a leer el código, entender qué hace, y hacer ajustes pequeños siguiendo los ejemplos de la documentación. El aprendizaje de Rust será gradual y orgánico.
+              </div>
+            </div>
+
+            <h4 style="margin:20px 0 10px; font-size:14px; color:var(--dark)">📖 Tu tarea de lectura hoy</h4>
+            <ul class="step-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <h4>Ir a <code>tauri.app</code> → "Why Tauri"</h4>
+                  <p>Lee la página completa. Presta atención a los números de tamaño de ejecutable y la comparación con Electron. El equipo de Tauri explica su filosofía de diseño ahí.</p>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <h4>Luego ir a "Architecture" en el mismo sitio</h4>
+                  <p>Ahí explican el modelo de procesos: cómo el proceso principal de Rust controla la ventana y cómo el WebView (tu React) vive en un proceso separado que se comunica con el principal.</p>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <h4>Toma notas de al menos 3 conceptos que no entendías antes</h4>
+                  <p>No necesitas entender todo al 100%. Lo que no entiendas hoy, lo entenderás cuando lo practiques el sábado.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ═══════════════════════════════════════════
+         MARTES
+    ═══════════════════════════════════════════ -->
+    <div class="section fade-in" id="martes">
+      <div class="section-header">
+        <div class="section-icon teoria">🔗</div>
+        <div class="section-header-text">
+          <span class="tag teoria">📚 Teoría · Martes 6–8 pm</span>
+          <h2>Tauri Commands — el puente entre React y Rust</h2>
+          <p>Lee tauri.app/develop/calling-rust — Cómo JavaScript llama funciones del backend</p>
+        </div>
+      </div>
+
+      <div class="day-card open" id="card-martes">
+        <div class="day-card-header" onclick="toggleCard('card-martes')">
+          <span class="day-tag martes">Martes</span>
+          <h3>invoke() — cómo React habla con Rust</h3>
+          <span class="time-badge">6–8 pm · 2h</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="day-card-body">
+
+          <div class="callout info">
+            <span class="callout-icon">🌉</span>
+            <div class="callout-text">
+              <strong>El concepto más importante de Tauri</strong>
+              <code>invoke()</code> es la función que te permite llamar código Rust desde React. Es el puente entre el frontend y el backend. Cada vez que necesites acceder a la base de datos, a archivos, o a recursos del sistema, usarás <code>invoke()</code>.
+            </div>
+          </div>
+
+          <div class="concept">
+            <h4 style="margin-bottom:12px; font-size:14px">¿Cómo funciona un Command?</h4>
+            <p class="concept-lead">Un "Command" en Tauri es simplemente una función Rust que tiene el atributo <code>#[tauri::command]</code> y está registrada en el Builder. Una vez registrada, React puede llamarla por nombre con <code>invoke()</code>.</p>
+
+            <p style="font-size:13px; color:var(--mid); margin-bottom:8px"><strong style="color:var(--dark)">Parte 1 — Defines el command en Rust</strong> (<code>src-tauri/src/lib.rs</code>):</p>
+            <pre><code><span class="code-comment">// El atributo #[tauri::command] hace que esta función sea accesible desde React</span>
+<span class="code-keyword">#[tauri::command]</span>
+<span class="code-keyword">fn</span> <span class="code-fn">saludar</span>(nombre: <span class="code-type">String</span>) -> <span class="code-type">String</span> {
+    format!(<span class="code-string">"¡Hola, {}! Desde el backend Rust."</span>, nombre)
+}
+
+<span class="code-comment">// Aquí registras todos tus commands para que Tauri los conozca</span>
+<span class="code-keyword">pub fn</span> <span class="code-fn">run</span>() {
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![saludar])  <span class="code-comment">// ← registrar</span>
+        .run(tauri::generate_context!())
+        .expect(<span class="code-string">"error while running tauri application"</span>);
+}<span class="lang-badge">Rust</span></code></pre>
+
+            <p style="font-size:13px; color:var(--mid); margin:16px 0 8px"><strong style="color:var(--dark)">Parte 2 — Lo llamas desde React</strong> (<code>src/components/MiComponente.tsx</code>):</p>
+            <pre><code><span class="code-keyword">import</span> { invoke } <span class="code-keyword">from</span> <span class="code-string">"@tauri-apps/api/core"</span>;
+
+<span class="code-keyword">async function</span> <span class="code-fn">probarSaludo</span>() {
+    <span class="code-comment">// El primer argumento es el nombre del command (en snake_case)</span>
+    <span class="code-comment">// El segundo es un objeto con los argumentos que espera Rust</span>
+    <span class="code-keyword">const</span> respuesta = <span class="code-keyword">await</span> invoke<<span class="code-type">string</span>>(<span class="code-string">"saludar"</span>, { nombre: <span class="code-string">"ELAN"</span> });
+    
+    console.log(respuesta);
+    <span class="code-comment">// → "¡Hola, ELAN! Desde el backend Rust."</span>
+}
+<span class="lang-badge">TypeScript</span></code></pre>
+
+            <div class="callout tip">
+              <span class="callout-icon">✨</span>
+              <div class="callout-text">
+                <strong>Nota el <code>await</code></strong>
+                <code>invoke()</code> siempre retorna una Promise — es como hacer un <code>fetch()</code> a una API, pero en lugar de internet, la petición va al backend Rust local. La respuesta puede ser casi inmediata (microsegundos), pero la sintaxis asíncrona es la misma.
+              </div>
+            </div>
+
+            <h4 style="margin:20px 0 12px; font-size:14px">Cómo aplica esto a PrecioJusto</h4>
+            <p style="font-size:13px; color:var(--mid); margin-bottom:12px">Cuando termines el Sprint 2, tus commands reales se verán así:</p>
+
+            <pre><code><span class="code-comment">// En Rust — guardar un insumo en SQLite</span>
+<span class="code-keyword">#[tauri::command]</span>
+<span class="code-keyword">async fn</span> <span class="code-fn">crear_insumo</span>(db: State<<span class="code-type">DbState</span>>, nombre: <span class="code-type">String</span>, precio: <span class="code-type">f64</span>) -> <span class="code-type">Result</span><<span class="code-type">i64</span>, <span class="code-type">String</span>> {
+    <span class="code-comment">// Aquí Rust habla con SQLite y devuelve el id del nuevo insumo</span>
+    Ok(<span class="code-fn">insertar_en_db</span>(&db, nombre, precio).<span class="code-fn">await</span>?)
+}<span class="lang-badge">Rust</span></code></pre>
+
+            <pre><code><span class="code-comment">// En React — formulario de nuevo insumo</span>
+<span class="code-keyword">const</span> <span class="code-fn">handleGuardar</span> = <span class="code-keyword">async</span> () => {
+    <span class="code-keyword">const</span> nuevoId = <span class="code-keyword">await</span> invoke<<span class="code-type">number</span>>(<span class="code-string">"crear_insumo"</span>, {
+        nombre: formData.nombre,
+        precio: formData.precio
+    });
+    console.log(<span class="code-string">`Insumo guardado con id: ${nuevoId}`</span>);
+};<span class="lang-badge">TypeScript</span></code></pre>
+
+            <div class="glossary">
+              <div class="glossary-title">🔤 Glosario rápido de hoy</div>
+              <div class="glossary-item"><span class="glossary-term">Command</span><span class="glossary-def">Función Rust expuesta al frontend de Tauri</span></div>
+              <div class="glossary-item"><span class="glossary-term">invoke()</span><span class="glossary-def">Función de JavaScript para llamar un Command de Rust</span></div>
+              <div class="glossary-item"><span class="glossary-term">snake_case</span><span class="glossary-def">La convención de nombres en Rust: palabras separadas por _</span></div>
+              <div class="glossary-item"><span class="glossary-term">async/await</span><span class="glossary-def">Sintaxis para código asíncrono — igual que en TypeScript</span></div>
+              <div class="glossary-item"><span class="glossary-term">Result&lt;T, E&gt;</span><span class="glossary-def">Tipo Rust para retornar éxito (Ok) o error (Err)</span></div>
+            </div>
+
+            <h4 style="margin:16px 0 10px; font-size:14px;">📖 Tu tarea de lectura hoy</h4>
+            <ul class="step-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <h4>Ir a <code>tauri.app/develop/calling-rust</code></h4>
+                  <p>Lee la sección "Commands" completa. Fíjate especialmente en cómo se pasan argumentos de TypeScript a Rust y cómo se retornan los resultados.</p>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <h4>No te estreses si no entiendes la sintaxis de Rust al 100%</h4>
+                  <p>Lo importante es entender el <em>flujo</em>: React llama → Rust ejecuta → React recibe. La sintaxis específica la aprenderás cuando la uses.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ═══════════════════════════════════════════
+         MIÉRCOLES-VIERNES: SQL
+    ═══════════════════════════════════════════ -->
+    <div class="section fade-in" id="sql">
+      <div class="section-header">
+        <div class="section-icon sql">🗄️</div>
+        <div class="section-header-text">
+          <span class="tag sql">📚 Teoría · Miércoles–Viernes 6–8 pm</span>
+          <h2>SQL básico — el lenguaje de las bases de datos</h2>
+          <p>Recurso: sqlitetutorial.net — Estudia SELECT, INSERT, UPDATE y DELETE</p>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">📦</span>
+        <div class="callout-text">
+          <strong>¿Qué es SQLite y por qué es perfecta para PrecioJusto?</strong>
+          SQLite es una base de datos que vive en <em>un solo archivo .db</em> en el computador del usuario. No necesita instalar un servidor de base de datos (como MySQL o PostgreSQL). Es la base de datos más usada del mundo — Android, iOS, navegadores web, y miles de apps de escritorio la usan. Ideal para apps de un solo usuario como PrecioJusto.
+        </div>
+      </div>
+
+      <!-- Miércoles -->
+      <div class="day-card open" id="card-mie" style="margin-top:20px;">
+        <div class="day-card-header" onclick="toggleCard('card-mie')">
+          <span class="day-tag sql">Miércoles</span>
+          <h3>SELECT — Consultar datos de la base de datos</h3>
+          <span class="time-badge">6–8 pm · 2h</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="day-card-body">
+          <p class="concept-lead">SELECT es el comando más usado en SQL. Lo usarás para <em>leer</em> datos. En PrecioJusto, cada vez que cargues una lista de insumos, servicios o cotizaciones, usarás SELECT.</p>
+
+          <h4 style="font-size:14px; margin:16px 0 8px;">Sintaxis básica</h4>
+          <pre><code><span class="code-comment">-- Obtener TODOS los inputs (insumos)</span>
+<span class="code-keyword">SELECT</span> * <span class="code-keyword">FROM</span> inputs; <span class="code-comment">-- inputs = insumos</span>
+
+<span class="code-comment">-- El * significa "todas las columnas"</span>
+<span class="code-comment">-- FROM dice de qué tabla leer</span><span class="lang-badge">SQL</span></code></pre>
+
+          <pre><code><span class="code-comment">-- Obtener solo columnas específicas</span>
+<span class="code-keyword">SELECT</span> name, price, unit_name <span class="code-comment">-- name = nombre, price = precio, unit_name = unidad</span>
+<span class="code-keyword">FROM</span> inputs; <span class="code-comment">-- inputs = insumos</span>
+
+<span class="code-comment">-- Obtener inputs filtrados por condición</span>
+<span class="code-keyword">SELECT</span> name, price <span class="code-comment">-- name = nombre, price = precio</span>
+<span class="code-keyword">FROM</span> inputs <span class="code-comment">-- inputs = insumos</span>
+<span class="code-keyword">WHERE</span> price &gt; 1000; <span class="code-comment">-- filtrar insumos que cuesten más de 1000</span>
+
+<span class="code-comment">-- Ordenar resultados</span>
+<span class="code-keyword">SELECT</span> name, price <span class="code-comment">-- name = nombre, price = precio</span>
+<span class="code-keyword">FROM</span> inputs <span class="code-comment">-- inputs = insumos</span>
+<span class="code-keyword">ORDER BY</span> name <span class="code-keyword">ASC</span>;<span class="lang-badge">SQL</span></code></pre>
+
+          <div class="callout tip">
+            <span class="callout-icon">🎯</span>
+            <div class="callout-text">
+              <strong>En PrecioJusto usarás SELECT para:</strong>
+              Cargar la lista de insumos al abrir la pantalla. Buscar insumos por nombre. Cargar el historial de cotizaciones. Obtener la configuración de la app (moneda, idioma). Casi todo lo que el usuario "ve" viene de un SELECT.
+            </div>
+          </div>
+
+          <div class="glossary">
+            <div class="glossary-title">Palabras clave SQL de hoy</div>
+            <div class="glossary-item"><span class="glossary-term">SELECT</span><span class="glossary-def">Qué columnas quiero ver (o * para todas)</span></div>
+            <div class="glossary-item"><span class="glossary-term">FROM</span><span class="glossary-def">De qué tabla leer los datos</span></div>
+            <div class="glossary-item"><span class="glossary-term">WHERE</span><span class="glossary-def">Condición de filtro (como un if en JavaScript)</span></div>
+            <div class="glossary-item"><span class="glossary-term">ORDER BY</span><span class="glossary-def">Ordenar los resultados por una columna</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jueves -->
+      <div class="day-card open" id="card-jue">
+        <div class="day-card-header" onclick="toggleCard('card-jue')">
+          <span class="day-tag sql">Jueves</span>
+          <h3>INSERT y UPDATE — Crear y modificar datos</h3>
+          <span class="time-badge">6–8 pm · 2h</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="day-card-body">
+          <p class="concept-lead">INSERT crea registros nuevos. UPDATE modifica registros existentes. Son los comandos que usarás cuando el usuario llene un formulario y haga clic en "Guardar".</p>
+
+          <h4 style="font-size:14px; margin:16px 0 8px;">INSERT — Crear un registro nuevo</h4>
+          <pre><code><span class="code-comment">-- Crear un nuevo input (insumo)</span>
+<span class="code-keyword">INSERT INTO</span> inputs (name, price, unit_name) <span class="code-comment">-- inputs = insumos; name = nombre, price = precio, unit_name = unidad</span>
+<span class="code-keyword">VALUES</span> (<span class="code-string">'Harina de trigo'</span>, 2500.00, <span class="code-string">'kg'</span>);
+
+<span class="code-comment">-- No incluyes el 'id' — SQLite lo genera automáticamente (AUTOINCREMENT)</span>
+<span class="code-comment">-- Después de este INSERT, puedes obtener el id generado con: last_insert_rowid()</span><span class="lang-badge">SQL</span></code></pre>
+
+          <pre><code><span class="code-comment">-- Crear un service (servicio) con todos sus campos</span>
+<span class="code-keyword">INSERT INTO</span> services (name, details, price, price_type) <span class="code-comment">-- services = servicios; name = nombre, details = descripcion, price = costo_mensual, price_type = tipo</span>
+<span class="code-keyword">VALUES</span> (<span class="code-string">'Arriendo bodega'</span>, <span class="code-string">'Almacenamiento mensual'</span>, 500000, <span class="code-string">'static'</span>);
+
+<span class="code-comment">-- Timestamp automático con la función datetime()</span>
+<span class="code-keyword">INSERT INTO</span> inputs (name, price, created_at) <span class="code-comment">-- inputs = insumos; name = nombre, price = precio</span>
+<span class="code-keyword">VALUES</span> (<span class="code-string">'Azúcar'</span>, 3200, datetime(<span class="code-string">'now'</span>));<span class="lang-badge">SQL</span></code></pre>
+
+          <h4 style="font-size:14px; margin:20px 0 8px;">UPDATE — Modificar un registro existente</h4>
+          <pre><code><span class="code-comment">-- Actualizar el precio de un input (insumo) específico</span>
+<span class="code-keyword">UPDATE</span> inputs <span class="code-comment">-- inputs = insumos</span>
+<span class="code-keyword">SET</span> price = 2800 <span class="code-comment">-- price = precio</span>
+<span class="code-keyword">WHERE</span> id = 1;
+
+<span class="code-comment">-- ⚠️ SIEMPRE usa WHERE en un UPDATE</span>
+<span class="code-comment">-- Sin WHERE, actualizarías TODOS los registros de la tabla</span><span class="lang-badge">SQL</span></code></pre>
+
+          <pre><code><span class="code-comment">-- Actualizar varios campos a la vez</span>
+<span class="code-keyword">UPDATE</span> inputs <span class="code-comment">-- inputs = insumos</span>
+<span class="code-keyword">SET</span>
+    price = 2800,         <span class="code-comment">-- price = precio</span>
+    unit_name = <span class="code-string">'500g'</span>,  <span class="code-comment">-- unit_name = unidad</span>
+    updated_at = datetime(<span class="code-string">'now'</span>)
+<span class="code-keyword">WHERE</span> id = 1;<span class="lang-badge">SQL</span></code></pre>
+
+          <div class="callout danger">
+            <span class="callout-icon">🚨</span>
+            <div class="callout-text">
+              <strong>La regla más importante del UPDATE (y DELETE)</strong>
+              Siempre, siempre, siempre incluye el <code>WHERE</code>. Un <code>UPDATE inputs SET price = 0</code> sin WHERE pondría en cero el precio de TODOS los inputs (insumos) de la base de datos. Esto es difícil de deshacer.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Viernes -->
+      <div class="day-card open" id="card-vie">
+        <div class="day-card-header" onclick="toggleCard('card-vie')">
+          <span class="day-tag sql">Viernes</span>
+          <h3>DELETE — Eliminar registros (con cuidado)</h3>
+          <span class="time-badge">6–8 pm · 2h</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="day-card-body">
+          <p class="concept-lead">DELETE elimina registros de forma permanente. En PrecioJusto usamos borrado definitivo — cuando el usuario elimina un insumo o servicio, la fila desaparece de la base de datos.</p>
+
+          <h4 style="font-size:14px; margin:16px 0 8px;">DELETE — el patrón que usaremos en PrecioJusto</h4>
+          <pre><code><span class="code-comment">-- Eliminar un input (insumo) específico por su id</span>
+<span class="code-keyword">DELETE FROM</span> inputs <span class="code-comment">-- inputs = insumos</span>
+<span class="code-keyword">WHERE</span> id = 5;
+
+<span class="code-comment">-- ⚠️ Igual que UPDATE: SIEMPRE usa WHERE</span>
+<span class="code-comment">-- DELETE FROM inputs; — eliminaría TODA la tabla</span><span class="lang-badge">SQL</span></code></pre>
+
+          <div class="callout tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-text">
+              <strong>Resumen del CRUD en SQL</strong>
+              <strong>C</strong>reate → <code>INSERT INTO</code> &nbsp;·&nbsp; <strong>R</strong>ead → <code>SELECT FROM</code> &nbsp;·&nbsp; <strong>U</strong>pdate → <code>UPDATE SET</code> &nbsp;·&nbsp; <strong>D</strong>elete → <code>DELETE FROM</code>
+            </div>
+          </div>
+
+          <h4 style="font-size:14px; margin:20px 0 8px;">📖 Recurso para los 3 días: sqlitetutorial.net</h4>
+          <ul class="step-list">
+            <li class="step-item">
+              <div class="step-num gold">1</div>
+              <div class="step-content"><h4>Miércoles: leer "SQLite SELECT"</h4><p>Secciones: SELECT básico, WHERE, ORDER BY, LIMIT.</p></div>
+            </li>
+            <li class="step-item">
+              <div class="step-num gold">2</div>
+              <div class="step-content"><h4>Jueves: leer "SQLite INSERT" y "SQLite UPDATE"</h4><p>Fíjate en los ejemplos con múltiples valores y en el uso de WHERE en UPDATE.</p></div>
+            </li>
+            <li class="step-item">
+              <div class="step-num gold">3</div>
+              <div class="step-content"><h4>Viernes: leer "SQLite DELETE"</h4><p>Opcional: instala DB Browser for SQLite y practica los comandos en una base de datos de prueba.</p></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ═══════════════════════════════════════════
+         PRÁCTICA
+    ═══════════════════════════════════════════ -->
+    <div class="section fade-in">
+      <div class="section-header">
+        <div class="section-icon practica">⚙️</div>
+        <div class="section-header-text">
+          <span class="tag practica">⚙️ Práctica · Sábado y Domingo</span>
+          <h2>Configurar Tauri 2.0 en el proyecto</h2>
+          <p>5 pasos para convertir tu app React en una aplicación de escritorio nativa</p>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⏱</span>
+        <div class="callout-text">
+          <strong>Distribución sugerida del fin de semana</strong>
+          <strong>Sábado (9–11am + 3–6pm = 5h):</strong> Pasos 1, 2 y 3 — instalar Rust, inicializar Tauri, instalar plugin SQL.<br>
+          <strong>Domingo (9–11am + 3–6pm = 5h):</strong> Pasos 4 y 5 — configurar permisos, ejecutar, verificar criterios de aceptación.
+        </div>
+      </div>
+
+      <!-- PASO 1 -->
+      <div class="practice-block open" id="paso1" style="margin-top:24px;">
+        <div class="practice-block-header" onclick="togglePractice('paso1')">
+          <div class="paso-num">1</div>
+          <h3>Instalar Rust en Windows</h3>
+          <span class="est-time">⏱ ~45 min</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="practice-block-body">
+
+          <div class="callout info">
+            <span class="callout-icon">🦀</span>
+            <div class="callout-text">
+              <strong>¿Por qué necesitas instalar Rust?</strong>
+              Tauri usa Rust para el backend de la app. Cuando ejecutas <code>npm run tauri dev</code> o <code>npm run tauri build</code>, en realidad está compilando código Rust. Sin Rust instalado, el comando falla.
+            </div>
+          </div>
+
+          <ul class="step-list" style="margin-top:16px;">
+            <li class="step-item">
+              <div class="step-num green">1</div>
+              <div class="step-content">
+                <h4>Ir a <code>rustup.rs</code> en tu navegador</h4>
+                <p>Verás un botón grande para descargar el instalador de Windows (<code>rustup-init.exe</code>). Descárgalo y ejecútalo.</p>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">2</div>
+              <div class="step-content">
+                <h4>En el instalador, seleccionar opción 1 (instalación estándar)</h4>
+                <p>Cuando el instalador abra una ventana de texto y pregunte qué hacer, escribe <code>1</code> y presiona Enter. Esto instala la versión estable de Rust con las herramientas estándar.</p>
+                <pre><code><span class="code-comment">Pantalla del instalador:</span>
+<span class="code-string">1) Proceed with standard installation (default - just press enter)</span>
+<span class="code-string">2) Customize installation</span>
+<span class="code-string">3) Cancel installation</span>
+
+<span class="code-comment">→ Escribe 1 y presiona Enter</span><span class="lang-badge">Terminal</span></code></pre>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">3</div>
+              <div class="step-content">
+                <h4>Instalar Visual Studio Build Tools (solo Windows)</h4>
+                <p>Rust en Windows necesita el compilador de C++ de Microsoft para compilar código nativo. Sigue estos pasos:</p>
+                <ul>
+                  <li>Ir a: <code>https://visualstudio.microsoft.com/visual-cpp-build-tools/</code></li>
+                  <li>Descargar el instalador de "Build Tools for Visual Studio"</li>
+                  <li>En el instalador, marcar <strong>"Desktop development with C++"</strong></li>
+                  <li>Instalar (puede tomar 10-15 minutos y ~6 GB de espacio)</li>
+                </ul>
+                <div class="callout warn" style="margin-top:12px;">
+                  <span class="callout-icon">💾</span>
+                  <div class="callout-text">
+                    <strong>¿Ya tienes Visual Studio instalado?</strong>
+                    Si tienes Visual Studio Community o Professional, ya tienes las Build Tools. Solo verifica que tengas el componente "Desktop development with C++" instalado.
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">4</div>
+              <div class="step-content">
+                <h4>Cerrar y reabrir la terminal, luego verificar</h4>
+                <p>Después de instalar Rust, debes reiniciar la terminal para que los nuevos comandos estén disponibles. Luego ejecuta:</p>
+                <pre><code>rustc --version
+<span class="code-comment"># Debe mostrar algo como: rustc 1.77.0 (aedd173a2 2024-03-17)</span>
+
+cargo --version
+<span class="code-comment"># Debe mostrar algo como: cargo 1.77.0 (aedd173a2 2024-03-17)</span><span class="lang-badge">Terminal</span></code></pre>
+              </div>
+            </li>
+          </ul>
+
+          <div class="glossary">
+            <div class="glossary-title">¿Qué se instaló?</div>
+            <div class="glossary-item"><span class="glossary-term">rustc</span><span class="glossary-def">El compilador de Rust — convierte código .rs en ejecutable</span></div>
+            <div class="glossary-item"><span class="glossary-term">cargo</span><span class="glossary-def">Gestor de paquetes de Rust — como npm pero para Rust</span></div>
+            <div class="glossary-item"><span class="glossary-term">rustup</span><span class="glossary-def">El instalador/actualizador de Rust — como nvm para Node</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 2 -->
+      <div class="practice-block open" id="paso2">
+        <div class="practice-block-header" onclick="togglePractice('paso2')">
+          <div class="paso-num">2</div>
+          <h3>Agregar Tauri al proyecto existente</h3>
+          <span class="est-time">⏱ ~30 min</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="practice-block-body">
+
+          <div class="callout info">
+            <span class="callout-icon">📁</span>
+            <div class="callout-text">
+              <strong>Asegúrate de estar en la raíz del proyecto</strong>
+              Abre la terminal en la carpeta donde está tu <code>package.json</code> de PrecioJusto. El directorio raíz del proyecto, no dentro de ninguna subcarpeta.
+            </div>
+          </div>
+
+          <ul class="step-list" style="margin-top:16px;">
+            <li class="step-item">
+              <div class="step-num green">1</div>
+              <div class="step-content">
+                <h4>Instalar el CLI de Tauri como dependencia de desarrollo</h4>
+                <pre><code>npm install --save-dev @tauri-apps/cli@next
+
+<span class="code-comment"># ¿Qué hace este comando?</span>
+<span class="code-comment"># Instala la herramienta de línea de comandos de Tauri</span>
+<span class="code-comment"># (similar a como Vite tiene su propio CLI)</span>
+<span class="code-comment"># @next = versión 2.x (la más reciente)</span><span class="lang-badge">Terminal</span></code></pre>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">2</div>
+              <div class="step-content">
+                <h4>Inicializar Tauri en el proyecto</h4>
+                <pre><code>npx tauri init
+
+<span class="code-comment"># El asistente te hará estas preguntas — responde así:</span><span class="lang-badge">Terminal</span></code></pre>
+                <div class="callout info" style="margin-top:8px;">
+                  <span class="callout-icon">🤖</span>
+                  <div class="callout-text">
+                    <strong>Respuestas para el asistente de <code>npx tauri init</code>:</strong><br><br>
+                    <code>App name?</code> → <strong>PrecioJusto</strong><br>
+                    <code>Window title?</code> → <strong>PrecioJusto</strong><br>
+                    <code>Web assets relative to src-tauri?</code> → <strong>../dist</strong><br>
+                    <code>Dev server URL?</code> → <strong>http://localhost:5173</strong><br>
+                    <code>Frontend dev command?</code> → <strong>npm run dev</strong><br>
+                    <code>Frontend build command?</code> → <strong>npm run build</strong>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">3</div>
+              <div class="step-content">
+                <h4>Agregar script en package.json</h4>
+                <p>Abre <code>package.json</code> y agrega el script de Tauri en la sección <code>"scripts"</code>:</p>
+                <pre><code>{
+  <span class="code-string">"scripts"</span>: {
+    <span class="code-string">"dev"</span>: <span class="code-string">"vite"</span>,
+    <span class="code-string">"build"</span>: <span class="code-string">"tsc && vite build"</span>,
+    <span class="code-string">"preview"</span>: <span class="code-string">"vite preview"</span>,
+    <span class="code-string">"tauri"</span>: <span class="code-string">"tauri"</span>,
+    <span class="code-string">"tauri:dev"</span>: <span class="code-string">"tauri dev"</span>,
+    <span class="code-string">"tauri:build"</span>: <span class="code-string">"tauri build"</span>
+  }
+}<span class="lang-badge">JSON</span></code></pre>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">4</div>
+              <div class="step-content">
+                <h4>Verificar los archivos creados por tauri init</h4>
+                <p>El comando habrá creado la carpeta <code>src-tauri/</code>. Tu proyecto ahora se verá así:</p>
+                <div class="file-tree">
+  preciojusto/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← raíz del proyecto</span><br>
+  ├── src/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← tu código React</span><br>
+  ├── public/<br>
+  ├── index.html<br>
+  ├── package.json<br>
+  ├── vite.config.ts<br>
+  └── <span class="new">src-tauri/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← NUEVO — todo Rust va aquí</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="new">Cargo.toml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← como package.json pero para Rust</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="new">Cargo.lock&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← lock file (no editar manualmente)</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="new">build.rs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← script de build (no tocar por ahora)</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="new">tauri.conf.json&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← configuración de la ventana y la app</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="new">capabilities/</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="new">default.json&nbsp;&nbsp;&nbsp;&nbsp;← permisos de la app (Paso 4)</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="new">icons/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← íconos de la app en varios tamaños</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="new">src/</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="new">lib.rs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← TU código Rust (commands van aquí)</span>
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">5</div>
+              <div class="step-content">
+                <h4>Ajustar el tamaño de la ventana en tauri.conf.json</h4>
+                <p>Abre <code>src-tauri/tauri.conf.json</code> y verifica (o ajusta) la sección de la ventana:</p>
+                <pre><code>{
+  <span class="code-string">"app"</span>: {
+    <span class="code-string">"windows"</span>: [
+      {
+        <span class="code-string">"title"</span>: <span class="code-string">"PrecioJusto"</span>,
+        <span class="code-string">"width"</span>: <span class="code-type">1200</span>,
+        <span class="code-string">"height"</span>: <span class="code-type">800</span>,
+        <span class="code-string">"resizable"</span>: <span class="code-keyword">true</span>,
+        <span class="code-string">"fullscreen"</span>: <span class="code-keyword">false</span>
+      }
+    ]
+  }
+}<span class="lang-badge">JSON</span></code></pre>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PASO 3 -->
+      <div class="practice-block open" id="paso3">
+        <div class="practice-block-header" onclick="togglePractice('paso3')">
+          <div class="paso-num">3</div>
+          <h3>Instalar el plugin SQL de Tauri</h3>
+          <span class="est-time">⏱ ~20 min</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="practice-block-body">
+
+          <div class="callout info">
+            <span class="callout-icon">🔌</span>
+            <div class="callout-text">
+              <strong>¿Qué es un plugin en Tauri?</strong>
+              Los plugins de Tauri extienden las capacidades de la app. El plugin SQL agrega la capacidad de conectarse a bases de datos SQLite (o MySQL/PostgreSQL). Sin él, tu código React no puede hablar con SQLite.
+            </div>
+          </div>
+
+          <ul class="step-list" style="margin-top:16px;">
+            <li class="step-item">
+              <div class="step-num green">1</div>
+              <div class="step-content">
+                <h4>Instalar el paquete JavaScript del plugin</h4>
+                <pre><code>npm install @tauri-apps/plugin-sql
+
+<span class="code-comment"># Este paquete exporta las funciones que usarás en React</span>
+<span class="code-comment"># para conectarte a SQLite (Database.load(), db.execute(), db.select())</span><span class="lang-badge">Terminal</span></code></pre>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">2</div>
+              <div class="step-content">
+                <h4>Agregar la dependencia Rust en Cargo.toml</h4>
+                <p>Abre <code>src-tauri/Cargo.toml</code> y agrega la línea del plugin en la sección <code>[dependencies]</code>:</p>
+                <pre><code>[package]
+name = <span class="code-string">"precio-justo"</span>
+version = <span class="code-string">"0.1.0"</span>
+edition = <span class="code-string">"2021"</span>
+
+[dependencies]
+tauri = { version = <span class="code-string">"2"</span>, features = [] }
+tauri-plugin-sql = { version = <span class="code-string">"2"</span>, features = [<span class="code-string">"sqlite"</span>] }  <span class="code-comment"># ← NUEVO</span>
+
+[profile.release]
+panic = <span class="code-string">"abort"</span>
+codegen-units = <span class="code-type">1</span>
+lto = <span class="code-keyword">true</span>
+opt-level = <span class="code-string">"s"</span>
+strip = <span class="code-keyword">true</span><span class="lang-badge">TOML</span></code></pre>
+                <div class="callout warn" style="margin-top:8px;">
+                  <span class="callout-icon">⚠️</span>
+                  <div class="callout-text">
+                    <strong>TOML es sensible a la indentación y sintaxis</strong>
+                    A diferencia de JSON, TOML usa pares <code>clave = valor</code> y las secciones van entre corchetes como <code>[dependencies]</code>. No uses comillas dobles para las claves, solo para los valores de tipo string. Copia exactamente el formato que ves arriba.
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">3</div>
+              <div class="step-content">
+                <h4>Registrar el plugin en lib.rs</h4>
+                <p>Abre <code>src-tauri/src/lib.rs</code> — así debería verse después de agregar el plugin:</p>
+                <pre><code><span class="code-comment">// El pub fn run() es el punto de entrada de tu app Rust</span>
+<span class="code-keyword">pub fn</span> <span class="code-fn">run</span>() {
+    tauri::Builder::default()
+        <span class="code-comment">// Registrar el plugin SQL — añade esta línea</span>
+        .plugin(tauri_plugin_sql::Builder::default().build())
+        <span class="code-comment">// Aquí registrarás tus commands cuando los crees</span>
+        .invoke_handler(tauri::generate_handler![])
+        .run(tauri::generate_context!())
+        .expect(<span class="code-string">"error while running tauri application"</span>);
+}<span class="lang-badge">Rust</span></code></pre>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PASO 4 -->
+      <div class="practice-block open" id="paso4">
+        <div class="practice-block-header" onclick="togglePractice('paso4')">
+          <div class="paso-num">4</div>
+          <h3>Configurar los permisos de la app</h3>
+          <span class="est-time">⏱ ~15 min</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="practice-block-body">
+
+          <div class="callout info">
+            <span class="callout-icon">🔐</span>
+            <div class="callout-text">
+              <strong>¿Por qué Tauri 2.0 tiene un sistema de permisos?</strong>
+              Por seguridad. Tauri 2.0 implementó un modelo de "capabilities" (capacidades) — cada operación que la app puede hacer debe declararse explícitamente. Así, si alguien inyectara código malicioso en tu WebView, no podría hacer cosas que no están autorizadas. Es como los permisos de una app móvil.
+            </div>
+          </div>
+
+          <ul class="step-list" style="margin-top:16px;">
+            <li class="step-item">
+              <div class="step-num green">1</div>
+              <div class="step-content">
+                <h4>Abrir el archivo de capabilities</h4>
+                <p>Abre <code>src-tauri/capabilities/default.json</code>. Debería existir desde que corriste <code>npx tauri init</code>.</p>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">2</div>
+              <div class="step-content">
+                <h4>Agregar los permisos SQL</h4>
+                <pre><code>{
+  <span class="code-string">"$schema"</span>: <span class="code-string">"../gen/schemas/desktop-schema.json"</span>,
+  <span class="code-string">"identifier"</span>: <span class="code-string">"default"</span>,
+  <span class="code-string">"description"</span>: <span class="code-string">"Capacidades principales de PrecioJusto"</span>,
+  <span class="code-string">"windows"</span>: [<span class="code-string">"main"</span>],
+  <span class="code-string">"permissions"</span>: [
+    <span class="code-string">"core:default"</span>,
+    <span class="code-string">"sql:allow-execute"</span>,   <span class="code-comment">// ← INSERT, UPDATE, DELETE</span>
+    <span class="code-string">"sql:allow-select"</span>,    <span class="code-comment">// ← SELECT (leer datos)</span>
+    <span class="code-string">"sql:allow-load"</span>        <span class="code-comment">// ← conectarse a la BD</span>
+  ]
+}<span class="lang-badge">JSON</span></code></pre>
+                <div class="callout tip" style="margin-top:8px;">
+                  <span class="callout-icon">✅</span>
+                  <div class="callout-text">
+                    <code>core:default</code> incluye los permisos básicos de ventana (cerrar, minimizar, maximizar). Los permisos <code>sql:*</code> los provee el plugin que instalaste en el Paso 3.
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PASO 5 -->
+      <div class="practice-block open" id="paso5">
+        <div class="practice-block-header" onclick="togglePractice('paso5')">
+          <div class="paso-num">5</div>
+          <h3>Ejecutar y verificar — el momento de la verdad 🎉</h3>
+          <span class="est-time">⏱ ~30 min (primera vez)</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="practice-block-body">
+
+          <ul class="step-list">
+            <li class="step-item">
+              <div class="step-num green">1</div>
+              <div class="step-content">
+                <h4>Ejecutar el comando de desarrollo</h4>
+                <pre><code>npm run tauri dev
+
+<span class="code-comment"># Este comando hace dos cosas simultáneamente:</span>
+<span class="code-comment"># 1. Inicia Vite (el servidor de desarrollo de React)</span>
+<span class="code-comment"># 2. Compila el código Rust y abre la ventana nativa</span><span class="lang-badge">Terminal</span></code></pre>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">2</div>
+              <div class="step-content">
+                <h4>Esperar la compilación de Rust (primera vez: 3–8 minutos)</h4>
+                <p>Verás mucho texto en la terminal — mensajes de Cargo descargando y compilando dependencias. Es completamente normal. Verás cosas como:</p>
+                <pre><code><span class="code-comment">Downloading crates ...  </span>
+<span class="code-string">Compiling tauri v2.0.0</span>
+<span class="code-string">Compiling tauri-plugin-sql v2.0.0</span>
+<span class="code-string">Compiling precio-justo v0.1.0 (/ruta/a/tu/proyecto/src-tauri)</span>
+<span class="code-string">    Finished dev [unoptimized + debuginfo] target(s) in 4m 32s</span><span class="lang-badge">Terminal</span></code></pre>
+                <div class="callout tip">
+                  <span class="callout-icon">💡</span>
+                  <div class="callout-text">
+                    <strong>Solo la primera vez tarda tanto.</strong>
+                    Las compilaciones siguientes solo recompilan los archivos que cambiaste y toman 5-15 segundos. Rust cachea todo el trabajo anterior en la carpeta <code>src-tauri/target/</code>.
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num green">3</div>
+              <div class="step-content">
+                <h4>Verificar que se abre la ventana nativa</h4>
+                <p>Cuando la compilación termine, debe abrirse una ventana de Windows con tu aplicación React adentro. Tiene barra de título nativa, se puede redimensionar, minimizar y cerrar como cualquier app de escritorio.</p>
+                <div class="callout tip">
+                  <span class="callout-icon">📸</span>
+                  <div class="callout-text">
+                    <strong>Toma un screenshot de la ventana.</strong>
+                    Lo necesitas para cumplir el criterio de aceptación CA-2.1b.
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <h4 style="font-size:14px; margin:20px 0 10px; color:var(--dark)">🔧 Errores comunes y cómo solucionarlos</h4>
+
+          <div class="day-card" id="errores">
+            <div class="day-card-header" onclick="toggleCard('errores')">
+              <span class="day-tag mievier" style="background:var(--primary-lt); color:var(--primary)">Errores</span>
+              <h3>Troubleshooting — solución a problemas frecuentes</h3>
+              <span class="chevron">▼</span>
+            </div>
+            <div class="day-card-body">
+              <ul class="step-list">
+                <li class="step-item">
+                  <div class="step-num" style="background:var(--primary)">!</div>
+                  <div class="step-content">
+                    <h4><code>"MSVC not found"</code> o errores de linker</h4>
+                    <p>No tienes las Visual Studio Build Tools instaladas, o no instalaste el componente "Desktop development with C++". Vuelve al Paso 1, sub-paso 3.</p>
+                  </div>
+                </li>
+                <li class="step-item">
+                  <div class="step-num" style="background:var(--primary)">!</div>
+                  <div class="step-content">
+                    <h4><code>"Error: Could not connect to http://localhost:5173"</code></h4>
+                    <p>Tauri no puede conectarse al servidor de React porque no está corriendo. Asegúrate de que <code>npm run dev</code> esté activo en otra terminal, o usa simplemente <code>npm run tauri dev</code> que lo inicia automáticamente.</p>
+                  </div>
+                </li>
+                <li class="step-item">
+                  <div class="step-num" style="background:var(--primary)">!</div>
+                  <div class="step-content">
+                    <h4>Error de sintaxis en Cargo.toml o lib.rs</h4>
+                    <p>TOML y Rust son muy estrictos con la sintaxis. Lee el error en la terminal — Rust da mensajes de error muy descriptivos con la línea exacta del problema y sugerencias de cómo arreglarlo.</p>
+                  </div>
+                </li>
+                <li class="step-item">
+                  <div class="step-num" style="background:var(--primary)">!</div>
+                  <div class="step-content">
+                    <h4><code>"Permission denied"</code> en capabilities</h4>
+                    <p>Revisa que el archivo <code>default.json</code> tiene los permisos <code>sql:allow-execute</code>, <code>sql:allow-select</code> y <code>sql:allow-load</code> exactamente como se muestra en el Paso 4.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ═══════════════════════════════════════════
+         CRITERIOS DE ACEPTACIÓN
+    ═══════════════════════════════════════════ -->
+    <div class="section fade-in" id="criterios">
+      <div class="section-header">
+        <div class="section-icon ca">✅</div>
+        <div class="section-header-text">
+          <span class="tag ca">✅ Criterios de Aceptación — Semana 4</span>
+          <h2>¿Cómo sé que terminé correctamente?</h2>
+          <p>Marca estos criterios cuando los hayas verificado</p>
+        </div>
+      </div>
+
+      <div class="ca-grid">
+        <div class="ca-item" id="ca-2-1a">
+          <input type="checkbox" onchange="toggleCA('ca-2-1a', this)">
+          <span class="ca-id">CA-2.1a</span>
+          <div class="ca-text">
+            El comando <code>rustc --version</code> muestra una versión <strong>1.70 o superior</strong>. No hay errores al instalar. Ejemplo de salida esperada: <code>rustc 1.77.0 (aedd173a2 2024-03-17)</code>
+          </div>
+        </div>
+        <div class="ca-item" id="ca-2-1b">
+          <input type="checkbox" onchange="toggleCA('ca-2-1b', this)">
+          <span class="ca-id">CA-2.1b</span>
+          <div class="ca-text">
+            <code>npm run tauri dev</code> compila sin errores y abre una <strong>ventana de escritorio nativa</strong> con el contenido de React adentro. Tomar screenshot de la ventana.
+          </div>
+        </div>
+      </div>
+
+      <div class="entregable">
+        <span class="entregable-icon">🖥️</span>
+        <div class="entregable-text">
+          <h3>Entregable Semana 4</h3>
+          <p>Proyecto corriendo como app de escritorio nativa en Windows — una ventana real con título, controles de ventana y el contenido de React adentro. Este es el momento en que PrecioJusto deja de ser una app web.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ═══════════════════════════════════════════
+         RECURSOS
+    ═══════════════════════════════════════════ -->
+    <div class="section fade-in" id="recursos">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--bg-mid)">📎</div>
+        <div class="section-header-text">
+          <span class="tag" style="background:var(--bg-mid); color:var(--mid)">RECURSOS</span>
+          <h2>Links y herramientas de la semana</h2>
+          <p>Todos los recursos que necesitas, en un solo lugar</p>
+        </div>
+      </div>
+
+      <div class="resources-grid">
+        <a href="https://tauri.app/start/prerequisites" target="_blank" class="resource-link">
+          <div class="resource-icon" style="background:var(--primary-lt)">🦀</div>
+          <div class="resource-text">
+            <strong>Tauri — Prerequisites</strong>
+            <span>Guía oficial de instalación para Windows</span>
+          </div>
+        </a>
+        <a href="https://rustup.rs" target="_blank" class="resource-link">
+          <div class="resource-icon" style="background:var(--rust-lt)">⚙️</div>
+          <div class="resource-text">
+            <strong>Rustup.rs</strong>
+            <span>Instalador oficial de Rust</span>
+          </div>
+        </a>
+        <a href="https://tauri.app/develop/calling-rust/" target="_blank" class="resource-link">
+          <div class="resource-icon" style="background:var(--primary-lt)">🔗</div>
+          <div class="resource-text">
+            <strong>Tauri — Calling Rust</strong>
+            <span>Cómo usar invoke() y Commands</span>
+          </div>
+        </a>
+        <a href="https://sqlitetutorial.net" target="_blank" class="resource-link">
+          <div class="resource-icon" style="background:var(--gold-lt)">🗄️</div>
+          <div class="resource-text">
+            <strong>SQLite Tutorial</strong>
+            <span>SELECT, INSERT, UPDATE, DELETE con ejemplos</span>
+          </div>
+        </a>
+        <a href="https://sqlitebrowser.org" target="_blank" class="resource-link">
+          <div class="resource-icon" style="background:var(--jade-lt)">🔍</div>
+          <div class="resource-text">
+            <strong>DB Browser for SQLite</strong>
+            <span>Gratis — inspeccionar tu base de datos visualmente</span>
+          </div>
+        </a>
+        <a href="https://tauri.app/reference/javascript/api/namespacesql/" target="_blank" class="resource-link">
+          <div class="resource-icon" style="background:var(--blue-lt)">📚</div>
+          <div class="resource-text">
+            <strong>Tauri SQL Plugin — API</strong>
+            <span>Documentación del plugin que instalaste</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div style="height: 60px;"></div>
+  </div><!-- /content -->
+</main>
+
+<script>
+// ── TOGGLE CARDS ──
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  if (card) card.classList.toggle('open');
+}
+
+function togglePractice(id) {
+  const block = document.getElementById(id);
+  if (block) block.classList.toggle('open');
+}
+
+// ── CA CHECKBOXES ──
+let caCount = 0;
+function toggleCA(id, checkbox) {
+  const item = document.getElementById(id);
+  if (checkbox.checked) {
+    item.classList.add('checked');
+    caCount++;
+  } else {
+    item.classList.remove('checked');
+    caCount--;
+  }
+  document.getElementById('caCounter').textContent = `${caCount} / 2 criterios completados`;
+}
+
+// ── SCROLL PROGRESS ──
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+});
+
+// ── FADE IN ON SCROLL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ── ACTIVE NAV ──
+const sections = document.querySelectorAll('[id]');
+const navItems = document.querySelectorAll('.nav-item');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

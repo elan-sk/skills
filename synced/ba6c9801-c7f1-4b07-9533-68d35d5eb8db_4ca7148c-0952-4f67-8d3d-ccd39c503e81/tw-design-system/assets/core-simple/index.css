@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "./atoms/index";
+@import "./bases/index";
+@import "./libraries/index";
+@import "./settings/index";
+@import "./utilities/index";

@@ -1,0 +1,112 @@
+/*==================================================
+  TEST: Resalta los elementos según el nivel,
+        Padres, hijos, nietos, etc.
+==================================================*/
+@utility test {
+  @apply !border-3 !border-red-500;
+  & > * {
+    @apply !border-3 !border-yellow-400;
+    & > * {
+      @apply !border-3 !border-green-400;
+      & > * {
+        @apply !border-3 !border-blue-400;
+        & > * {
+          @apply !border-3 !border-purple-400;
+          & > * {
+            @apply !border-3 !border-yellow-700;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/*==================================================
+  TEST RESPONSIVE: Muestra el tamaño del contenedor
+==================================================*/
+@utility test-responsive {
+  &, &.test, &.test-son {
+    @apply
+      !border-3
+      !border-gray-200          /* < 352px: gris */
+      xs:!border-red-500        /* 352px+: rojo */
+      sm:!border-yellow-400     /* 576px+: amarillo */
+      md:!border-green-400      /* 768px+: verde */
+      lg:!border-blue-400       /* 992px+: azul */
+      xl:!border-purple-400     /* 1424px+: púrpura */
+      2xl:!border-yellow-700    /* 1696px+: amarillo oscuro */
+      !relative
+
+      /* Pseudo-elemento con el badge */
+      before:!absolute
+      before:!top-0
+      before:!right-0
+      before:!font-semibold
+      before:!px-2
+      before:!pb-0.5
+      before:!rounded-bl-lg
+      before:!text-small
+      before:!text-black
+      before:!block
+
+      /* Contenido del badge por breakpoint */
+      before:!content-['📱<_352']
+      before:!bg-gray-200
+
+      xs:before:!content-['📱xs:_350']
+      xs:before:!bg-red-500
+      xs:before:!text-white
+
+      sm:before:!content-['📱sm:_576']
+      sm:before:!bg-yellow-400
+      sm:before:!text-black
+
+      md:before:!content-['💻md:_768']
+      md:before:!bg-green-400
+
+      lg:before:!content-['💻lg:_992']
+      lg:before:!bg-blue-400
+
+      xl:before:!content-['🖥️xl:_1424']
+      xl:before:!bg-purple-400
+
+      2xl:before:!content-['🖥️2xl:_1696']
+      2xl:before:!bg-yellow-700
+      2xl:before:!text-white;
+  }
+}
+/*==================================================
+  TEST son: Muestra los hijos directos
+==================================================*/
+@utility test-son {
+  @apply !border-3 !border-red-500;
+  & > * {
+    @apply !border-3 !border-yellow-400;
+  }
+}
+
+/*==================================================
+  TEST Copy: Icono para copiar texto
+==================================================*/
+@utility test-copy {
+  @apply relative hover:cursor-pointer;
+
+  & .copy-icon {
+    @apply mx-0.5 text-gray-400 text-lg cursor-pointer transition select-none text-[16px];
+  }
+
+  & .copy-icon:hover {
+    @apply text-blue-600;
+  }
+
+  & .copy-icon.copied {
+    @apply text-green-500;
+  }
+}
+
+@utility test-copy-hidden {
+  @apply hidden;
+}
+
+

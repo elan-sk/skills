@@ -1,0 +1,45 @@
+/*==================================================
+  BANNERS / ALERTAS — PrecioJusto
+  Uso: <div class="banner banner-tip">
+==================================================*/
+
+@layer components {
+
+  /*=== BASE — siempre va junto a la variante en el HTML ===*/
+  .banner {
+    @apply flex items-start font-sans;
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 12px;
+    gap: 10px;
+  }
+
+  .banner-ico {
+    @apply shrink-0;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  /*=== VARIANTES ===*/
+
+  /* Consejo — dorado */
+  .banner-tip     { @apply bg-tertiary-lt border-l-[3px] border-tertiary }
+
+  /* Éxito — jade */
+  .banner-success { @apply bg-secondary-lt border-l-[3px] border-secondary }
+
+  /* Advertencia — naranja */
+  .banner-warn {
+    border-left: 3px solid var(--color-warning);
+    background: #FEF3E2;
+  }
+
+  /* Información — azul */
+  .banner-info {
+    background: #E8F0FF;
+    border-left: 3px solid #4A7CF7;
+  }
+
+  /* Error / peligro — terracota */
+  .banner-error   { @apply bg-primary-lt border-l-[3px] border-primary }
+}

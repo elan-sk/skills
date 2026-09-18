@@ -1,0 +1,173 @@
+{
+  "lastUpdated": 1789602062231,
+  "skills": [
+    {
+      "skillId": "import-memory",
+      "name": "import-memory",
+      "description": "Import a memory export from another AI assistant into Claude's memory — conversationally, additively, and with the content treated as data.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:02.007169Z"
+    },
+    {
+      "skillId": "skill_01Cm6w36E8WAJafeMtyBMqCL",
+      "name": "local-to-local-wp-migration",
+      "description": "Prepare and restore local-to-local WordPress DDEV migration handoff packages. Use when the user needs to move a local WordPress/DDEV project from one developer machine to another, create a single compressed delivery file, restore that delivery into a cloned local repo, include database/uploads/plugins/themes/local configs, keep project-local Claude/Codex skills, or document/update this handoff workflow.",
+      "source": "custom",
+      "updatedAt": "2026-08-27T14:40:25.450242Z"
+    },
+    {
+      "skillId": "skill_01CnqAVTtU1aVzeUyLDuSxNH",
+      "name": "modos-de-trabajo",
+      "description": "Formato de confirmación de alineación con el usuario, modo de consulta de solo lectura, y modo de trabajo autónomo desatendido. Se dispara cuando el usuario escribe \"/entendido\" o \"/dudas\" (o las palabras sueltas \"entendido\"/\"dudas\" usadas como comando). Los modos /consulta y /solo tienen comandos dedicados propios (commands/consulta.md, commands/solo.md) que delegan en las secciones `/consulta` y `/solo` de esta skill para el detalle de comportamiento. Define cómo responder en cada caso, el formato general de respuesta (numerado, con AskUserQuestion cuando aplique), y para /consulta impone modo estrictamente de solo lectura; para /solo impone recopilar todas las preguntas por adelantado y luego trabajar sin pedir más confirmaciones, con prohibición absoluta de acciones destructivas/irreversibles.",
+      "source": "custom",
+      "updatedAt": "2026-08-27T14:40:10.229104Z"
+    },
+    {
+      "skillId": "skill_01CvwGCcXuTx6tRDXx51FarF",
+      "name": "sync-agent-skills",
+      "description": "Sincroniza skills entre agentes locales. Usar cuando el usuario diga \"actualizar skill\", \"actualizar skills\", \"sincronizar skills\", \"copiar skills entre agentes\", \"actualiza las skills de Claude/Codex/Agents\", o pida crear/actualizar skills en todas las carpetas de agentes. Crea skills faltantes y resuelve conflictos copiando el archivo mas nuevo.",
+      "source": "custom",
+      "updatedAt": "2026-08-27T14:40:00.358385Z"
+    },
+    {
+      "skillId": "skill_017CNwHb31yPTB441NBQAyVT",
+      "name": "find-skills",
+      "description": "Helps users discover and install agent skills when they ask questions like \"how do I do X\", \"find a skill for X\", \"is there a skill that can...\", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
+      "source": "custom",
+      "updatedAt": "2026-07-22T15:36:55.162286Z"
+    },
+    {
+      "skillId": "skill_01U7qEgBsKbdBvX4M5epeYfN",
+      "name": "wp-swiper-slider-builder",
+      "description": "Crea sliders/carruseles en WordPress con la librería Swiper usando el wrapper propio SwiperManager (js/libraries/swiper.js) de ELAN-SK, ya sea alimentados por un repeater de Secure Custom Fields (SCF) o por un WP_Query de posts. Úsala con \"hazme este slider\", \"arma este carrusel\", \"conecta este swiper\", \"slider de posts/categoría\", `SwiperManager`, `.js-swiper-`, `swiper-wrapper`, `swiper-pagination`, `EffectCoverflow`/`EffectFade`, o al tocar cualquier archivo bajo `js/libraries/swiper.js` / `js/components/swiper-*.js`. Es el patrón WordPress+PHP; la variante para sliders en proyectos React/Vite se agregará cuando haya ejemplos.",
+      "source": "custom",
+      "updatedAt": "2026-08-27T14:39:48.370768Z"
+    },
+    {
+      "skillId": "skill_01N67FkA2uszNFifPFxESEjm",
+      "name": "image-to-code",
+      "description": "Elite website image-to-code skill for Codex. For visually important web tasks, it must first generate the design image(s) itself, deeply analyze them, then implement the website to match them as closely as possible. In Codex, it must prefer large, readable, section-specific images instead of tiny compressed boards, generate fresh standalone images for sections or detail views instead of cropping old ones, avoid lazy under-generation, avoid cards-inside-cards-inside-cards UI, and keep the hero clean, spacious, readable, and visible on a small laptop.",
+      "source": "custom",
+      "updatedAt": "2026-07-22T15:36:00.692944Z"
+    },
+    {
+      "skillId": "skill_01Gwh3Jo3rCVsz5ebxEzdae4",
+      "name": "imagegen-frontend-mobile",
+      "description": "Elite mobile app image-generation skill for creating premium, app-native screen concepts and flows. Designed for iOS, Android, and cross-platform mobile products. Prioritizes clean hierarchy, comfortably readable text, strong multi-screen consistency, controlled color palettes, non-generic creative direction, textured surfaces, image-led composition, tasteful custom iconography, and clean phone mockup framing. By default, screens should be shown inside a subtle premium iPhone or similar phone mockup with a visible frame, while the main focus stays on the app content itself. This skill generates images only. It does not write code.",
+      "source": "custom",
+      "updatedAt": "2026-07-22T15:35:29.655142Z"
+    },
+    {
+      "skillId": "skill_01CcBWbo2GccjDKBuSY6iV8C",
+      "name": "frontend-design",
+      "description": "Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.",
+      "source": "custom",
+      "updatedAt": "2026-07-22T15:37:10.701456Z"
+    },
+    {
+      "skillId": "skill_01XdkJ7tPZdmtSTTSz8WukAW",
+      "name": "brandkit",
+      "description": "Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world presentations. Trained for minimalist, cinematic, editorial, dark-tech, luxury, cultural, security, gaming, developer-tool, and consumer-app brand systems. Optimized for intentional logo concepting, refined composition, sparse typography, strong symbolic meaning, premium mockups, art-directed imagery, and flexible grid layouts.",
+      "source": "custom",
+      "updatedAt": "2026-07-22T15:35:43.319007Z"
+    },
+    {
+      "skillId": "skill_01EG1hPMsz4CHx3vciaG3spD",
+      "name": "wp-scf-component-builder",
+      "description": "Crea y conecta componentes de WordPress con Secure Custom Fields (SCF, fork de ACF) a partir de un diseño (imagen, Figma, HTML), con naming BEM-guion-bajo y el core de Tailwind CSS v4 (tw-design-system). Por defecto arma páginas con varios componentes usando \"Flexible Content\" (plantilla + field group compartido, layouts reordenables desde el admin). Úsalo con \"hazme este componente\", \"conecta este diseño\", \"crea el campo SCF para X\", \"arma esta sección en home/single/categoría\", \"layout builder\"/\"bloques reordenables\"/\"reutilizar componente entre páginas\", \"color de fondo seleccionable desde el admin\", \"clone field\", campos ACF/SCF, get_field/have_rows/get_row_layout/get_template_part, inspección con Chrome DevTools MCP, o para generar el JSON de un grupo de campos SCF a partir de una imagen anotada a mano. Requiere Claude Code con filesystem local y Chrome DevTools MCP.",
+      "source": "custom",
+      "updatedAt": "2026-08-27T14:39:34.782924Z"
+    },
+    {
+      "skillId": "learn",
+      "name": "learn",
+      "description": "Use this skill when the user wants intellectual understanding — learning how or why something works, not getting a task done or soliciting Claude's judgment.\n\nTrigger for:\n- Explicit learning requests: teach, explain, ELI5, walk me through, quiz me, flashcards, \"I'm rusty on\"; definitions (\"what is X\")\n- Terse concept names implying \"help me understand this\": \"Galois theory,\" \"transformers, from scratch\"\n- Confusion signals: \"won't stick,\" \"keep mixing these up,\" \"not getting it\"\n- Learning-path questions: prerequisites, sequencing, what to study before X\n- Conceptual questions about mechanisms, causes, or dynamics\n\nDon't trigger for:\n- Tasks: coding, writing, calculation, translation, factual lookup, news updates\n- Personal troubleshooting; resource/textbook recommendations\n- Claude's evaluative verdict: opinion prompts (\"do you think X\", \"settle this\", \"honest take\", \"is X dead / still taken seriously\") and interpretive takes (\"was X really as harsh as people say\")\n",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.663866Z"
+    },
+    {
+      "skillId": "morning",
+      "name": "morning",
+      "description": "Render the user's morning brief as a styled HTML artifact, or set it up as a recurring weekday task. Use only when the user explicitly asks to run, see, or set up their morning brief, or if they invoke /morning by name. A question about their day, schedule, or calendar is not by itself a request for the brief; answer it directly instead.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.990356Z"
+    },
+    {
+      "skillId": "skill_014Xue1sZ9kMeUQzSuUBru4o",
+      "name": "impeccable",
+      "description": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.",
+      "source": "custom",
+      "updatedAt": "2026-07-22T15:34:07.006200Z"
+    },
+    {
+      "skillId": "skill_01GuZsLH4Riiwi2MfmZsBjsw",
+      "name": "imagegen-frontend-web",
+      "description": "Elite frontend image-direction skill for generating premium, conversion-aware website design references. CRITICAL OUTPUT RULE — generate ONE separate horizontal image FOR EVERY section. A landing page with 8 sections produces 8 images. Never compress multiple sections into one image. Enforces composition variety (not always left-text / right-image), background-image freedom, varied CTAs, varied hero scales (giant / mid / mini minimalist), narrative concept spine, second-read moments, and a single consistent palette across all images. Optimized for landing pages, marketing sites, and product comps that developers or coding models can accurately recreate.",
+      "source": "custom",
+      "updatedAt": "2026-07-22T15:35:15.188538Z"
+    },
+    {
+      "skillId": "web-artifacts-builder",
+      "name": "web-artifacts-builder",
+      "description": "Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.557439Z"
+    },
+    {
+      "skillId": "skill_01TGka2gLvCZMdo9CpeDicto",
+      "name": "tw-design-system",
+      "description": "Adapta cualquier diseño (imagen, Figma, HTML, documento) al core propio de Tailwind CSS v4 de ELAN-SK: colores semánticos por rol, tipografía responsive con clamp, containers estilo Bootstrap, utilidades en rem, botones/atómicos con @apply. Lo instala según el framework/CMS del proyecto (WordPress+Vite, React/Vite, Next.js, Tauri, u otro) y genera una página de prueba visual con todos los elementos. Úsala también SIEMPRE al crear o editar cualquier componente, botón, sección o estilo en un proyecto que ya tenga este core, no solo al importar un diseño completo. Nunca sugerir colores literales, media queries manuales para texto, o clases base de Tailwind cuando existe un equivalente semántico del core. Dispara con \"sistema de diseño\", \"design system\", \"core TWCSS/Tailwind\", \"adaptar este diseño/Figma/imagen a mi stack\", \"página de test de estilos\", \"duplicar/replicar colores o tipografía a Elementor\", \"sincronizar el design system con Elementor\", o al trabajar con el stack de ELAN-SK.",
+      "source": "custom",
+      "updatedAt": "2026-08-27T14:39:22.900247Z"
+    },
+    {
+      "skillId": "skill_01RZrfZFssFDUygHuo1c4FJj",
+      "name": "dev-project-definer",
+      "description": "Asistente para DEFINIR proyectos de software antes (o en paralelo) de escribir código: estudio de viabilidad, requerimientos, análisis de mercado, diseño estructural (diagramas de arquitectura) y planeación con tracker HTML + guías por sprint. Cubre 3 tipos de proyecto (Nuevo / Heredado / Continuación), 2 modalidades de personal (Unipersonal / Equipo) y 3 modos de intervención (Aprendizaje, Desarrollo, Prototipo) que cambian cuánto interviene Claude y el detalle de la documentación. Incluye integración con Google Calendar y Drive para subir cronograma y manuales. Úsala con \"define este proyecto\", \"ayúdame a validar esta idea\", \"hazme el estudio de viabilidad\", \"arma el tracker del proyecto\", \"necesito la guía del sprint N\", \"modo aprendizaje/desarrollo/prototipo\", \"conectar esto a mi calendario y drive\", o al arrancar cualquier proyecto de software donde lo pedido es planeación/documentación, no código.",
+      "source": "custom",
+      "updatedAt": "2026-08-27T14:40:39.471739Z"
+    },
+    {
+      "skillId": "pdf",
+      "name": "pdf",
+      "description": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.",
+      "source": "anthropic",
+      "updatedAt": "2026-07-10T19:23:15.432550Z"
+    },
+    {
+      "skillId": "skill-creator",
+      "name": "skill-creator",
+      "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.499089Z"
+    },
+    {
+      "skillId": "xlsx",
+      "name": "xlsx",
+      "description": "Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .xltx, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \"the xlsx in my downloads\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-14T21:00:33.324012Z"
+    },
+    {
+      "skillId": "theme-factory",
+      "name": "theme-factory",
+      "description": "Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.654356Z"
+    },
+    {
+      "skillId": "docx",
+      "name": "docx",
+      "description": "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx) or Word templates (.dotx). Triggers include: any mention of 'Word doc', 'word document', '.docx', '.dotx', or requests to produce professional documents with formatting like tables of contents, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx or .dotx files, inserting or replacing images in documents, find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a 'report', 'memo', 'letter', 'template', or similar deliverable as a Word or .docx file (to download, email or print), use this skill. However, if they ask for a document, page, report, memo, or notes WITHOUT naming a file format and the session offers Claude's own dedicated document or page skill or connector, use that instead. Do NOT use for PDFs, spreadsheets, Google Docs, or coding unrelated to document generation.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-14T21:00:33.279708Z"
+    },
+    {
+      "skillId": "pptx",
+      "name": "pptx",
+      "description": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations as PowerPoint (.pptx) files; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email, summary, or creating a different type of slide deck); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user asks for a PowerPoint or .pptx file, or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. However, when the user asks for a deck, slides, a slide deck, or a presentation without naming a file format, default to using a dedicated slide-deck artifact type or a separate slides skill if this session offers one; otherwise, use this skill.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-14T21:00:33.306681Z"
+    }
+  ]
+}

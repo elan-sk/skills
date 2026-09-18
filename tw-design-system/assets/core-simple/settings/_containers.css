@@ -1,0 +1,69 @@
+/*==================================================
+  CONTAINERS: Se recrean los containers de Bootstrap
+==================================================*/
+@theme {
+  /* BreakPoint & Containers*/
+  --breakpoint-xs: 22rem;   /*xs:352px*/
+  --breakpoint-sm: 36rem;   /*sm:576px*/
+  --breakpoint-md: 48rem;   /*md:768px*/
+  --breakpoint-lg: 62rem;   /*lg:992px*/
+  --breakpoint-xl: 89rem;   /*xl:1424px*/
+  --breakpoint-2xl: 106rem;  /*2xl:1696px*/
+}
+
+
+/* Full width fluid */
+@utility container-full {
+  @apply w-[calc(62/64*100%)] mx-auto px-4 sm:px-0;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+  @media (width >= 48rem/*md:768px*/) { @apply w-[calc(14/16*100%)] }
+}
+
+
+/* Full width container */
+@utility container-fluid {
+  @apply w-[calc(62/64*100%)] mx-auto px-4;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+  @media (width >= 48rem/*md:768px*/) { @apply w-[calc(12/16*100%)] }
+}
+
+/* Responsive containers */
+@utility container {
+  @apply w-[calc(62/64*100%)] mx-auto px-4; max-width: var(--breakpoint-2xl) !important;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+  @media (width >= 48rem/*md:768px*/) { @apply w-[calc(12/16*100%)] }
+}
+
+@utility container-xs {
+  @apply w-[calc(62/64*100%)] mx-auto px-4; max-width: var(--breakpoint-xs) !important;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+}
+
+@utility container-sm {
+  @apply w-[calc(62/64*100%)] mx-auto px-4; max-width: var(--breakpoint-sm) !important;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+}
+
+@utility container-md {
+  @apply w-[calc(62/64*100%)] mx-auto px-4; max-width: var(--breakpoint-md) !important;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+  @media (width >= 48rem/*md:768px*/) { @apply w-[calc(12/16*100%)] }
+}
+
+@utility container-lg {
+  @apply w-[calc(62/64*100%)] mx-auto px-4; max-width: var(--breakpoint-lg) !important;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+  @media (width >= 48rem/*md:768px*/) { @apply w-[calc(12/16*100%)] }
+}
+
+@utility container-xl {
+  @apply w-[calc(62/64*100%)] mx-auto px-4; max-width: var(--breakpoint-xl) !important;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+  @media (width >= 48rem/*md:768px*/) { @apply w-[calc(12/16*100%)] }
+}
+
+@utility container-2xl {
+  @apply w-[calc(62/64*100%)] mx-auto px-4; max-width: var(--breakpoint-2xl) !important;
+  @media (width >= 22rem/*xs:352px*/) { @apply w-[calc(30/32*100%)] }
+  @media (width >= 48rem/*md:768px*/) { @apply w-[calc(12/16*100%)] }
+}
