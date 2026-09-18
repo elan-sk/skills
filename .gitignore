@@ -1,0 +1,28 @@
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+dist-ssr/
+
+# Logs
+*.log
+
+# Secretos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Caché de Python
+__pycache__/
+*.pyc
+
+# Editor / SO
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
