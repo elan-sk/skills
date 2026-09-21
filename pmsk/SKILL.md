@@ -1,6 +1,6 @@
 ---
 name: pmsk
-description: 'Conecta directo con la API de ProjectManagerSK — sistema propio de gestión de proyectos del usuario, a veces tecleado "MPSK" por error — para crear/consultar proyectos, fases, tareas, asignados, estados y dependencias, sin tener que redescubrir qué es ni dónde vive cada vez. Disparar de inmediato con "MPSK", "PMSK", "ProjectManagerSK", "súbelo al gestor de proyectos", "montá esto en mi tracker de proyectos", o al pedir migrar/vincular un cronograma a ese sistema — sin preguntar qué es ni buscarlo primero.'
+description: 'Conecta directo con la API de ProjectManagerSK — sistema propio de gestión de proyectos del usuario, a veces tecleado "MPSK" por error — para crear/consultar proyectos, fases, tareas, asignados, estados y dependencias, y diseñar y subir Ajustes, Pruebas y Aceptaciones (con imágenes y archivos), comentarios y preguntas de selección, sin tener que redescubrir qué es ni dónde vive cada vez. Disparar de inmediato con "MPSK", "PMSK", "ProjectManagerSK", "súbelo al gestor de proyectos", "montá esto en mi tracker de proyectos", o al pedir migrar/vincular un cronograma a ese sistema — sin preguntar qué es ni buscarlo primero.'
 ---
 
 # ProjectManagerSK (PMSK — a veces tecleado "MPSK")
@@ -78,7 +78,7 @@ Mostrarle a la persona el resumen (cuántos objetivos/requerimientos/fases/tarea
 - `POST /api/v1/projects` — `{ name, clientName?, startDate, pmId }`.
 - `GET /api/v1/projects` / `GET /api/v1/projects/:id` — listar / detalle con fases, tareas, `bottlenecks`, `delays`.
 - `POST /api/v1/projects/:id/phases` — `{ name }`. Al crear el proyecto, PMSK agrega solo una fase "General" vacía — borrarla si no se usa: `DELETE /api/v1/projects/:id/phases/:phaseId` (409 si ya tiene tareas).
-- `POST /api/v1/projects/:id/tasks` — `{ phaseId, title, type: SIMPLE|MILESTONE|QA|ADJUSTMENT, description?, plannedStart, durationDays, assigneeIds, dependsOnTaskIds?, reviewerIds?, meetingUrl? }`. `plannedEnd` se calcula solo en días hábiles (festivos del país del proyecto).
+- `POST /api/v1/projects/:id/tasks` — `{ phaseId, title, type: SIMPLE|MILESTONE|QA|ADJUSTMENT|ACCEPTANCE, description?, plannedStart, durationDays, assigneeIds, dependsOnTaskIds?, reviewerIds?, meetingUrl? }`. `plannedEnd` se calcula solo en días hábiles (festivos del país del proyecto).
 - `PATCH /api/v1/tasks/:id` — `{ status: NOT_STARTED|IN_PROGRESS|BLOCKED|COMPLETED|RETURNED }` (entre otros campos). Cambiar a `COMPLETED`/`RETURNED` corre las mismas validaciones que la app web (checklist, evidencia, ronda aprobada) → 409 con el motivo si no se cumplen.
 - `POST /api/v1/tasks/:id/dependencies` — `{ predecessorId, type: FINISH_TO_START|START_TO_START }`. Para dependencias detectadas después de crear la tarea (ver sección de arriba) — no solo las explícitas del origen, también las de sentido lógico del trabajo.
 - `PATCH /api/v1/tasks/:id/assignees` — `{ assigneeIds }` (reemplaza la lista completa).
@@ -90,3 +90,17 @@ La API exige lo mismo que la app web para esa persona (ver detalle completo en l
 ## Antes de disparar una carga masiva
 
 Mostrarle a la persona un resumen de qué se va a crear (cuántas fases/tareas, a quién queda asignado cada bloque) antes de ejecutar — son llamadas reales a un sistema compartido, visibles después para todo el equipo del proyecto en PMSK.
+
+## Diseñar Ajustes, Pruebas y Aceptaciones y subirlos (agregado 2026-09-20)
+
+Objetivo: la persona diseña conversando y Claude lo sube. **Confirmar la lista completa antes de subir.** Detalle y contratos exactos: `.claude/skills/project-manager-sk/SKILL.md` del repo (fuente de verdad). Resumen:
+
+- **Roles, sin clave maestra**: Claude actúa con el rol real de quien hizo login. Para diseñar hace falta ser PM del proyecto o administrador (asignado en Ajuste/Aceptación; revisor para agregar pruebas). Un 403 es un permiso real: avisar qué rol hace falta, no reintentar.
+- **Archivos e imágenes**: `POST /api/upload` (multipart, campo `file`, Bearer) → `{ url, name, mimeType }`; luego esa `url` (o un link `https://`) va en los campos «archivo» `{ url, name, mimeType? }`. Imágenes, PDF, Word, Excel, PowerPoint, TXT/CSV, hasta 20 MB. Desde Claude Code: `curl -F "file=@/ruta/imagen.png"`.
+- `GET /api/v1/tasks/:id/design` — estructura completa (cambios o rondas/checks con ids, resultados, evidencias, calificación del cliente).
+- `POST /api/v1/tasks/:id/design` — diseño completo en un llamado. Ajuste: `{ items:[{ description, note?, before?:[archivo], after?:[archivo] }] }`. Prueba/Aceptación: `{ deliverables:[archivo], templateId?, checks:[{ title, criteria?, category?, evidence?:[archivo] }] }` (crea la ronda 1 si no existe: exige ≥1 entregable).
+- Crear la tarea: `POST /api/v1/projects/:id/tasks` con `type` = `ADJUSTMENT | QA | ACCEPTANCE`. En QA, `reviewerIds` (un asignado nunca es su revisor).
+- Comentarios y preguntas: `POST /api/v1/tasks/:id/comments` (`scope`: task · adjustment_item · acceptance_check · qa_check · round · conversation; `targetId`; `body`; `mentions`; `attachments`; `poll:{multiple,options}` = pregunta radio/casillas) y `POST /api/v1/projects/:id/comments` (`project_conversation` · `project_definition`). Leer: `GET /api/v1/tasks/:id/threads`, `GET /api/v1/polls/:id` (estadística), `POST /api/v1/polls/:id/vote`, `PATCH /api/v1/polls/:id {closed}`. Porcentaje = sobre personas que respondieron (múltiple puede pasar de 100 %).
+- Link para el cliente: `POST|GET|DELETE /api/v1/tasks/:id/share-link` (y `/projects/:id/share-link`) → `path` `/share/<token>` (anteponer la URL del servidor). El cliente califica y acepta desde ahí; la API nunca lo hace por él.
+- Cuidado: comentar con `mentions` en la conversación interna o en el hilo de una prueba avisa por WhatsApp a personas reales. No publicar comentarios de prueba.
+
