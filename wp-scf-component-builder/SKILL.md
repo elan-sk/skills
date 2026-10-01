@@ -30,6 +30,10 @@ Este proyecto corre sobre **DDEV** (contenedores `ddev-cafexport-web`/`ddev-cafe
 
 ---
 
+## Reutilizar antes de construir
+
+Antes de crear un componente, card, loop, campo o clone nuevo, buscar en `components/`, `cards/`, `loops/` y `field-groups-json/` uno ya probado igual o parecido, y reutilizarlo (clone field, `get_template_part` con args, extraer parcial compartido) en vez de duplicarlo desde cero. Crear desde cero solo si no hay nada reutilizable, y decir por qué.
+
 ## Flujo completo (7 pasos)
 
 ### Paso 1 — Recolectar inputs mínimos

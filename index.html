@@ -118,6 +118,7 @@
     <details class="skill">
       <summary>dev-inspector-toolbar</summary>
       <p class="desc">Inyecta y mantiene Lens-SK, una toolbar flotante de depuración visual para páginas web: seleccionar elementos, copiar clases, ver estructura HTML, capturar componentes, depurar estilos/layout/a11y, Asistencia IA con capturas.</p>
+      <p class="desc"><strong>Reutilizar antes de construir:</strong> antes de agregar un control o popup nuevo a la barra, reutiliza las funciones que ya existen en <code>toolbar.js</code>. Solo crea algo desde cero si no hay nada que sirva, y explica por qué.</p>
     </details>
 
     <details class="skill">
@@ -203,6 +204,7 @@
     <details class="skill">
       <summary>pmsk</summary>
       <p class="desc">Conecta directo con la API de ProjectManagerSK (a veces tecleado "MPSK"): crear/consultar proyectos, fases, tareas, asignados, estados y dependencias del sistema propio de gestión de proyectos del usuario.</p>
+      <p class="desc"><strong>Conexión por link:</strong> si se pega el link del botón "Conectar IA" de la app, se abre una sola vez y se trabaja con esa sesión, sin pedir usuario ni contraseña. El link vence en 1 hora si no se usa, la sesión dura 8 horas y tiene los mismos permisos de la persona.</p>
     </details>
 
     <details class="skill">
@@ -213,21 +215,25 @@
     <details class="skill">
       <summary>tw-design-system</summary>
       <p class="desc">Adapta cualquier diseño (imagen, Figma, HTML, documento) al core propio de Tailwind CSS v4 de ELAN-SK: colores semánticos por rol, tipografía responsive con clamp, containers estilo Bootstrap, utilidades en rem, botones/atómicos con @apply. Se usa SIEMPRE al crear/editar cualquier componente en un proyecto que ya tenga este core.</p>
+      <p class="desc"><strong>Reutilizar antes de construir:</strong> antes de crear un átomo, utilidad o archivo <code>.css</code> nuevo, busca uno ya existente en <code>tailwindcss/</code> y lo reutiliza o extiende. Solo crea algo desde cero si no hay nada que sirva, y explica por qué.</p>
     </details>
 
     <details class="skill">
       <summary>wp-basic-component-builder</summary>
       <p class="desc">Maqueta y publica secciones con el componente "Básico" de WordPress (hello-elementor-depura): un layout de Flexible Content que es lienzo libre de HTML + Tailwind sin campos SCF fijos. Modo local (compila CSS con Node + inserta vía WP-CLI) o modo externo (solo entrega el código para pegar, con placeholders).</p>
+      <p class="desc"><strong>Reutilizar antes de construir:</strong> parte del markup y las clases de secciones o snippets ya probados en vez de escribir HTML desde cero. Solo crea algo desde cero si no hay nada que sirva, y explica por qué.</p>
     </details>
 
     <details class="skill">
       <summary>wp-scf-component-builder</summary>
       <p class="desc">Crea y conecta componentes de WordPress con Secure Custom Fields (SCF) a partir de un diseño, con naming BEM-guion-bajo y el core de tw-design-system. Por defecto arma páginas con Flexible Content (layouts reordenables desde el admin).</p>
+      <p class="desc"><strong>Reutilizar antes de construir:</strong> antes de crear un componente, card o campo nuevo, busca uno parecido ya probado (componentes, cards, loops, field groups) y lo reutiliza. Solo crea algo desde cero si no hay nada que sirva, y explica por qué.</p>
     </details>
 
     <details class="skill">
       <summary>wp-swiper-slider-builder</summary>
       <p class="desc">Crea sliders/carruseles en WordPress con Swiper usando el wrapper propio SwiperManager, alimentados por un repeater de SCF o por un WP_Query de posts.</p>
+      <p class="desc"><strong>Reutilizar antes de construir:</strong> todo slider nuevo parte de <code>SwiperManager</code> y de un slider existente, no desde cero. Solo crea algo desde cero si no hay nada que sirva, y explica por qué.</p>
     </details>
 
   </div>

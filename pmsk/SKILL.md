@@ -1,6 +1,6 @@
 ---
 name: pmsk
-description: 'Conecta directo con la API de ProjectManagerSK — sistema propio de gestión de proyectos del usuario, a veces tecleado "MPSK" por error — para crear/consultar proyectos, fases, tareas, asignados, estados y dependencias, y diseñar y subir Ajustes, Pruebas y Aceptaciones (con imágenes y archivos), comentarios y preguntas de selección, sin tener que redescubrir qué es ni dónde vive cada vez. Disparar de inmediato con "MPSK", "PMSK", "ProjectManagerSK", "súbelo al gestor de proyectos", "montá esto en mi tracker de proyectos", o al pedir migrar/vincular un cronograma a ese sistema — sin preguntar qué es ni buscarlo primero.'
+description: 'Conecta directo con la API de ProjectManagerSK — sistema propio de gestión de proyectos del usuario, a veces tecleado "MPSK" por error — para crear/consultar proyectos, fases, tareas, asignados, estados y dependencias, y diseñar y subir Ajustes, Pruebas y Aceptaciones (con imágenes y archivos), comentarios y preguntas de selección, sin tener que redescubrir qué es ni dónde vive cada vez. Disparar de inmediato con "MPSK", "PMSK", "ProjectManagerSK", "súbelo al gestor de proyectos", "montá esto en mi tracker de proyectos", al pegar un link `/api/v1/claude-link/…` del botón "Conectar IA", o al pedir migrar/vincular un cronograma a ese sistema — sin preguntar qué es ni buscarlo primero.'
 ---
 
 # ProjectManagerSK (PMSK — a veces tecleado "MPSK")
@@ -19,18 +19,28 @@ Producción confirmada (2026-09-13): `https://mediumorchid-donkey-632879.hosting
 
 No es secreta — usarla directo, sin preguntar. Si algún llamado falla por **conexión** (timeout, connection refused — no un 401/403/404, esos son respuestas válidas del servidor), puede haberse movido: recién ahí preguntar la URL actual.
 
-## Login — SIEMPRE usuario/contraseña de la persona, NUNCA credencial guardada
+## Login — usuario/contraseña de la persona, guardados en `.pmsk.env` del proyecto
 
-No existe ninguna API key fija. Cada vez que haga falta hablar con la API en una conversación nueva (sin token vigente todavía en esta sesión), pedirle a la persona su usuario o correo y contraseña de PMSK — las mismas con las que entra a la app web:
+No existe ninguna API key fija. Se usan el usuario o correo y la contraseña de PMSK de la persona — las mismas con las que entra a la app web (cómo obtenerlos y guardarlos: ver "Credenciales" más abajo):
 
 ```bash
 curl -s "$BASE_URL/api/v1/auth/login" -H "Content-Type: application/json" \
   -d '{"identifier":"usuario_o_correo","password":"..."}'
 ```
 
-Devuelve `{ token, expiresAt, user: {id, name, username, role} }`. Usar ese `token` en `Authorization: Bearer <token>` para el resto de los llamados de la conversación (dura 8hs). **Nunca** escribir usuario, contraseña ni token en un archivo — solo en memoria mientras dure la conversación.
+Devuelve `{ token, expiresAt, user: {id, name, username, role} }`. Usar ese `token` en `Authorization: Bearer <token>` para el resto de los llamados de la conversación (dura 8hs). El token NO se guarda en archivo: solo en memoria mientras dure la conversación.
 
 Si el login por API falla y no queda claro si es la credencial o el llamado: verificar **una sola vez** en `$BASE_URL/login` con el navegador (login real de la app) antes de seguir probando variantes a ciegas — evita arriesgar un bloqueo de cuenta por reintentos.
+
+## Conexión por link — "Conectar IA" (tiene prioridad sobre el login)
+
+Si la persona pega un link con la forma `<BASE_URL>/api/v1/claude-link/<token>`, generado con el botón **"Conectar IA"** de la app, usarlo **en lugar** del login con usuario/contraseña — no pedir ni leer credenciales:
+
+1. Abrirlo con `curl -s "<link>"`. Responde markdown con la URL base, el token (`Authorization: Bearer …`) y la tarea o proyecto en JSON como contexto (con la cascada fase → requerimientos → objetivos).
+2. El token del link **es** la credencial: usarlo en `Authorization: Bearer` para el resto de los llamados, con los mismos permisos de la persona. Solo en memoria, nunca en archivos ni en la salida.
+3. Es reutilizable: volver a abrirlo trae el contexto actualizado. Vale hasta que la tarea se completa, pasan 7 días sin uso (cada uso reinicia el plazo), se desactiva desde la app o se genera otro para la misma tarea/proyecto. `410` o `401` → pedir uno nuevo.
+4. La tarea/proyecto del link es solo contexto: el token puede todo lo que la persona puede en la app, no solo esa tarea.
+5. Cada persona puede tener un link activo por tarea/proyecto a la vez; no se pisan entre sí ni con la sesión de login.
 
 ## Flujo típico: resolver personas antes de crear tareas
 
@@ -50,6 +60,43 @@ No crear un lote de tareas "sueltas" sin dependencias solo porque el documento d
 
 Declarar cada relación real detectada con `dependsOnTaskIds` al crear la tarea (o `POST .../dependencies` después). Sí evitar inventar relaciones sin base real — la regla es "buscarlas activamente y declararlas", no "inferir cualquier cosa a partir de fechas parecidas". Si hay duda real sobre si dos tareas están relacionadas, preguntar antes de decidir por cuenta propia.
 
+## REGLAS DURAS de fechas y dependencias — misma lógica que la app (falla real 2026-09-20)
+
+La API `POST /projects/:id/tasks` guarda `plannedStart` TAL CUAL: NO valida contra las predecesoras (la app web sí). Un error mío dejó un hito iniciando en Jueves Santo (festivo). Por eso, al crear/planificar tareas, calcular las fechas con la MISMA regla de `requiredStartFor` de la app, nunca "a ojo":
+
+1. **FINISH_TO_START**: la sucesora empieza el **día HÁBIL siguiente** al `plannedEnd` de la predecesora. Con varias predecesoras, manda la de fin más tardío (el máximo). **START_TO_START**: mismo `plannedStart` que la predecesora.
+2. **Día hábil = ni sábado/domingo NI festivo del país del proyecto** (`countryCode`, ej. CO). Saltar solo fines de semana es un BUG. Festivos: mismos que usa la app, `https://date.nager.at/api/v3/publicholidays/<año>/<CC>` (con header `User-Agent: curl/8.5.0`), traer todos los años que cruce el cronograma.
+3. Un `plannedStart` nunca puede caer en fin de semana ni festivo. Ni siquiera un hito de 1 día.
+4. `plannedEnd` lo calcula el servidor (`addBusinessDays(start, duración-1)`); leerlo de la respuesta y arrancar la siguiente desde ahí, no calcularlo aparte. Crear en orden topológico (predecesora antes que sucesora) y declarar `dependsOnTaskIds` en el mismo POST.
+5. **Nunca** una sucesora puede iniciar antes o el mismo día del fin de su predecesora (en FINISH_TO_START), ni la primera tarea antes de `startDate` del proyecto.
+6. **Verificar siempre al terminar una carga**: leer `GET /projects/:id` + `GET /tasks/:id/dependencies` de cada tarea y comprobar que cada sucesora cumple 1-3 (0 violaciones). Se puede probar en seco antes de reportar "listo".
+7. **Para corregir fechas usar `POST /api/v1/tasks/:id/move` `{newStartDate}`**: usa la lógica de la app (mantiene la duración en días hábiles y recalcula en cascada todas las sucesoras). No editar fechas una por una a mano.
+8. Si mandan un bloque de tareas con dependencias en cadena, la primera de cada fase depende del hito/última tarea de la fase anterior, y todo lo anterior se aplica igual.
+
+## Descripción de tareas vs. herramientas del sistema (regla dura, 2026-09-20)
+
+PMSK ya tiene herramientas propias por tarea: **checklist** (`GET|POST /tasks/:id/steps`, `PATCH /tasks/:id/steps/:stepId {done}`), comentarios, adjuntos (`/tasks/:id/attachments`), etiquetas, dependencias. **Usar SIEMPRE esas herramientas; nunca simularlas dentro de la descripción.**
+
+- **`description` de una tarea es HTML** (viene de un editor visual WYSIWYG; `PATCH /api/v1/tasks/:id {description}`). Se manda con etiquetas (`<h3>`, `<p>`, `<ul><li>`, `<strong>`); la persona lo ve formateado, no como código. Si le preguntan "qué es HTML", explicar eso en una frase, sin tecnicismos.
+- La descripción lleva **solo contexto**: objetivo, referencia en la documentación (sección/documento), definición de terminado (criterios de aceptación) y notas/decisiones abiertas. **Prohibido** meter listas de pasos o "qué hay que hacer" con viñetas: eso es un checklist disfrazado y se duplica con el real.
+- Los pasos de trabajo van al **checklist real** (`/tasks/:id/steps`). PMSK exige el checklist completo para pasar la tarea a COMPLETED, algo que una lista en la descripción no hace.
+- **Antes de tocar checklist/comentarios/adjuntos, preguntar** quién los crea (Claude por API o la persona en la app). Si dice que los hace ella, no tocarlos. No asumirlo.
+- No adjuntar a tareas documentos con datos sensibles (ej. precios internos) mientras el proyecto no esté oculto.
+- Al dudar si un script o cambio masivo es lo que quieren, mostrar un ejemplo de UNA tarea antes de aplicarlo a todas.
+
+### Tiempos, QA, ajustes y aceptación: SIEMPRE con las herramientas nativas de PMSK
+
+- **Tiempo de las tareas** (inicio, duración, fin): usar los campos y endpoints de la app (`plannedStart` + `durationDays` al crear; `POST /tasks/:id/move` y `/resize` para cambiarlas; dependencias reales). Nunca poner fechas o duraciones como texto en la descripción ni calcular el fin por fuera (ver reglas duras de fechas).
+- **Pruebas de calidad (QA)**: tarea `type: QA` con `reviewerIds`, y sus rondas/checks por `POST /tasks/:id/design` (`deliverables` + `checks`). No describir "pruebas" como lista en una descripción.
+- **Revisar ajustes**: tarea `type: ADJUSTMENT` con `POST /tasks/:id/design` `{items:[…]}` (before/after con archivos vía `/api/upload`).
+- **Pruebas de aceptación**: tarea `type: ACCEPTANCE` con `POST /tasks/:id/design` (`checks`), y el link para el cliente con `/tasks/:id/share-link`. La calificación/aceptación la hace el cliente, nunca la API.
+- Si el trabajo exige una de estas figuras y la tarea se creó como `SIMPLE`, corregir el `type` a la correcta en vez de improvisar con texto.
+- **Claude decide con criterio de experto qué tareas necesitan QA / Ajuste / Aceptación** (no preguntar "¿cuáles?"): QA donde hay criterios de aceptación verificables o riesgo alto (seguridad, aislamiento de datos, despliegue, integraciones, dinero/impuestos); Aceptación solo donde el cliente valida algo que ve/usa; Ajuste solo con cambios pedidos concretos. En proyecto unipersonal, la QA formal se concentra en el cierre de cada entrega (una por entrega, con un check por criterio de aceptación CA-x.y), no en cada tarea.
+- **Límites reales de la API para QA (verificados 2026-09-20)**: (1) NO se pueden crear ni editar plantillas de prueba ni categorías de respuesta por API: solo en la app (Configuración); con la API solo se referencia una existente (`defaultTestTemplateId`/`templateId`). Si hace falta una plantilla nueva: redactar sus ítems y pedir que la cree la persona en la app, o cargar los `checks` directo por `design`. (2) La ronda 1 exige al menos un `deliverable` (archivo o link `https://`): los checks NO se pueden cargar antes de que exista el entregable a probar; crear antes solo la tarea `QA`. (3) `reviewerIds` nunca puede incluir a un asignado de la tarea; elegir revisor real es decisión de la persona → `AskUserQuestion`. Asignar revisor puede notificar por WhatsApp a gente real (proyecto aún no oculto = riesgo).
+- **Proyecto oculto = personal de quien lo pide** (aclarado por el usuario 2026-09-20): todas las tareas se asignan a esa persona, nadie más trabaja ni revisa; NO ofrecer ni asignar otros usuarios como revisores/asignados. Las QA van asignadas a esa persona y sin `reviewerIds`: quien es PM/administrador puede calificar la prueba sin ser revisor (`canReviewTask`). No preguntar "¿quién revisa?" en ese caso.
+- Insertar una tarea QA en una cadena existente: crearla con `plannedStart` válido, declarar `POST /tasks/:id/dependencies` (predecesora → QA, QA → hito) y dejar que la app recalcule en cascada; luego verificar de nuevo las reglas de fechas.
+- **Preguntas al usuario**: TODA confirmación, elección u opción (¿creo esto o aquello?, ¿tú o yo?, ¿confirmas la lista?) se hace con el formulario `AskUserQuestion`, no con preguntas sueltas en texto. Aplica también a decidir si una tarea necesita QA/Ajuste/Aceptación, a confirmar antes de una carga masiva y a quién crea checklist/comentarios/adjuntos.
+
 ## Objetivos, requerimientos y descripción — completar SIEMPRE, no dejarlos vacíos
 
 Regla dura (falla real: en la primera carga de un cronograma completo se creó el proyecto con solo fases y tareas, dejando estos tres campos vacíos aunque la información ya estaba disponible en los documentos de origen). Si hay documentos de origen (Excel/tracker, actas de reunión, documento de requisitos, resumen ejecutivo) con esta información, **siempre** volcarla en PMSK — no es opcional ni "solo si el usuario lo pide":
@@ -59,6 +106,38 @@ Regla dura (falla real: en la primera carga de un cronograma completo se creó e
 - `PATCH /api/v1/projects/:id` — `{ description }` (HTML). Acá va **todo lo que no entra en un campo estructurado**: introducción/contexto del cliente, diagnóstico del problema que motiva el proyecto, decisiones técnicas y su razón (ej. plataforma elegida y por qué se descartó otra), qué queda fuera de alcance de este cronograma y por qué, riesgos/preguntas abiertas. Regla del pedido original: "no perder información solo porque no encaja en un campo específico".
 
 Antes de crear tareas, ya se leyeron los documentos del proyecto para armar el cronograma — no releerlos de nuevo para esto, ya está toda la información a mano en esa misma pasada.
+
+## Proyecto oculto — la API NO puede ocultarlo (verificado 2026-09-20)
+
+`Project.hidden` solo lo cambia la acción web `setProjectHidden` (botón `HideProjectButton` en la página del proyecto), únicamente para ADMIN. Ningún endpoint `/api/v1` lo acepta. Si piden "proyecto oculto": crear el proyecto **vacío**, pedirle a la persona (admin) que lo oculte desde la web, y **recién después** subir documentos/contenido sensible (ej. precios internos). Un oculto solo lo ven admins: el PM/asignados no-admin no lo verán. Avisarlo de entrada.
+
+## Credenciales: archivo `.pmsk.env` en la raíz del proyecto (no rastreado por git)
+
+Regla dura (el usuario lo cambió 2026-09-30; reemplaza la regla anterior de "solo memoria"). Al empezar cualquier trabajo con la API, lo PRIMERO:
+
+1. Raíz = `git rev-parse --show-toplevel` (si no es repo git, el directorio de trabajo actual). Archivo: `<raíz>/.pmsk.env` con
+   ```
+   PMSK_USER=usuario_o_correo
+   PMSK_PASSWORD=...
+   ```
+2. **Si el archivo existe** → leerlo y hacer login directo, sin preguntar.
+3. **Si no existe, o el login con lo guardado da 401** → pedir usuario/correo y contraseña con el formulario `AskUserQuestion` (una pregunta por dato, opciones marcador "Escribir en Other" + "Cancelar"; el valor real llega en la respuesta "Other"; si trae el marcador en vez del dato, volver a preguntar, no adivinar). Hacer login, y **solo si funciona** escribir/sobrescribir `.pmsk.env`.
+4. Antes de escribirlo, garantizar que git lo ignore: `git check-ignore -q .pmsk.env` y, si no está ignorado, agregar la línea `.pmsk.env` a `.git/info/exclude` (local, no se sube; NO tocar el `.gitignore` rastreado). Luego `chmod 600 .pmsk.env`. Verificar con `git status --porcelain` que no aparezca.
+5. En scripts, cargar las variables del archivo (`set -a; . ./.pmsk.env; set +a` en bash, o leerlo en Python) — nunca copiar la clave dentro del script ni mostrarla en la salida.
+
+Nunca crear artifacts/páginas para pedir credenciales. El token sigue siendo solo de memoria.
+
+## Recoger otras decisiones con AskUserQuestion
+
+Para PM, qué documentos subir, si crear tareas, etc., usar también `AskUserQuestion`.
+
+## Python `urllib` recibe 405 en login
+
+El hosting bloquea el User-Agent por defecto de `urllib`. En scripts Python agregar el header `User-Agent: curl/8.5.0` (con `curl` funciona directo).
+
+## Documentos fuente: los `.docx` se leen sin pandoc
+
+No hay pandoc/docx2txt en este entorno: extraer texto con `python3` (`zipfile` + `word/document.xml`, quitando tags). Ignorar copias idénticas de nombre sin guion (mismo tamaño) al subir adjuntos.
 
 ## Checklist completo al crear un proyecto nuevo — ningún paso es opcional
 
@@ -91,6 +170,23 @@ La API exige lo mismo que la app web para esa persona (ver detalle completo en l
 
 Mostrarle a la persona un resumen de qué se va a crear (cuántas fases/tareas, a quién queda asignado cada bloque) antes de ejecutar — son llamadas reales a un sistema compartido, visibles después para todo el equipo del proyecto en PMSK.
 
+## Tono de todo texto que se sube a la app — tercera persona, de usted, cordial y respetuoso (regla dura, 2026-09-21)
+
+Todo lo que se redacte para la app (descripciones, Ajustes, checks y criterios de Pruebas y Aceptaciones, comentarios, preguntas, mensajes) lo leen miembros del equipo y clientes externos. Se escribe siempre **de usted, en tercera persona o impersonal, con calidez y respeto**:
+
+- Nunca tuteo ni voseo: no «mira», «pulsa», «comprueba», «anota», «vas a probar», «querés», «podés».
+- Sí: «Observe la parte superior…», «Pulse cada pestaña y verifique que…», «¿Qué es lo que usted va a probar?», «Se solicita indicar qué botón o función echa de menos.», «Quedamos atentos a sus comentarios».
+- Amable y cálido, sin confianza ni jerga técnica: agradecer, invitar («Por favor», «Sería de gran ayuda que…»), nunca ordenar en seco.
+- Aplica también a los textos de ejemplo y a los que se corrijan en contenido ya subido.
+
+## Negritas para dar jerarquía (regla dura, 2026-09-21)
+
+En los textos que se suben a la app, los **títulos y rótulos** de cada bloque van en negrita, en especial los que llevan dos puntos («Para qué sirve:», «Cómo probarlo:»). La negrita marca la jerarquía y hace el texto más fácil de recorrer.
+
+- **Texto plano** (`criteria` de los checks de Prueba/Aceptación, comentarios, pasos del checklist): la app interpreta `*texto*` (un asterisco a cada lado, en la misma línea) como negrita. Escribir el rótulo así: `*Para qué sirve:* Comprobar que…`. No usar `**doble**` ni `<strong>` (se vería literal).
+- **Campos HTML** (`description` de tareas y del proyecto): usar `<strong>` o `<h3>`.
+- Aplicarla donde haga falta para mostrar la jerarquía (rótulos, términos clave); no resaltar frases enteras ni todo el texto. Al cargar o corregir checks, poner los rótulos ya con asteriscos.
+
 ## Diseñar Ajustes, Pruebas y Aceptaciones y subirlos (agregado 2026-09-20)
 
 Objetivo: la persona diseña conversando y Claude lo sube. **Confirmar la lista completa antes de subir.** Detalle y contratos exactos: `.claude/skills/project-manager-sk/SKILL.md` del repo (fuente de verdad). Resumen:
@@ -103,4 +199,27 @@ Objetivo: la persona diseña conversando y Claude lo sube. **Confirmar la lista 
 - Comentarios y preguntas: `POST /api/v1/tasks/:id/comments` (`scope`: task · adjustment_item · acceptance_check · qa_check · round · conversation; `targetId`; `body`; `mentions`; `attachments`; `poll:{multiple,options}` = pregunta radio/casillas) y `POST /api/v1/projects/:id/comments` (`project_conversation` · `project_definition`). Leer: `GET /api/v1/tasks/:id/threads`, `GET /api/v1/polls/:id` (estadística), `POST /api/v1/polls/:id/vote`, `PATCH /api/v1/polls/:id {closed}`. Porcentaje = sobre personas que respondieron (múltiple puede pasar de 100 %).
 - Link para el cliente: `POST|GET|DELETE /api/v1/tasks/:id/share-link` (y `/projects/:id/share-link`) → `path` `/share/<token>` (anteponer la URL del servidor). El cliente califica y acepta desde ahí; la API nunca lo hace por él.
 - Cuidado: comentar con `mentions` en la conversación interna o en el hilo de una prueba avisa por WhatsApp a personas reales. No publicar comentarios de prueba.
+
+## Flujo probado: prototipo interactivo → Prueba de Aceptación del cliente (2026-09-20)
+
+Cuando pidan "un prototipo para que el cliente vea cómo va a ser y lo apruebe", el flujo completo que funcionó (modo `/solo-ya`) es:
+
+1. **Prototipo**: un solo `.html`, sin backend, datos de ejemplo en `localStorage` (con try/catch y botón «Reiniciar demo»), menú tipo **Ribbon hecho a mano** (pestañas + grupos + botones grandes con icono; no hay librería Ribbon gratuita y estable para web, las existentes son comerciales), una **ruta por pantalla** (`#/pos`, `#/inventario`…) para dar link al punto exacto, y una función `window.SK` para poder armar estados desde el navegador al tomar capturas. Exponer los flujos reales del alcance (ej. turno → venta → factura simulada → inventario → cierre → reportes).
+2. **SOLO tema claro y muy legible** (exigido por el usuario: «tema claro», «fácil de leer»): forzar `color-scheme: light` sin bloque oscuro ni botón de tema (el visor puede estar en oscuro), letra base 16px, `muted` oscuro con buen contraste, botones/tablas/inputs grandes. Nunca dejar que el tema del sistema decida.
+3. **Publicar como Artifact** (privado; solo su dueño lo abre, lo comparte él desde Share — avisarlo). El archivo a publicar es un *fragmento*: quitar `<!doctype>`, `<html>`, `<head>`, `<meta>`, `<body>` (dejar `<title>`, `<link>` de Google Fonts, `<style>`, contenido, `<script>`). Republicar el mismo `file_path` mantiene la URL. No se puede comprobar desde aquí que un enlace con `#/ruta` llegue a la pantalla dentro del Artifact: en cada punto de la aceptación dar SIEMPRE también la ruta manual («pestaña X → botón Y»).
+4. **Capturas** con Chrome DevTools sobre el archivo local (la petición explícita de «toma capturas» es la autorización del navegador para esa sesión): tema claro, ventana ~1366×1040, ocultar el toast antes de capturar, una captura por punto. Agrupar en pocas pasadas (evaluate + screenshot). Guardarlas en la carpeta scratchpad.
+5. **Tarea `ACCEPTANCE`** en la fase correspondiente, con `description` = contexto y cómo calificar (sin listas de pasos), `deliverables` = link `https` del Artifact, y **un `check` por pantalla** con `criteria` (un paso por línea: link directo + pasos + qué opinar) y `evidence` = captura(s) subidas con `POST /api/upload`. Luego `POST /tasks/:id/share-link` y dar `BASE_URL + path` al usuario.
+6. **Reemplazar capturas/checks ya cargados**: `GET /tasks/:id/design` → `DELETE /api/v1/checks/:checkId` (solo sin resultado) → `POST /api/v1/rounds/:roundId/checks {checks:[…]}`. Sirve si cambia el prototipo y hay que rehacer las imágenes.
+7. **Insertar la aceptación en el cronograma**: `POST .../phases` SIEMPRE agrega la fase al final (la API no reordena; el orden por fecha sí es correcto, avisar que el orden visual de fases lo ajusta la persona en la app). Crear la tarea con `dependsOnTaskIds` = hito anterior, añadir `POST /tasks/:id/dependencies` desde la primera tarea de la fase siguiente, y mover esa con `POST /tasks/:id/move` al inicio requerido; verificar después las reglas de fechas (0 violaciones).
+
+Otros hallazgos de esta sesión:
+- Errores `500` o `405` esporádicos del hosting en la API (o con `urllib` sin User-Agent): reintentar con pausa; no significan error de permisos. Espaciar las llamadas (~0.5 s) en cargas masivas; una ráfaga rápida cortó la conexión y hay que reanudar sin duplicar (leer el estado antes).
+- Un admin **puede** modificar un proyecto oculto por la API; las credenciales no lo impiden.
+- Al crear un proyecto nuevo, `description`, objetivos y requerimientos van SIEMPRE llenos; si el proyecto aún no está oculto, la descripción va sin precios/márgenes internos y esos datos solo se suben tras ocultarlo. `.md` se sube a `/api/upload` como `.txt`.
+- La numeración de contadores en resúmenes debe contarse, no asumirse (se dijo «24 requerimientos» y eran 29).
+- **Prototipos para clientes, reglas del usuario**: (a) SIEMPRE con **transiciones suaves** para que no se vea brusco (fade/slide al cambiar de pantalla y de pestaña del Ribbon, diálogos, avisos, hover/active de botones, barras que crecen; solo al cambiar de pantalla, no en cada re-render; dentro de `@media (prefers-reduced-motion:no-preference)`); (b) omitir registro/login/roles/tipo de negocio salvo que los pidan: la demo arranca «ya con la sesión iniciada»; si se quita una pantalla, quitar también sus puntos de la aceptación y rehacer las capturas (que no aparezcan pestañas que ya no existen); (c) el archivo principal se llama **`index.html`** dentro de la carpeta del prototipo, para que pueda servirse tal cual en un hosting.
+- **Lo que no se pueda hacer literal, se simula** (regla del usuario), pero **lo que el navegador sí permite se hace real**: imprimir (`window.print()` con CSS `@media print` que muestre solo el comprobante), descargar un archivo real (Blob + `<a download>`, p. ej. un XML de ejemplo marcado «simulado»), «Guardar como PDF» vía el diálogo de impresión, y `mailto:` con el mensaje armado. Todo dentro de try/catch con aviso (toast) de qué es simulado. Antes de dar un prototipo por «completo», **cruzarlo contra las tareas y RF de la entrega** (tabla cubierto/parcial/faltante) y ofrecer cerrar los huecos visibles (ej. costo y edición de producto, selector de período en reportes, comprobante imprimible).
+- Cuidados al ampliar datos de demo: subir la versión de la clave de `localStorage` (`sk-proto-v2`…) para no mezclar con datos viejos; los gráficos SVG deben usar un `viewBox` ancho (~1000×300) para que el texto no se agrande al escalar, y las etiquetas se espacian (`ceil(n/10)`); evitar que botones, badges y celdas de stock se partan en dos líneas (`white-space:nowrap`).
+- **Prototipo servido en hosting propio**: el usuario sube la carpeta; al recibir la URL, agregar el entregable con `POST /api/v1/rounds/:roundId/deliverables` (la API no permite borrar el anterior; lo quita la persona en la app) y rehacer los checks con links directos `URL/#/ruta` (guardar el script parametrizable por variable de entorno `URL`).
+- Estilo de trabajo del usuario: pide modo `/solo-ya` y espera resultado; dar al final un reporte con qué se hizo, qué se asumió y qué dudas quedan, y actualizar esta skill con lo aprendido.
 

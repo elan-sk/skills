@@ -35,6 +35,10 @@ Ver el código completo en `references/code-patterns.md`, sección 1. Puntos cla
 
 ---
 
+## Reutilizar antes de construir
+
+Todo slider nuevo parte de `SwiperManager` y de un slider existente ya probado (`js/components/swiper-*.js` + su PHP): copiar/adaptar su estructura en vez de escribir la instancia de Swiper, la paginación o los breakpoints desde cero. Solo agregar lógica nueva si ningún slider existente cubre el caso, y decir por qué.
+
 ## Flujo para crear un slider nuevo
 
 ### Paso 1 — Definir slug y origen de contenido

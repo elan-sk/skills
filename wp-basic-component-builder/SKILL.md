@@ -29,6 +29,10 @@ Skill para maquetar secciones con total libertad usando el componente **"Básico
 
 ---
 
+## Reutilizar antes de construir
+
+Antes de maquetar HTML nuevo, buscar si ya hay una sección, snippet/plantilla del Básico o un componente del tema que resuelva algo igual o parecido, y partir de su markup y clases ya probados en vez de empezar desde cero. Crear desde cero solo si no hay nada reutilizable, y decir por qué.
+
 ## Modo A — Dentro del repo (WP + SCF reales)
 
 ### Paso 1 — Inputs mínimos
