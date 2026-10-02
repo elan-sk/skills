@@ -204,7 +204,17 @@
     <details class="skill">
       <summary>pmsk</summary>
       <p class="desc">Conecta directo con la API de ProjectManagerSK (a veces tecleado "MPSK"): crear/consultar proyectos, fases, tareas, asignados, estados y dependencias del sistema propio de gestión de proyectos del usuario.</p>
-      <p class="desc"><strong>Conexión por link:</strong> si se pega el link del botón "Conectar IA" de la app, se abre una sola vez y se trabaja con esa sesión, sin pedir usuario ni contraseña. El link vence en 1 hora si no se usa, la sesión dura 8 horas y tiene los mismos permisos de la persona.</p>
+      <p class="desc"><strong>Conexión por link:</strong> si se pega el link del botón "Conectar IA" de la app, se usa en lugar de usuario y contraseña, con los mismos permisos de la persona. Es reutilizable: vale hasta que la tarea se completa, pasan 7 días sin uso o se desactiva desde la app; hay uno por tarea o proyecto.</p>
+      <p class="desc"><strong>Documentos en .md:</strong> todo documento de texto que redacta y sube a la app va en Markdown, que el visor muestra con formato. Los archivos que aporta la persona se suben tal como vienen.</p>
+    </details>
+
+    <details class="skill">
+      <summary>sdd-pmsk</summary>
+      <p class="desc">Desarrolla una tarea de ProjectManagerSK con Spec-Driven Development: al pegar el link "Conectar IA" de la tarea, arma en el repo la constitución y la especificación a partir de la cascada objetivos → requerimientos → fase → tarea, entrevista con opciones hasta no tener dudas, planifica, implementa con tests primero y valida requisito por requisito.</p>
+      <p class="desc"><strong>Lee las fuentes primero:</strong> antes de la entrevista descarga y lee los insumos y evidencias de la tarea, los archivos y enlaces del proyecto y las conversaciones; lo que no puede leer lo dice y lo pregunta.</p>
+      <p class="desc"><strong>Aprobaciones:</strong> se detiene solo después de la especificación y después del plan.</p>
+      <p class="desc"><strong>Registro en la app:</strong> agrega la sección «Especificación» a la descripción, crea el checklist con las tareas, sube a Insumos los archivos fuente y la especificación (.md), a Evidencias las capturas de las pruebas, publica un comentario de cierre y completa la tarea solo si todo pasó.</p>
+      <p class="desc"><strong>Para el usuario:</strong> nombres legibles antes que ids, y «Especificación» en lugar de «spec» en todo lo que se ve en la app.</p>
     </details>
 
     <details class="skill">
