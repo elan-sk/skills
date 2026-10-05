@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Cliente de la API biblioteca/v1 (plugin "Biblioteca Depura").
+# Config: BD_URL y BD_TOKEN en el entorno o en ~/.config/biblioteca-depura/config
+#   bd indice [component|handbook] [texto]   → catálogo compacto (JSON)
+#   bd entrada ID [html]                       → entrada completa; "html" agrega contenido_html para editar
+#   bd taxonomias                              → términos existentes (stack, clase, cliente)
+#   bd proponer ARCHIVO.json                   → crea propuesta; devuelve link de aprobación
+#   bd estado ID_PROPUESTA                     → pendiente | aprobada | rechazada | vencida | error
+set -euo pipefail
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}/biblioteca-depura/config"
+# El entorno tiene prioridad sobre el archivo (ej. BD_URL=https://sitio-local para probar en local)
+ENV_URL="${BD_URL:-}" ENV_TOKEN="${BD_TOKEN:-}"
+[ -f "$CONF" ] && . "$CONF"
+BD_URL="${ENV_URL:-${BD_URL:-}}" BD_TOKEN="${ENV_TOKEN:-${BD_TOKEN:-}}"
+: "${BD_URL:?Falta BD_URL (ver $CONF)}" "${BD_TOKEN:?Falta BD_TOKEN (ver $CONF)}"
+API="${BD_URL%/}/wp-json/biblioteca/v1"
+get() { curl -sS --fail-with-body -H "X-Biblioteca-Token: $BD_TOKEN" "$API/$1"; }
+
+case "${1:-}" in
+  indice)     get "indice?tipo=${2:-}&q=$(jq -rn --arg q "${3:-}" '$q|@uri')" ;;
+  entrada)    get "entrada/${2:?ID}${3:+?html=1}" ;;
+  taxonomias) get taxonomias ;;
+  proponer)   # Adjuntos con "archivo": "/ruta/local" se convierten a base64 (y toman el nombre del archivo si falta)
+              body=$(mktemp); cp "${2:?archivo JSON}" "$body"
+              for i in $(jq -r '.datos.adjuntos // [] | to_entries[] | select(.value.archivo) | .key' "$body"); do
+                src=$(jq -r ".datos.adjuntos[$i].archivo" "$body"); b64=$(mktemp); base64 -w0 "$src" > "$b64"
+                jq --argjson i "$i" --rawfile b "$b64" --arg n "$(basename "$src")" \
+                  '.datos.adjuntos[$i] |= ((.nombre //= $n) | del(.archivo) | .base64 = $b)' "$body" > "$body.tmp" && mv "$body.tmp" "$body"
+                rm -f "$b64"
+              done
+              curl -sS --fail-with-body -X POST -H "X-Biblioteca-Token: $BD_TOKEN" -H 'Content-Type: application/json' \
+                --data-binary "@$body" "$API/propuestas"; rm -f "$body" ;;
+  estado)     get "propuestas/${2:?ID de propuesta}" ;;
+  *) sed -n '2,9p' "$0"; exit 1 ;;
+esac
+echo
