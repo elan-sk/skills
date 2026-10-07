@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1791149632934,
+  "lastUpdated": 1791341156413,
   "skills": [
     {
       "skillId": "import-memory",
@@ -19,9 +19,9 @@
     {
       "skillId": "skill_01CnqAVTtU1aVzeUyLDuSxNH",
       "name": "modos-de-trabajo",
-      "description": "Formato de confirmación de alineación con el usuario, modo de consulta de solo lectura, y modo de trabajo autónomo desatendido. Se dispara cuando el usuario escribe \"/entendido\" o \"/dudas\" (o las palabras sueltas \"entendido\"/\"dudas\" usadas como comando). Los modos /consulta y /solo tienen comandos dedicados propios (commands/consulta.md, commands/solo.md) que delegan en las secciones `/consulta` y `/solo` de esta skill para el detalle de comportamiento. Define cómo responder en cada caso, el formato general de respuesta (numerado, con AskUserQuestion cuando aplique), y para /consulta impone modo estrictamente de solo lectura; para /solo impone recopilar todas las preguntas por adelantado y luego trabajar sin pedir más confirmaciones, con prohibición absoluta de acciones destructivas/irreversibles.",
-      "source": "custom",
-      "updatedAt": "2026-08-27T14:40:10.229104Z",
+      "description": "Formato de confirmación de alineación con el usuario y modos de trabajo. Se dispara con \"/entendido\", \"/dudas\" (o esas palabras sueltas usadas como comando), \"/consulta\" (solo lectura, para evaluar una idea o viabilidad sin tocar nada), \"/solo\" (recopilar todas las preguntas por adelantado y luego trabajar sin pedir más confirmaciones) y \"/solo-ya\" (arrancar de inmediato con lo claro y dejar las dudas para el reporte final). En los modos solo quedan prohibidas las acciones destructivas o irreversibles; con listas de 5 o más ítems se entrega además un informe HTML con checklist.",
+      "source": "plugin",
+      "updatedAt": "2026-10-07T02:39:39.481972Z",
       "backingPluginId": "plugin_01NNP5Brf1kjANT6d2jMBjtg"
     },
     {
@@ -137,8 +137,8 @@
       "skillId": "skill_01RZrfZFssFDUygHuo1c4FJj",
       "name": "dev-project-definer",
       "description": "Asistente para DEFINIR proyectos de software antes (o en paralelo) de escribir código: estudio de viabilidad, requerimientos, análisis de mercado, diseño estructural (diagramas de arquitectura) y planeación con tracker HTML + guías por sprint. Cubre 3 tipos de proyecto (Nuevo / Heredado / Continuación), 2 modalidades de personal (Unipersonal / Equipo) y 3 modos de intervención (Aprendizaje, Desarrollo, Prototipo) que cambian cuánto interviene Claude y el detalle de la documentación. Incluye integración con Google Calendar y Drive para subir cronograma y manuales. Úsala con \"define este proyecto\", \"ayúdame a validar esta idea\", \"hazme el estudio de viabilidad\", \"arma el tracker del proyecto\", \"necesito la guía del sprint N\", \"modo aprendizaje/desarrollo/prototipo\", \"conectar esto a mi calendario y drive\", o al arrancar cualquier proyecto de software donde lo pedido es planeación/documentación, no código.",
-      "source": "custom",
-      "updatedAt": "2026-08-27T14:40:39.471739Z",
+      "source": "plugin",
+      "updatedAt": "2026-10-07T02:38:55.607325Z",
       "backingPluginId": "plugin_01YYbSzVJ7XZTd1GgmxUqWK2"
     },
     {
@@ -195,7 +195,47 @@
       "name": "google-workspace",
       "description": "Read this before the first Google Drive, Docs, Sheets or Slides connector call whenever the task creates or changes a Google file. Use this skill whenever the user wants to create or change a Google Doc, Sheet or Slides file in their Google Drive. Triggers include: a request that names Google Docs, Sheets, Slides or Drive and asks to make, edit, format, copy or rename a file; a docs.google.com link with a request to change that file, even a one-line fix or suggested edits; and any follow-up change to a Google file from earlier in the chat, even \"change it\" or \"add a tab\". Includes helper scripts for document positions, cell ranges and slide layout. However, if the user asks for a doc, deck or spreadsheet without naming Google, or gives a Google file only as source material for something new, use Claude's own output type instead. Do NOT use for read-only questions about a Google file, or for Word, Excel, PowerPoint or PDF files.",
       "source": "anthropic-example",
-      "updatedAt": "2026-09-23T19:50:41.402985Z"
+      "updatedAt": "2026-10-06T23:31:35.618898Z"
+    },
+    {
+      "skillId": "skill_011JGSphhjsNE5noiSJEGJ1v",
+      "name": "biblioteca-depura",
+      "description": "Memoria documental y procedimental de Depura Creatividad (biblioteca.depura-creatividad.com): Componentes (código reutilizable: PHP/ACF/SCF, Drupal, React, SCSS/Tailwind, por cliente) e Instructivos (normas, convenciones, procedimientos, conceptos, soluciones). CONSULTARLA EN SILENCIO, sin pedir permiso, ANTES de crear o maquetar un componente, sección, slider, formulario, header/footer, filtro, plugin o snippet, y antes de decidir naming, estructura, deploy o convenciones — para reutilizar patrones y respetar las normas de la empresa. También cuando el usuario diga \"biblioteca\", \"librería de componentes\", \"instructivo\", \"manual de la empresa\", \"¿ya tenemos un X?\", \"documentá/subí este componente\", \"actualizá el instructivo\", \"borrá esa entrada\". Crear/editar/eliminar SIEMPRE va por propuesta con link de aprobación de un administrador; puede subir imágenes y archivos, y toda entrada nueva debe llevar portada (imagen destacada) siempre que sea posible.",
+      "source": "plugin",
+      "updatedAt": "2026-10-07T02:25:25.140173Z",
+      "backingPluginId": "plugin_01WvaF4SNney2LFkXcsx7YdQ"
+    },
+    {
+      "skillId": "skill_01478jGov7mzX7NxS7nB2psE",
+      "name": "buenas-practicas-codigo",
+      "description": "Unifica las convenciones de ELAN-SK para construir y revisar código con una fuente de verdad, módulos verificables, reutilización, código mínimo e inventario de impacto. Usar al implementar lógica o componentes y al revisar su estructura, o cuando el usuario diga \"buenas prácticas\", \"revisá este código\", \"¿está bien hecho?\"; adaptar las reglas al stack y al alcance solicitado.",
+      "source": "plugin",
+      "updatedAt": "2026-10-07T02:37:56.519534Z",
+      "backingPluginId": "plugin_01B74u71tv77V4bBkgTh88Bn"
+    },
+    {
+      "skillId": "skill_01F4i3MaonuXad7ne4xKvKCq",
+      "name": "pmsk",
+      "description": "Conecta directo con la API de ProjectManagerSK — sistema propio de gestión de proyectos del usuario, a veces tecleado \"MPSK\" por error — para crear/consultar proyectos, fases, tareas, asignados, estados y dependencias, y diseñar y subir Ajustes, Pruebas y Aceptaciones (con imágenes y archivos), comentarios y preguntas de selección, sin tener que redescubrir qué es ni dónde vive cada vez. Disparar de inmediato con \"MPSK\", \"PMSK\", \"ProjectManagerSK\", \"súbelo al gestor de proyectos\", \"montá esto en mi tracker de proyectos\", al pegar un link `/api/v1/claude-link/…` del botón \"Conectar IA\", o al pedir migrar/vincular un cronograma a ese sistema — sin preguntar qué es ni buscarlo primero.",
+      "source": "plugin",
+      "updatedAt": "2026-10-07T02:40:20.537965Z",
+      "backingPluginId": "plugin_01G5orA7RTmwyvmViF7Bvscg"
+    },
+    {
+      "skillId": "skill_01F23mWsECD6MtEZvpZFdQL7",
+      "name": "sdd",
+      "description": "Spec-Driven Development para desarrollar con spec, plan, tareas y validación RF por RF, con entrevista hasta no tener dudas e inventario de impacto. Modo PMSK: al pegar un link de tarea `/api/v1/claude-link/…` (botón \"Conectar IA\") para DESARROLLARLA; arma `docs/constitution.md` + `specs/NNN-nombre/` desde la cascada objetivos → requerimientos → fase → tarea y registra en PMSK (descripción, checklist, insumos, evidencias, comentario, estado). Con link de una Prueba, arma su plantilla (la «General» + los requisitos de la Especificación probada). Modo chat (sin link): para pedidos de desarrollo medianos o grandes por chat —funcionalidad nueva, cambio de datos o permisos, algo que toca varias partes de la app— o con `/sdd`; mismo flujo sin PMSK. No para ajustes chicos (un texto, un estilo, un botón). También para retomar una spec (\"seguí con la spec 003\", \"en qué va la tarea X\") y para cambios de alcance (\"hay requerimientos nuevos\", \"agregale esto a la spec\", \"actualizá la especificación\").",
+      "source": "plugin",
+      "updatedAt": "2026-10-07T02:39:55.497913Z",
+      "backingPluginId": "plugin_01Gvtbx3eKxNiUwFBeSLrGxx"
+    },
+    {
+      "skillId": "skill_01EqjN3KgD6pX8jnthXugoNL",
+      "name": "la-paguer",
+      "description": "Identidad y formato de documentos de La Paguer (agencia «Marketing que transforma», Quibdó; aliada de Depura Creatividad). Usar siempre que el usuario diga \"La Paguer\", \"lapaguer\", \"la paguer\", o pida un documento, acta, propuesta, informe o correo \"con el membrete/estilo de La Paguer\" — tomar logo, colores, tipografía, lemas, datos de contacto y la plantilla .docx de la carpeta assets/ de esta skill, sin volver a preguntarlos ni re-extraerlos del PDF.",
+      "source": "plugin",
+      "updatedAt": "2026-10-07T02:39:15.522627Z",
+      "backingPluginId": "plugin_01MDrjgNVke83dKfaqfyWiRW"
     }
   ]
 }
