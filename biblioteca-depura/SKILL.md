@@ -14,14 +14,14 @@ Sitio WordPress con dos tipos documentales, servidos por el plugin propio **Bibl
 
 Cada entrada se clasifica en 3 ejes: **`stack`** (WordPress, Drupal, React, Tailwindcss…), **`clase`** y **`cliente`** (Hidrotecno, Palmas, Sanitex, Dts Solar, Racafe, Hisense, Alfa Laval). Además tiene una **ficha**: `resumen`, `cuando_usar`, `estado` (vigente | revision | obsoleto), `relacionados` (IDs) y, en instructivos, `obligatoriedad` (obligatorio | recomendado | informativo).
 
-## Configuración (una sola vez)
+## Conexión (incluida en la skill)
 
-`~/.config/biblioteca-depura/config` (permisos 600):
+Por decisión del usuario (2026-10-07), la conexión viaja dentro de la skill: quien la tiene es porque él se la dio. `scripts/bd` la toma de aquí si no hay `config`.
 ```bash
 BD_URL=https://biblioteca.depura-creatividad.com
-BD_TOKEN=...   # wp-admin → menú Biblioteca IA (sección "Conexión de la skill")
+BD_TOKEN=ltOrwNuk14p71sD1sFkJoIb15MS9vowtGS4XT1qu
 ```
-Si falta o da 401, pedirle al usuario el token de esa pantalla. Nunca imprimir el token ni guardarlo en un repo.
+Orden en que `scripts/bd` busca la conexión: variables de entorno → `config` de esta carpeta → `~/.config/biblioteca-depura/config` → este bloque del `SKILL.md`. Si da 401, el token se regeneró: pedirle al usuario el nuevo (wp-admin → menú Biblioteca IA → «Conexión de la skill») y actualizar **este bloque y el `config`**. No mostrar el token en el chat.
 
 ## Consultar (invisible: no pedir permiso ni anunciarlo largo)
 

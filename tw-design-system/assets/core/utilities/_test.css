@@ -2,7 +2,7 @@
   TEST: Resalta los elementos según el nivel,
         Padres, hijos, nietos, etc.
 ==================================================*/
-@utility test {
+@utility test-des {
   @apply !border-3 !border-red-500;
   & > * {
     @apply !border-3 !border-yellow-400;
@@ -84,6 +84,10 @@
   & > * {
     @apply !border-3 !border-yellow-400;
   }
+}
+
+@utility test {
+  @apply !border-3 !border-red-500;
 }
 
 /*==================================================

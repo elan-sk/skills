@@ -40,7 +40,7 @@ Si ya existe una página de test (`references/test-page.md`), actualizar ahí mi
 - Configurar (o crear si no existe) `.vscode/settings.json` **local al proyecto** con `"files.associations": { "*.css": "tailwindcss" }`, para que VSCode reconozca `@apply`/`@tailwind`/`@theme` en todos los `.css` del repo y no marque falsos "Unknown at rule". Si el archivo ya tiene otras claves en `files.associations`, fusionar en vez de sobreescribir.
 
 ### 6. Generar la prueba visual
-Seguir `references/test-page.md`. Nunca CSS adicional — siempre una plantilla/componente real del proyecto con las 4 secciones (Colors, Typography, Text Reset, Buttons) usando las clases reales del core.
+Seguir `references/test-page.md`. Esta página es la guía de estilos en vivo: una página real "Estilos" en `/estilos/` del sitio (local y de pruebas), con copiado de clases y hex. Pasarle la URL al usuario y no empezar a maquetar componentes hasta que confirme que todo se ve bien. Nunca CSS adicional — siempre una plantilla/componente real del proyecto con las 4 secciones (Colors, Typography, Text Reset, Buttons) usando las clases reales del core.
 
 Si hay Chrome DevTools MCP disponible, cargar la página de prueba en el navegador y revisar (no solo confiar en que el build compiló) que los botones se vean bien sobre TODOS los fondos, incluyendo los que comparten color de marca con el propio botón (ej. `.btn-primary` dentro de una sección `.bg-primary`) — ver `references/philosophy.md §11` para los bugs típicos que no rompen el build pero sí el render (colisión con CSS sin capa del theme padre en WordPress, texto/borde invisible por mal contraste contextual).
 
@@ -98,6 +98,6 @@ Antes de crear un átomo, utilidad (`@utility`), variable o archivo `.css` nuevo
 - `assets/core/` — core unificado con plugins JS (contraste WCAG + botones/links contextuales), default para WordPress, React, Next.js, Vite y Tauri por igual.
 - `assets/core-simple/` — core solo-CSS sin plugins JS, únicamente como fallback excepcional (ver `references/frameworks/js-frameworks.md`).
 - `assets/core/readme.md` — documentación extensa original, consultar solo para casos borde no cubiertos en `philosophy.md`.
-- `assets/wp-test-template/` — los 5 archivos PHP reales de referencia para la prueba visual en WordPress.
+- `assets/wp-test-template/` — los 5 archivos PHP reales de referencia para la prueba visual en WordPress, más `test.js` (copiado al portapapeles, hex real y contraste de los círculos; va en `js/libraries/`).
 - `assets/react-next-test-template/` — plantilla real (page.jsx + componentes) para la prueba visual en React/Next, con copiado al portapapeles incluido.
 - `assets/wp-header-example/` — header real de referencia, específico de WordPress (PHP desktop/mobile, `_header.css`, `menu.js`, modal de búsqueda en React, filtro de CTA por clase). Ver su `readme.md` para los 7 patrones reusables: layout `shrink-0`+`flex-1`+`ml-auto`, evitar `<a>` anidado con `the_custom_logo()`, acotar el `<img>` del logo, CTA por clase CSS en vez de "último ítem", hide-on-scroll sin togglear `position`, no dejar un módulo JS rehén de otro que falla, y depurar "no pasa nada al click" con el navegador real.

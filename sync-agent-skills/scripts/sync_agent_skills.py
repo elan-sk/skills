@@ -9,6 +9,7 @@ import os
 import shutil
 import subprocess
 import sys
+from datetime import date
 from pathlib import Path
 
 
@@ -117,7 +118,7 @@ def choose_newest(candidates: list[Path], roots: list[Path]) -> tuple[Path, bool
     return newest[0], len({file_digest(p) for p in newest}) > 1
 
 
-def sync(roots: list[Path], requested: list[str], dry_run: bool) -> int:
+def sync(roots: list[Path], requested: list[str], dry_run: bool, push: bool = True) -> int:
     roots = existing_roots(roots)
     if not roots:
         print("No skill roots exist.", file=sys.stderr)
@@ -187,18 +188,57 @@ def sync(roots: list[Path], requested: list[str], dry_run: bool) -> int:
             print(f"  {name}: {status} {values}")
 
     if not dry_run:
-        validate(roots, names)
+        if not validate(roots, names):
+            print("git: skipped, validation failed")
+            return 1
+        if push:
+            return publish(roots, names)
 
     return 0
 
 
-def validate(roots: list[Path], names: list[str]) -> None:
+def git(root: Path, *args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", "-C", str(root), *args], text=True, capture_output=True, check=False)
+
+
+def publish(roots: list[Path], names: list[str]) -> int:
+    """Commit and push the synced skill folders in every root that is a git repo."""
+    status = 0
+    for root in roots:
+        top = git(root, "rev-parse", "--show-toplevel")
+        if top.returncode != 0 or Path(top.stdout.strip()).resolve() != root:
+            continue
+        paths = [name for name in names if (root / name).exists()]
+        git(root, "add", "-A", "--", *paths)
+        changed = git(root, "diff", "--cached", "--name-only", "--", *paths).stdout.split()
+        if not changed:
+            print(f"git {root}: nothing to commit")
+            continue
+        skills = sorted({Path(f).parts[0] for f in changed})
+        msg = f"sync skills: {', '.join(skills)} ({date.today().isoformat()})"
+        # Only the synced skill folders: anything else staged in the repo stays out.
+        commit = git(root, "commit", "-m", msg, "--", *paths)
+        if commit.returncode != 0:
+            print(f"git {root}: commit FAIL {commit.stderr.strip() or commit.stdout.strip()}")
+            status = 1
+            continue
+        pushed = git(root, "push")
+        if pushed.returncode != 0:
+            print(f"git {root}: committed, push FAIL {pushed.stderr.strip()}")
+            status = 1
+            continue
+        print(f"git {root}: pushed '{msg}'")
+    return status
+
+
+def validate(roots: list[Path], names: list[str]) -> bool:
     validator = Path.home() / ".codex" / "skills" / ".system" / "skill-creator" / "scripts" / "quick_validate.py"
     if not validator.exists():
         print("validation skipped: quick_validate.py not found")
-        return
+        return True
 
     print("validation")
+    ok = True
     for name in names:
         for root in roots:
             skill_dir = root / name
@@ -213,12 +253,15 @@ def validate(roots: list[Path], names: list[str]) -> None:
             line = result.stdout.strip() or result.stderr.strip()
             prefix = "OK" if result.returncode == 0 else "FAIL"
             print(f"  {prefix} {skill_dir}: {line}")
+            ok = ok and result.returncode == 0
+    return ok
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("skills", nargs="*", help="Optional skill names to sync. Default: all discovered skills.")
     parser.add_argument("--dry-run", action="store_true", help="Show planned changes without writing files.")
+    parser.add_argument("--no-push", action="store_true", help="Skip git commit/push of the synced skills.")
     parser.add_argument(
         "--root",
         action="append",
@@ -231,7 +274,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     roots = [path.expanduser().resolve() for path in (args.root or DEFAULT_ROOTS)]
-    return sync(roots, args.skills, args.dry_run)
+    return sync(roots, args.skills, args.dry_run, not args.no_push)
 
 
 if __name__ == "__main__":

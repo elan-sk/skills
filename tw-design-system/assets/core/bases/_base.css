@@ -21,12 +21,12 @@
   headings. Distinto es el caso de .btn-* (atoms/_buttons.css): ESE sí lleva
   !important porque un botón es un átomo de marca, no algo que se espera
   reestilizar puntual manteniendo la clase. */
-  h1 { @apply text-h1; }
-  h2 { @apply text-h2; }
-  h3 { @apply text-h3; }
-  h4 { @apply text-h4; }
-  h5 { @apply text-h5; }
-  h6 { @apply text-h6; }
+  h1 { @apply text-h1 text-heading-color; }
+  h2 { @apply text-h2 text-heading-color; }
+  h3 { @apply text-h3 text-heading-color; }
+  h4 { @apply text-h4 text-heading-color; }
+  h5 { @apply text-h5 text-heading-color; }
+  h6 { @apply text-h6 text-heading-color; }
 
   * + :is(h1, h2, h3, h4, h5, h6) {
     @apply mt-6;

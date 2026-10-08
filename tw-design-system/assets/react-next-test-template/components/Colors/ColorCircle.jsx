@@ -9,7 +9,7 @@ function ColorCircle({ title, colors }) {
         {colors.map((color) => (
           <div key={color} className="text-center">
             <div
-              className={`size-30 rounded-full mx-auto bg-${color} border-2 border-gray-600 flex-center text-large font-semibold`}
+              className={`size-30 rounded-full mx-auto bg-${color} bg-color-selected border-2 border-gray-600 flex-center text-large font-semibold`}
             >
               abc
             </div>

@@ -23,6 +23,12 @@ skills"**, **"sincroniza las skills"** o **"copia las skills entre agentes"**:
 5. Ignorar `.git`, `node_modules`, `__pycache__`, `.pytest_cache` y archivos
    temporales del sistema.
 6. Validar las skills sincronizadas con `quick_validate.py` cuando exista.
+7. Si la validacion pasa, en cada raiz que sea repo git (hoy solo
+   `~/.claude/skills` -> `git@github.com:elan-sk/skills.git`): `git add` +
+   `git commit` solo de las carpetas de las skills sincronizadas (mensaje
+   `sync skills: <skills> (<fecha>)`) y `git push`. Lo demas del repo (p. ej.
+   `synced/`) no se toca. Si el push falla se informa y no se fuerza.
+   Usar `--no-push` solo si el usuario pide no subir.
 
 No borrar archivos por defecto. La sincronizacion por defecto es union de
 archivos: si un archivo existe en una raiz y falta en otra, se copia.
@@ -55,7 +61,8 @@ El script imprime:
 - archivos copiados y fuente elegida;
 - conflictos con empate exacto de `mtime`, si existen;
 - resumen de hashes por skill;
-- resultado de validacion de `SKILL.md`.
+- resultado de validacion de `SKILL.md`;
+- linea `git <raiz>: pushed '...'`, `nothing to commit` o el error de git.
 
 Un resultado correcto debe terminar con hashes iguales para cada skill
 sincronizada entre las raices existentes.

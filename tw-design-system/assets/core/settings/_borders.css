@@ -1,0 +1,22 @@
+/*==================================================
+  BORDERS: escala de radios del proyecto
+  Reemplaza los --radius-* de Tailwind para que rounded-* quede atado a
+  esta escala. Ajustar los valores a la forma de cada marca.
+==================================================*/
+@theme {
+  --radius-none: 0px;
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.375rem;  /* 6px */
+  --radius-lg: 0.5rem;    /* 8px */
+  --radius-xl: 0.75rem;   /* 12px */
+  --radius-2xl: 1rem;     /* 16px */
+  --radius-3xl: 1.5rem;   /* 24px */
+  --radius-full: 9999px;  /* pills y círculos */
+}
+
+/* Borde de acento con los 3 niveles de color (philosophy.md §18.9):
+Nivel 1 = rol de marca por defecto; Nivel 2 = --border-accent-color, que
+pone plugins/text-colors.js cuando el editor eligió un fondo oscuro. */
+@utility border-accent {
+  @apply border-[var(--border-accent-color,var(--color-primary-lt))];
+}

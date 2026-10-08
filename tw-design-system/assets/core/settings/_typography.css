@@ -33,3 +33,13 @@
 @utility text-base { @apply text-button font-normal text-wrap; font-size: var(--text-base); }
 @utility text-small { @apply text-base; font-size: var(--text-small); }
 
+/* Color de títulos con los 3 niveles (philosophy.md §18.6): Nivel 1 =
+color de marca por defecto; Nivel 2 = --heading-color, que pone
+plugins/text-colors.js cuando el editor eligió un fondo oscuro. */
+@utility text-heading-color {
+  @apply text-[var(--heading-color,var(--color-primary))];
+}
+
+@utility text-outline-color {
+  @apply text-[var(--outline-color,var(--color-outline))];
+}

@@ -1,16 +1,25 @@
 #!/usr/bin/env bash
 # Cliente de la API biblioteca/v1 (plugin "Biblioteca Depura").
-# Config: BD_URL y BD_TOKEN en el entorno o en ~/.config/biblioteca-depura/config
+# Config: BD_URL y BD_TOKEN en el entorno, en el config de la skill, en ~/.config/biblioteca-depura/config
+# o, si no hay nada de eso, en el bloque "Conexión" del SKILL.md (la conexión viaja con la skill).
 #   bd indice [component|handbook] [texto]   → catálogo compacto (JSON)
 #   bd entrada ID [html]                       → entrada completa; "html" agrega contenido_html para editar
 #   bd taxonomias                              → términos existentes (stack, clase, cliente)
 #   bd proponer ARCHIVO.json                   → crea propuesta; devuelve link de aprobación
 #   bd estado ID_PROPUESTA                     → pendiente | aprobada | rechazada | vencida | error
 set -euo pipefail
-CONF="${XDG_CONFIG_HOME:-$HOME/.config}/biblioteca-depura/config"
+# Primero el config dentro de la skill (gitignored); si no existe, el de ~/.config
+CONF="$(dirname "$(readlink -f "$0")")/../config"
+[ -f "$CONF" ] || CONF="${XDG_CONFIG_HOME:-$HOME/.config}/biblioteca-depura/config"
 # El entorno tiene prioridad sobre el archivo (ej. BD_URL=https://sitio-local para probar en local)
 ENV_URL="${BD_URL:-}" ENV_TOKEN="${BD_TOKEN:-}"
 [ -f "$CONF" ] && . "$CONF"
+# Sin config: la conexión incluida en el SKILL.md de esta skill (bloque "Conexión").
+SKILL_MD="$(dirname "$(readlink -f "$0")")/../SKILL.md"
+if [ -z "${BD_TOKEN:-}" ] && [ -f "$SKILL_MD" ]; then
+  BD_URL="${BD_URL:-$(grep -m1 -oP '^BD_URL=\K\S+' "$SKILL_MD" || true)}"
+  BD_TOKEN="$(grep -m1 -oP '^BD_TOKEN=\K\S+' "$SKILL_MD" || true)"
+fi
 BD_URL="${ENV_URL:-${BD_URL:-}}" BD_TOKEN="${ENV_TOKEN:-${BD_TOKEN:-}}"
 : "${BD_URL:?Falta BD_URL (ver $CONF)}" "${BD_TOKEN:?Falta BD_TOKEN (ver $CONF)}"
 API="${BD_URL%/}/wp-json/biblioteca/v1"

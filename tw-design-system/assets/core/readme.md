@@ -133,20 +133,23 @@ No existe (ni hace falta) un `--color-on-{rol}` por cada rol — ver punto 2.
 
 #### 2. Aplicación automática por contraste (@layer base)
 
-Un plugin (`text-colors.js`) recorre cada rol y le pone al fondo el texto que más contraste da contra su propio hex — blanco o negro, calculado en el momento (`getTextColorForBg`, `functions.js`), sin ninguna tabla manual `on-{rol}` que alguien tenga que mantener sincronizada:
+`dark-bg-variants.js` calcula qué roles son oscuros por contraste real (`darkBgRoles`) y `text-colors.js` les pone el texto que más contraste da (`getTextColorForBg`, `functions.js`), sin ninguna tabla manual `on-{rol}`. La regla exige **dos clases juntas**: `.bg-color-selected` la agrega el componente solo cuando el editor eligió un color desde el CMS, así el fondo por defecto de un componente nunca pisa su texto (`philosophy.md §18.7`):
 
 ```js
-Object.keys(bgColors).forEach(bgColor => {
+darkBgRoles.forEach(role => {
+  const onColor = getTextColorForBg(bgColors[role], white, black);
   addBase({
-    [`.bg-${bgColor}`]: {
-      'color': getTextColorForBg(bgColors[bgColor], white, black),
+    [`.bg-color-selected.bg-${role}`]: {
+      'color': onColor,
+      '--heading-color': onColor,
+      '--border-accent-color': onColor,
     },
   });
 });
 ```
 
 **¿Qué hace esto?**
-Cuando aplicás `bg-primary` a un elemento, el texto pasa a blanco o negro automáticamente según qué de los dos contrasta mejor contra el hex real de `primary` — sin que nadie tenga que escribir `text-white`/`text-black` a mano ni mantener una tabla `on-primary`/`on-secondary`/etc. Si cambia el hex del rol y con eso cambia de claro a oscuro (o viceversa), el texto se recalcula solo en el próximo build.
+Con `class="bg-primary bg-color-selected"`, si `primary` es oscuro, el texto, los títulos (`text-heading-color`) y los bordes de acento (`border-accent`) pasan a claro solos. En roles claros no se genera nada: el texto conserva su color. Si cambia el hex del rol y con eso cambia de claro a oscuro (o viceversa), se recalcula solo en el próximo build.
 
 ### ¿Por Qué Este Sistema?
 
@@ -161,12 +164,12 @@ Si cambias `bg-orange-500` a `bg-blue-500`, debes también cambiar manualmente `
 
 **Solución actual:**
 ```html
-<button class="bg-primary">
+<section class="bg-primary bg-color-selected">
   Acción
-</button>
+</section>
 ```
 
-El texto **se ajusta solo** apenas se aplica la clase `bg-primary`, sin depender de dónde caiga el elemento (`text-colors.js` calcula blanco o negro contra el hex real de `primary`). Si cambia el hex de `primary`, el texto se recalcula solo en el próximo build — nadie tiene que tocar una tabla de texto por rol.
+El texto **se ajusta solo** apenas se aplican `bg-primary` y `bg-color-selected` (`text-colors.js` calcula blanco o negro contra el hex real de `primary`). Si cambia el hex de `primary`, el texto se recalcula solo en el próximo build — nadie tiene que tocar una tabla de texto por rol.
 
 ### Nomenclatura Semántica
 
@@ -240,10 +243,10 @@ Un plugin (`variables.js`, ver arriba) registra cada rol como `--color-{rol}` en
 
 **Fondo oscuro (texto automático, sin ninguna clase extra):**
 ```html
-<section class="bg-primary-dk py-16">
-  <!-- ⬆️ primary-dk es oscuro: text-colors.js ya le puso color:white a
-  .bg-primary-dk vía addBase, así que cualquier elemento con esta clase
-  hereda texto blanco solo con aplicarla — no hace falta text-white -->
+<section class="bg-primary-dk bg-color-selected py-16">
+  <!-- ⬆️ primary-dk es oscuro: text-colors.js le pone color:white a
+  .bg-color-selected.bg-primary-dk, así que todo lo de adentro hereda
+  texto blanco — no hace falta text-white -->
   <h1 class="text-h1">Título</h1>
   <p>Texto blanco automático.</p>
 </section>
@@ -2871,9 +2874,9 @@ Entonces:
 ### Ejemplo 2: Hero Section Responsive
 
 ```html
-<section class="bg-primary py-16">
-  <!-- ⬆️ primary es un rol oscuro: bg-primary ya trae el texto blanco
-  puesto solo (text-colors.js, ver "Sistema de Colores Semánticos") -->
+<section class="bg-primary bg-color-selected py-16">
+  <!-- ⬆️ primary es un rol oscuro: con bg-color-selected el texto pasa a
+  blanco solo (text-colors.js, ver "Sistema de Colores Semánticos") -->
   <div class="container">
     <div class="flex-grid-2 lg:flex-grid-2 gap-y-8 items-center">
       <!-- Contenido texto -->

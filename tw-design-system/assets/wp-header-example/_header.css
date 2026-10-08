@@ -18,8 +18,8 @@
   }
 
   /* Links del menú: el color base/hover ya lo resuelve el reset global
-     de atoms/_buttons.css (var(--link-color)/var(--link-hover-color)) según
-     el fondo del header (bg-background). Acá solo se agrega el indicador
+     de atoms/_buttons.css (var(--link-color), que pone en claro
+     plugins/dark-bg-variants.js si el fondo del header es oscuro). Acá solo se agrega el indicador
      de página activa, que no puede pisar la propiedad `color` del reset
      (ver atoms/_buttons.css) así que se resuelve con un borde en vez de
      un cambio de color. */
