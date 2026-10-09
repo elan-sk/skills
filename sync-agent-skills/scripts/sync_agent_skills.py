@@ -118,19 +118,42 @@ def choose_newest(candidates: list[Path], roots: list[Path]) -> tuple[Path, bool
     return newest[0], len({file_digest(p) for p in newest}) > 1
 
 
-def sync(roots: list[Path], requested: list[str], dry_run: bool, push: bool = True) -> int:
+def repo_skill_roots(global_roots: list[Path]) -> list[Path]:
+    """Skill roots of the git repo containing the cwd (only the ones that already exist)."""
+    top = subprocess.run(["git", "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False)
+    if top.returncode != 0:
+        return []
+    base = Path(top.stdout.strip()).resolve()
+    roots = [(base / d / "skills").resolve() for d in (".claude", ".codex", ".agents")]
+    return [r for r in roots if r.is_dir() and r not in global_roots]
+
+
+def sync(
+    roots: list[Path],
+    requested: list[str],
+    dry_run: bool,
+    push: bool = True,
+    update_only: list[Path] | None = None,
+) -> int:
+    """update_only: roots (repo skills) where skills are never created, only updated if they already exist."""
     roots = existing_roots(roots)
     if not roots:
         print("No skill roots exist.", file=sys.stderr)
         return 2
 
+    update_only = update_only or []
     names = discover_skill_names(roots, requested)
+    if update_only:
+        print("repo_roots")
+        for root in update_only:
+            print(f"  {root}")
+        roots = roots + update_only
     copied: list[tuple[Path, Path]] = []
     created_dirs: list[Path] = []
     tie_conflicts: list[str] = []
 
     for name in names:
-        skill_dirs = [root / name for root in roots]
+        skill_dirs = [root / name for root in roots if root not in update_only or (root / name / "SKILL.md").exists()]
         if not any((d / "SKILL.md").exists() for d in skill_dirs):
             print(f"[skip] {name}: no SKILL.md found in any root")
             continue
@@ -262,6 +285,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("skills", nargs="*", help="Optional skill names to sync. Default: all discovered skills.")
     parser.add_argument("--dry-run", action="store_true", help="Show planned changes without writing files.")
     parser.add_argument("--no-push", action="store_true", help="Skip git commit/push of the synced skills.")
+    parser.add_argument("--no-repo", action="store_true", help="Skip the skills of the current git repo.")
     parser.add_argument(
         "--root",
         action="append",
@@ -274,7 +298,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     roots = [path.expanduser().resolve() for path in (args.root or DEFAULT_ROOTS)]
-    return sync(roots, args.skills, args.dry_run, not args.no_push)
+    repo_roots = [] if args.no_repo else repo_skill_roots(roots)
+    return sync(roots, args.skills, args.dry_run, not args.no_push, repo_roots)
 
 
 if __name__ == "__main__":

@@ -30,6 +30,14 @@ skills"**, **"sincroniza las skills"** o **"copia las skills entre agentes"**:
    `synced/`) no se toca. Si el push falla se informa y no se fuerza.
    Usar `--no-push` solo si el usuario pide no subir.
 
+8. Skills del repo: si se ejecuta dentro de un repo git que tiene
+   `.claude/skills`, `.codex/skills` o `.agents/skills`, las skills del repo
+   que se llamen igual que una global se sincronizan con ella (gana el mas
+   nuevo, en cualquier sentido). No se crean skills ni carpetas en el repo,
+   y las skills que solo existen en el repo no se copian a las globales,
+   salvo que el usuario lo pida explicitamente. El repo del proyecto nunca
+   se commitea ni se pushea. `--no-repo` lo desactiva.
+
 No borrar archivos por defecto. La sincronizacion por defecto es union de
 archivos: si un archivo existe en una raiz y falta en otra, se copia.
 
