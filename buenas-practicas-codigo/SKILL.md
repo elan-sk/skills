@@ -5,6 +5,14 @@ description: Unifica las convenciones de ELAN-SK para construir y revisar códig
 
 # Buenas prácticas de construcción de código
 
+## REGLA DURA: cero comentarios en el código (usuario, 2026-10-09)
+
+- No escribir **ningún** comentario en el código: ni explicaciones, ni notas de implementación, ni "guías" para la persona o para la IA. Sobre todo en el frontend: plantillas (Django/Twig/PHP/JSX), CSS, JS y config de build. Tampoco en archivos generados por un comando.
+- Todo el racional, las decisiones y el contexto van a archivos `.md` del proyecto (`MEMORY.md` de la raíz, `design.md`, `docs/`, `specs/NNN-*/historial.md`), nunca al código.
+- Al copiar código de otro proyecto, quitarle los comentarios.
+- En plantillas Django/Wagtail, `{# #}` es de **una sola línea**: en varias líneas se imprime como texto en la página. Motivo: así quedaron impresos en la página de Estilos de Racafé.
+
+
 Aplicar estas decisiones dentro del cambio pedido. No autoriza refactorizaciones ajenas, instalaciones, migraciones, commits, publicaciones ni uso del navegador. Las instrucciones vigentes del usuario y del proyecto prevalecen sobre esta síntesis.
 
 ## Antes de editar

@@ -4,7 +4,8 @@
 # o, si no hay nada de eso, en el bloque "Conexión" del SKILL.md (la conexión viaja con la skill).
 #   bd indice [component|handbook] [texto]   → catálogo compacto (JSON)
 #   bd entrada ID [html]                       → entrada completa; "html" agrega contenido_html para editar
-#   bd taxonomias                              → términos existentes (stack, clase, cliente)
+#   bd taxonomias                              → términos existentes (stack, clase, proyecto)
+#   bd url URL                                 → todas las entradas del archivo de un proyecto, stack o clase (o la entrada, si es su URL)
 #   bd proponer ARCHIVO.json                   → crea propuesta; devuelve link de aprobación
 #   bd estado ID_PROPUESTA                     → pendiente | aprobada | rechazada | vencida | error
 set -euo pipefail
@@ -29,6 +30,8 @@ case "${1:-}" in
   indice)     get "indice?tipo=${2:-}&q=$(jq -rn --arg q "${3:-}" '$q|@uri')" ;;
   entrada)    get "entrada/${2:?ID}${3:+?html=1}" ;;
   taxonomias) get taxonomias ;;
+  url)        # Solo viaja la ruta: una URL completa en la query la puede frenar el firewall del hosting
+              ruta="${2:?URL}"; ruta="${ruta#*://}"; get "url?ruta=$(jq -rn --arg q "/${ruta#*/}" '$q|@uri')" ;;
   proponer)   # Adjuntos con "archivo": "/ruta/local" se convierten a base64 (y toman el nombre del archivo si falta)
               body=$(mktemp); cp "${2:?archivo JSON}" "$body"
               for i in $(jq -r '.datos.adjuntos // [] | to_entries[] | select(.value.archivo) | .key' "$body"); do
@@ -40,6 +43,6 @@ case "${1:-}" in
               curl -sS --fail-with-body -X POST -H "X-Biblioteca-Token: $BD_TOKEN" -H 'Content-Type: application/json' \
                 --data-binary "@$body" "$API/propuestas"; rm -f "$body" ;;
   estado)     get "propuestas/${2:?ID de propuesta}" ;;
-  *) sed -n '2,9p' "$0"; exit 1 ;;
+  *) sed -n '2,10p' "$0"; exit 1 ;;
 esac
 echo

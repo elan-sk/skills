@@ -5,6 +5,14 @@ description: Maqueta y publica secciones con el componente "Básico" del tema Wo
 
 # WP Basic Component Builder
 
+## REGLA DURA: cero comentarios en el código (usuario, 2026-10-09)
+
+- No escribir **ningún** comentario en el código: ni explicaciones, ni notas de implementación, ni "guías" para la persona o para la IA. Sobre todo en el frontend: plantillas (Django/Twig/PHP/JSX), CSS, JS y config de build. Tampoco en archivos generados por un comando.
+- Todo el racional, las decisiones y el contexto van a archivos `.md` del proyecto (`MEMORY.md` de la raíz, `design.md`, `docs/`, `specs/NNN-*/historial.md`), nunca al código.
+- Al copiar código de otro proyecto, quitarle los comentarios.
+- En plantillas Django/Wagtail, `{# #}` es de **una sola línea**: en varias líneas se imprime como texto en la página. Motivo: así quedaron impresos en la página de Estilos de Racafé.
+
+
 Skill para maquetar secciones con total libertad usando el componente **"Básico"** de `hello-elementor-depura` — un layout de Flexible Content llamado `basic` (`layout_basic`) que NO tiene campos con forma fija: son 4 subcampos genéricos (`basic__title` solo para el admin, `basic__content` = HTML libre, `basic__section` = clases del `<section>` que envuelve todo, `basic__compiled` = `{version, source, css}` con el CSS Tailwind ya compilado y escopado a esa instancia). El editor real vive en `js/admin/basic/editor.js` (reemplaza a TinyMCE, panel de estilos visual, inserción de medios/YouTube, plantillas reutilizables).
 
 **Skills complementarios:**

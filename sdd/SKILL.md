@@ -5,11 +5,40 @@ description: 'Spec-Driven Development para desarrollar con spec, plan, tareas y 
 
 # SDD (con o sin tarea de PMSK)
 
+## REGLA DURA: cero comentarios en el código (usuario, 2026-10-09)
+
+- No escribir **ningún** comentario en el código: ni explicaciones, ni notas de implementación, ni "guías" para la persona o para la IA. Sobre todo en el frontend: plantillas (Django/Twig/PHP/JSX), CSS, JS y config de build. Tampoco en archivos generados por un comando.
+- Todo el racional, las decisiones y el contexto van a archivos `.md` del proyecto (`MEMORY.md` de la raíz, `design.md`, `docs/`, `specs/NNN-*/historial.md`), nunca al código.
+- Al copiar código de otro proyecto, quitarle los comentarios.
+- En plantillas Django/Wagtail, `{# #}` es de **una sola línea**: en varias líneas se imprime como texto en la página. Motivo: así quedaron impresos en la página de Estilos de Racafé.
+
+
 La spec manda. Nada se implementa si no está en la spec; si falta una decisión, se para y se pregunta. Flujo:
 
 **Conexión → Leer las fuentes → Constitución (1 vez por repo) → Spec → Clarificación → ⏸ aprobación → Plan → ⏸ aprobación → Tareas (+ insumos) → Implementación → Validación (+ capturas) → Registro en PMSK (evidencias, comentario, estado)**
 
 Solo se para a pedir aprobación en los dos ⏸ (decisión del usuario 2026-10-01). Lo demás sigue solo, pero toda duda real que aparezca en cualquier fase se pregunta igual.
+
+### Cómo se pide una aprobación (regla dura, decisión del usuario 2026-10-10)
+
+Toda parada ⏸ se pide **con el formulario `AskUserQuestion`**, nunca con una pregunta suelta al final del texto: en texto no se distingue un pedido de aprobación de un simple informe. Aplica a la constitución, la spec, el plan, la lista de pruebas (modo Prueba) y los cambios de alcance.
+
+- Antes del formulario, el resumen de lo que se aprueba y una línea que lo diga sin rodeos: «**Necesito su aprobación para seguir.**»
+- Una sola pregunta, que nombre lo que se aprueba («¿Aprueba la Especificación 004?»), con estas opciones:
+  - **Aprobar (Recomendado)** — se sigue con el paso siguiente, y la descripción dice cuál es.
+  - **No aprobar** — no se avanza; se pregunta qué cambiar.
+  - «Other» (lo agrega solo el formulario) — para aprobar con matices escritos; se aplican y, si cambian el fondo, se vuelve a pedir aprobación.
+- Sin respuesta del formulario no hay aprobación: un mensaje que no responde a la pregunta no cuenta como «sí».
+- Cuando un mensaje solo informa (avance, resultado, hallazgo) no lleva formulario ni termina en pregunta; se cierra diciendo qué sigue.
+
+### Lecciones del simulacro en Racafé (2026-10-10)
+
+- **Entrevista proporcional.** Si la persona dice que la tarea es sencilla o de ejemplo, no se hacen rondas de preguntas: se toman las opciones recomendadas, se anotan en «Decisiones tomadas en la entrevista» y se sigue. Las preguntas de responsive siguen siendo obligatorias solo cuando hay decisiones reales que tomar.
+- **El diseño se lee de los insumos, no del Figma.** En plan gratuito, el conector de Figma agota las consultas en pocos llamados. Antes de pedirle nada, revisar si la tarea trae la imagen exportada y las medidas; si no las trae, pedirlas. Si se consulta Figma, hacerlo una sola vez por sección y con el nodo exacto.
+- **Dirección base = la del link.** El texto del link puede anunciar otra URL base (por ejemplo `localhost:3000` cuando se abrió por otro puerto). Usar el origen con el que se abrió el link.
+- **Simulacros y pruebas del flujo** se hacen en una instalación local de PMSK, nunca en producción.
+- **Tarea de componente:** su criterio de finalización incluye el ejemplo en la página de pruebas del proyecto, además de la verificación.
+- **Si un requisito se simplifica al implementar,** se corrige primero la especificación (y queda en el historial), después el código.
 
 ## Modos y cuándo usarla (decisión del usuario 2026-10-03)
 
@@ -46,7 +75,7 @@ Lo que ya existe en PMSK es contexto de la tarea: leerlo entero antes de pregunt
    - `.doc` / `.xls` / `.ppt` antiguos o lo que no se pueda abrir: no inventar el contenido; decirlo y preguntar en la entrevista qué contiene o pedir otro formato.
    - Enlaces: abrir solo si son públicos y relevantes; un video o un enlace privado se nombra en la spec sin suponer qué tiene.
    - Componente o instructivo de la biblioteca (`biblioteca.depura-creatividad.com`): no abrirlo como página web; cargar la skill `biblioteca-depura` y leerlo con su protocolo (`$B entrada <id>`; sin id en el enlace, `$B indice` filtrando por el título). Usar su código/estructura y respetar sus instructivos obligatorios.
-3. **Barrido en la biblioteca** (siempre, aunque ningún insumo la nombre — decisión del usuario 2026-10-04): con la skill `biblioteca-depura`, un `$B indice` filtrado por el stack del repo y las palabras clave de la tarea, y abrir solo los 1–3 candidatos que apliquen. Rápido, sin anunciarlo largo. Si algo sirve, va a la spec como fuente («Basado en *X*, #id»); si no hay nada, se anota en una línea en `historial.md`. Sin token o sin conexión: decirlo y seguir.
+3. **Barrido en la biblioteca** (siempre, aunque ningún insumo la nombre — decisión del usuario 2026-10-04): con la skill `biblioteca-depura`, un `$B indice` filtrado por el stack del repo y las palabras clave de la tarea, y abrir solo los 1–3 candidatos que apliquen. Rápido, sin anunciarlo largo. Si algo sirve, va a la spec como fuente («Basado en *X*, #id»); si no hay nada, se anota en una línea en `historial.md`. Sin token o sin conexión: decirlo y seguir. En modo PMSK, el proyecto del link es el `proyecto` de la biblioteca (decisión del usuario 2026-10-10): incluir en el barrido lo que ese proyecto ya tiene documentado y, si de la tarea sale algo para documentar, clasificarlo con ese proyecto según la regla de la skill `biblioteca-depura`. **Alcance acotado** (decisión del usuario 2026-10-10): si el proyecto de PMSK tiene entre sus enlaces (`links` de `GET /projects/:id`, que no vienen en el link de tarea) el archivo de un proyecto u otro eje de la biblioteca, este barrido NO recorre el índice completo: se limita a las entradas de ese enlace (`$B url <enlace>`) y a las normas obligatorias del stack. Sin ese enlace, el barrido es el de siempre.
 4. **Usar**: cada dato que salga de una fuente va a la spec con su origen; si una fuente contradice la descripción de la tarea u otra fuente, se pregunta en la entrevista cuál manda. Lo que las fuentes ya responden no se pregunta.
 5. Los archivos descargados quedan solo en el scratchpad: no se copian al repo salvo que el plan lo requiera (ej. datos de ejemplo como fixture de tests) y no se vuelven a subir a Insumos (ya están en PMSK).
 6. Anotar en `historial.md` qué fuentes se leyeron y cuáles no se pudieron leer.
@@ -72,6 +101,7 @@ Cubrir, como mínimo, lo que aplique:
 - **Datos**: qué se guarda, migraciones y compatibilidad con datos existentes.
 - **Fuera de alcance**: qué NO se hace en esta iteración.
 - **Verificación**: cómo se comprueba cada requisito (qué se prueba sin navegador y qué queda para prueba visual).
+- **Responsive** (obligatorio si el pedido es construir o cambiar un componente o una pantalla; decisión del usuario 2026-10-10): no se asume, se pregunta. Por cada punto de quiebre del proyecto (los reales del repo, no de memoria): qué cambia de la composición (columnas, orden, qué se apila), qué se oculta o se reemplaza (menú, slider en vez de grilla, texto recortado), tamaños de imagen y proporción, y cómo se comporta lo interactivo en táctil (hover, arrastre, flechas). Si hay diseño móvil o de tablet en las fuentes, manda ese; si solo hay escritorio, proponer el comportamiento con `preview` (mockup ASCII por tamaño) y confirmarlo. Las respuestas van a la spec como RF verificables por ancho.
 
 ### Plantilla
 
@@ -132,7 +162,7 @@ La spec es el QUÉ y el POR QUÉ: nada de archivos, stack ni arquitectura. Cada 
 
 Revisar la spec como QA: ambigüedades, contradicciones, casos límite sin cubrir, conflictos con la constitución y RF sin traza a la cascada. Lo que salga se pregunta (otra ronda de `AskUserQuestion`) y se corrige. **No presentar la spec con un solo `[NECESITA ACLARACIÓN]`.**
 
-⏸ **Aprobación 1**: mostrar la spec resumida (RF en una lista) y pedir aprobación. Aprobada → `Estado: aprobada`.
+⏸ **Aprobación 1**: mostrar la spec resumida (RF en una lista) y pedir aprobación con el formulario (ver «Cómo se pide una aprobación»). Aprobada → `Estado: aprobada`.
 
 ## 3. Plan — `plan.md`
 
@@ -142,7 +172,7 @@ Leer el código que se toca, de punta a punta.
 
 Resto del contenido: archivos que se crean o modifican y su responsabilidad; **qué se reutiliza** de lo existente (buscar antes de crear y decir explícitamente si algo se construye desde cero); lógica principal en pseudocódigo; interfaz; decisiones técnicas con su alternativa descartada y por qué; migraciones/datos; estrategia de verificación con las herramientas **reales** del repo (tsc, lint, scripts `verify:*`, tests existentes; si no hay tests, un chequeo ejecutable mínimo). Al lado de cada parte, qué RF cubre: ningún RF puede quedar sin parte del plan. Si algo resulta inviable al leer el código, decirlo ya y volver a la spec, no seguir.
 
-⏸ **Aprobación 2**: mostrar el plan resumido y pedir aprobación.
+⏸ **Aprobación 2**: mostrar el plan resumido y pedir aprobación con el formulario.
 
 ## 4. Tareas — `tasks.md` (+ PMSK solo en modo PMSK)
 

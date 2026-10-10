@@ -5,6 +5,14 @@ description: Crea y conecta componentes de WordPress con Secure Custom Fields (S
 
 # WP SCF Component Builder
 
+## REGLA DURA: cero comentarios en el código (usuario, 2026-10-09)
+
+- No escribir **ningún** comentario en el código: ni explicaciones, ni notas de implementación, ni "guías" para la persona o para la IA. Sobre todo en el frontend: plantillas (Django/Twig/PHP/JSX), CSS, JS y config de build. Tampoco en archivos generados por un comando.
+- Todo el racional, las decisiones y el contexto van a archivos `.md` del proyecto (`MEMORY.md` de la raíz, `design.md`, `docs/`, `specs/NNN-*/historial.md`), nunca al código.
+- Al copiar código de otro proyecto, quitarle los comentarios.
+- En plantillas Django/Wagtail, `{# #}` es de **una sola línea**: en varias líneas se imprime como texto en la página. Motivo: así quedaron impresos en la página de Estilos de Racafé.
+
+
 Skill para crear componentes de temas WordPress personalizados (SCF + TWCSS v4 propio) a partir de un diseño, conectarlos a la plantilla correcta, y verificarlos visualmente con Chrome DevTools MCP.
 
 **Requiere ejecutarse en Claude Code** (o entorno equivalente con filesystem real + MCP local). No funciona en claude.ai web porque necesita acceso al tema en disco y a un navegador apuntando a la instalación local.

@@ -5,6 +5,14 @@ description: 'Adapta cualquier diseño (imagen, Figma, HTML, documento) al core 
 
 # Adaptador de Design System → Core TWCSS de ELAN-SK
 
+## REGLA DURA: cero comentarios en el código (usuario, 2026-10-09)
+
+- No escribir **ningún** comentario en el código: ni explicaciones, ni notas de implementación, ni "guías" para la persona o para la IA. Sobre todo en el frontend: plantillas (Django/Twig/PHP/JSX), CSS, JS y config de build. Tampoco en archivos generados por un comando.
+- Todo el racional, las decisiones y el contexto van a archivos `.md` del proyecto (`MEMORY.md` de la raíz, `design.md`, `docs/`, `specs/NNN-*/historial.md`), nunca al código.
+- Al copiar código de otro proyecto, quitarle los comentarios.
+- En plantillas Django/Wagtail, `{# #}` es de **una sola línea**: en varias líneas se imprime como texto en la página. Motivo: así quedaron impresos en la página de Estilos de Racafé.
+
+
 ## Qué hace esta skill
 
 Toma un diseño de cualquier origen (imagen, capturas, Figma, HTML/CSS suelto, documento) y lo traduce al core CSS propio del usuario, manteniendo su arquitectura de tokens (`assets/core/`), lo instala en el proyecto correspondiente, y entrega una prueba visual real y funcional. También actúa como guardrail de estilo permanente: cualquier componente que se cree después en un proyecto con este core debe seguir sus reglas.
@@ -81,6 +89,19 @@ Cuando se pida crear/editar cualquier botón, card, formulario, sección o compo
 - **Orden de clases**: toda lista de clases Tailwind (nueva o al reorganizar una existente) sigue el orden fijo de bloques de `references/philosophy.md` §10 (semántica BEM → flujo/posición → layout → tamaños → bordes/forma/superficie → bg+texto fusionados → espacios → transiciones/animación/interacción → estados/group), con responsive pegado a su propiedad base y alfabético dentro de cada bloque.
   - Aplica SIEMPRE que se construya o modifique un archivo con clases Tailwind — no es una tarea aparte que hay que pedir explícitamente. Cubre TODO archivo tocado en un proyecto que use este core, sin importar el motivo del cambio ni si el pedido tiene algo que ver con diseño: un fix de bug, un cambio de copy/texto, agregar/quitar una sola clase, mover un bloque de PHP, lo que sea. Si al tocar una línea existente su lista de `class`/`className` queda desordenada (ya sea porque ya estaba mal o porque el cambio la desordenó), corregir el orden ahí mismo como parte del mismo edit, sin que el usuario tenga que pedirlo aparte.
   - **Automatización de editor**: no existe un formateador de terceros que aplique este orden en archivos con PHP interpolado (`prettier-plugin-tailwindcss` no soporta `.php` ni permite configurar un orden de bloques propio — confirmado 2026-07-23, ver `references/philosophy.md` §10 si hace falta reconfirmar la investigación). La solución real es un script propio: un sorter en Node (sin dependencias nuevas) que reordena `class="..."`/`className="..."` según estos mismos bloques, SALTEANDO por diseño cualquier atributo con `<?php`/`<?=` embebido (esos requieren juicio semántico — mover una variable PHP dentro de una lista de clases puede implicar reestructurar cómo se arma esa variable, ver el párrafo de "Clases armadas dinámicamente" en §10 — y no es seguro que un script los toque solo). Implementación de referencia ya construida y en uso en CAFEXPORT: `wp-content/themes/hello-elementor-depura/scripts/sort-tw-classes.js`, enganchado a `npm run build` (pasada única antes de compilar) y a `npm run dev` (modo `--watch`, reordena en cada guardado). Es portable: para instalarlo en otro proyecto con este core, copiar el script, ajustar `TARGET_DIRS`/`EXTENSIONS` a la estructura del proyecto, y agregar los mismos scripts de `package.json` (`sort-classes`, `sort-classes-watch`, más el hook en `build`/`dev`). Correr `--check` primero y revisar el diff antes de confiar en el modo de escritura en un proyecto nuevo — la tabla de clasificación de prefijos puede necesitar ajustes si el proyecto usa utilidades del core que CAFEXPORT no usa.
+
+## Wagtail / Django (referencia: proyecto Racafé)
+
+Variante del core para sitios en Wagtail. El proyecto de referencia tiene sus propias skills en `.agents/skills/` (`racafe-core-tailwind`, `wagtail-block-builder`): si existen en el repo, mandan sobre esta sección.
+
+- **Instalación:** `apps/core/static_src/` con `input.css`, `main.js` y `design/` (settings, bases, atoms, libraries, utilities). Se compila solo con Vite (`@tailwindcss/vite`) y Django lo carga con `django-vite`; en desarrollo, `django-browser-reload` recarga al guardar plantillas.
+- **Colores:** no hay plugins de Tailwind en JavaScript. La fuente única es una lista en Python (`color_palette.py`) y un comando (`generate_color_css`) que escribe los roles, las variables por fondo y la lista de seguridad de las clases que el CMS guarda en la base de datos.
+- **Puntos de quiebre:** los de Tailwind sin personalizar (640, 768, 1024, 1280, 1536), a diferencia de la variante de WordPress.
+- **Componentes:** bloques de StreamField (clase + plantilla + registro en una lista única), no Flexible Content. Enlaces con un bloque de enlace común; tarjetas reutilizables en una carpeta propia.
+- **Página de prueba visual:** una vista de Django restringida a usuarios del CMS (`/estilos/`), más una página «Pruebas de componentes» con un ejemplo de cada bloque.
+- **Build:** la carpeta compilada no se versiona; el despliegue corre `npm install` y `npm run build`.
+- **CSS suelto fuera de capas** (un `base.css` heredado) no debe redefinir etiquetas: le gana a las utilidades.
+- **Documento de referencia:** `docs/notas-de-diseno.md` en vez de `design.md`.
 
 ## Reutilizar antes de construir
 
